@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infos Pratiques - Lorine & Corentin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Dancing+Script:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-content">
+            <a href="index.html" class="nav-logo">L & C</a>
+            <ul class="nav-links">
+                <li><a href="programme.html">le programme</a></li>
+                <li><a href="infos-pratiques.html" class="active">infos pratiques</a></li>
+                <li><a href="rsvp.html">rsvp</a></li>
+                <li><a href="faq.html">faq corse</a></li>
+            </ul>
+            <div class="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section page-hero">
+        <!-- Illustration ferry vers la Corse -->
+        <svg class="page-illustration" viewBox="0 0 250 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Ferry -->
+            <rect x="80" y="120" width="90" height="25" stroke="#8b7d6b" stroke-width="2" fill="none"/>
+            <rect x="85" y="110" width="80" height="10" stroke="#8b7d6b" stroke-width="1.5" fill="none"/>
+            <!-- Cheminées -->
+            <rect x="95" y="100" width="8" height="10" stroke="#8b7d6b" stroke-width="1" fill="none"/>
+            <rect x="110" y="95" width="8" height="15" stroke="#8b7d6b" stroke-width="1" fill="none"/>
+            <rect x="125" y="100" width="8" height="10" stroke="#8b7d6b" stroke-width="1" fill="none"/>
+            
+            <!-- Mer avec vagues -->
+            <path d="M0 145 Q25 140 50 145 Q75 140 100 145 Q125 140 150 145 Q175 140 200 145 Q225 140 250 145" 
+                  stroke="#8b7d6b" stroke-width="1.5" fill="none" opacity="0.6"/>
+            <path d="M0 155 Q30 150 60 155 Q90 150 120 155 Q150 150 180 155 Q210 150 240 155" 
+                  stroke="#8b7d6b" stroke-width="1" fill="none" opacity="0.4"/>
+            
+            <!-- Île de Corse au loin -->
+            <path d="M200 110 Q210 100 220 105 Q230 95 240 100 Q245 105 250 100" 
+                  stroke="#8b7d6b" stroke-width="1.5" fill="none" opacity="0.8"/>
+            
+            <!-- Avion -->
+            <path d="M30 60 L50 65 L45 70 L25 65 Z" stroke="#8b7d6b" stroke-width="1" fill="none" opacity="0.7"/>
+            <path d="M40 50 L40 75" stroke="#8b7d6b" stroke-width="0.8" opacity="0.7"/>
+            <path d="M35 55 L45 55" stroke="#8b7d6b" stroke-width="0.8" opacity="0.7"/>
+            
+            <!-- Nuages -->
+            <circle cx="60" cy="40" r="8" stroke="#8b7d6b" stroke-width="0.8" fill="none" opacity="0.3"/>
+            <circle cx="70" cy="35" r="6" stroke="#8b7d6b" stroke-width="0.8" fill="none" opacity="0.3"/>
+            <circle cx="180" cy="50" r="10" stroke="#8b7d6b" stroke-width="0.8" fill="none" opacity="0.3"/>
+        </svg>
+
+        <h1 class="page-title">Infos Pratiques</h1>
+        <p class="page-subtitle">
+            Tout ce qu'il faut savoir pour rejoindre l'île de beauté<br>
+            et profiter pleinement de votre séjour corse !
+        </p>
+    </section>
+
+    <!-- Découpe organique -->
+    <div class="section-divider">
+        <svg viewBox="0 0 1440 150" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <!-- Vague avec sillage de ferry -->
+            <path d="M0,150 Q180,70 360,95 Q540,60 720,85 Q900,70 1080,95 Q1260,55 1440,75 L1440,150 L0,150 Z" 
+                  class="wave-white"/>
+            <path d="M0,150 Q240,80 480,105 Q720,65 960,90 Q1200,75 1440,85 L1440,150 L0,150 Z" 
+                  fill="rgba(255, 255, 255, 0.3)"/>
+            <path d="M0,150 Q180,70 360,95 Q540,60 720,85 Q900,70 1080,95 Q1260,55 1440,75" 
+                  class="wave-stroke"/>
+            <!-- Sillage -->
+            <path d="M200,90 Q250,85 300,90" stroke="#8b7d6b" stroke-width="0.6" fill="none" opacity="0.3"/>
+            <path d="M600,75 Q650,70 700,75" stroke="#8b7d6b" stroke-width="0.6" fill="none" opacity="0.3"/>
+        </svg>
+    </div>
+
+    <!-- Section Transport -->
+    <section class="content-section section-white">
+        <div class="container">
+            <h2 class="section-title">Comment venir en Corse ?</h2>
+            
+            <div class="grid-2">
+                <div class="glass-card hover-lift">
+                    <h3 class="mb-2">✈️ En Avion</h3>
+                    <p class="event-description mb-2">
+                        <strong>Aéroport d'Ajaccio Napoléon Bonaparte</strong><br>
+                        Vols directs depuis Paris, Lyon, Marseille, Nice...
+                    </p>
+                    <ul style="color: var(--text-light); margin-left: 1.5rem;">
+                        <li>Air France, Air Corsica, easyJet</li>
+                        <li>Durée : 1h30 depuis Paris</li>
+                        <li>Navette aéroport → centre : 20 min</li>
+                    </ul>
+                    <p class="event-note mt-2">Réservez tôt pour les meilleurs tarifs !</p>
+                </div>
+
+                <div class="glass-card hover-lift">
+                    <h3 class="mb-2">⛴️ En Ferry</h3>
+                    <p class="event-description mb-2">
+                        <strong>Depuis Marseille, Nice ou Toulon</strong><br>
+                        Traversée de nuit recommandée pour arriver frais !
+                    </p>
+                    <ul style="color: var(--text-light); margin-left: 1.5rem;">
+                        <li>Corsica Linea, La Méridionale</li>
+                        <li>Durée : 5h à 12h selon le port</li>
+                        <li>Possibilité d'emmener sa voiture</li>
+                    </ul>
+                    <p class="event-note mt-2">Cabine recommandée pour dormir !</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Découpe organique -->
+    <div class="section-divider">
+        <svg viewBox="0 0 1440 150" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <!-- Vague avec hôtels -->
+            <path d="M0,0 Q300,60 600,40 Q900,70 1200,50 Q1350,60 1440,55 L1440,0 L0,0 Z" 
+                  class="wave-primary"/>
+            <path d="M0,0 Q240,50 480,30 Q720,60 960,40 Q1200,50 1440,45 L1440,0 L0,0 Z" 
+                  fill="rgba(139, 125, 107, 0.02)"/>
+            <path d="M0,0 Q300,60 600,40 Q900,70 1200,50 Q1350,60 1440,55" 
+                  class="wave-stroke"/>
+            <!-- Petits hôtels -->
+            <rect x="200" y="45" width="8" height="12" stroke="#8b7d6b" stroke-width="0.5" fill="none" opacity="0.4"/>
+            <rect x="600" y="35" width="6" height="10" stroke="#8b7d6b" stroke-width="0.5" fill="none" opacity="0.4"/>
+            <rect x="1000" y="40" width="7" height="11" stroke="#8b7d6b" stroke-width="0.5" fill="none" opacity="0.4"/>
+        </svg>
+    </div>
+
+    <!-- Section Hébergement -->
+    <section class="content-section section-primary">
+        <div class="container">
+            <h2 class="section-title">Où dormir ?</h2>
+            
+            <div class="container-narrow mb-4">
+                <div class="glass-card text-center mb-3">
+                    <h3 class="mb-2">🏨 Nos recommandations</h3>
+                    <p class="section-subtitle">
+                        Nous avons négocié des tarifs préférentiels dans ces établissements.<br>
+                        Mentionnez "Mariage Lorine & Corentin" lors de votre réservation.
+                    </p>
+                </div>
+            </div>
+
+            <div class="grid-auto">
+                <div class="glass-card hover-lift">
+                    <h3 class="mb-2">🌟 Hôtel Les Mouettes</h3>
+                    <p class="event-description mb-2">
+                        <strong>⭐⭐⭐⭐</strong><br>
+                        Vue mer, proche du centre d'Ajaccio
+                    </p>
+                    <ul style="color: var(--text-light); margin-left: 1.5rem; margin-bottom: 1rem;">
+                        <li>Tarif négocié : 120€/nuit</li>
+                        <li>Petit-déjeuner inclus</li>
+                        <li>Parking gratuit</li>
+                    </ul>
+                    <p class="event-note">📞 04 95 XX XX XX</p>
+                </div>
+
+                <div class="glass-card hover-lift">
+                    <h3 class="mb-2">🏖️ Résidence Mare e Monti</h3>
+                    <p class="event-description mb-2">
+                        <strong>Appartements avec cuisine</strong><br>
+                        Parfait pour les familles
+                    </p>
+                    <ul style="color: var(--text-light); margin-left: 1.5rem; margin-bottom: 1rem;">
+                        <li>Tarif négocié : 80€/nuit</li>
+                        <li>2-4 personnes par appart</li>
+                        <li>Piscine commune</li>
+                    </ul>
+                    <p class="event-note">📞 04 95 XX XX XX</p>
+                </div>
+
+                <div class="glass-card hover-lift">
+                    <h3 class="mb-2">🏡 Chambres d'hôtes A Casa</h3>
+                    <p class="event-description mb-2">
+                        <strong>Authentique maison corse</strong><br>
+                        Accueil familial, petit-déjeuner maison
+                    </p>
+                    <ul style="color: var(--text-light); margin-left: 1.5rem; margin-bottom: 1rem;">
+                        <li>Tarif négocié : 90€/nuit</li>
+                        <li>Charme authentique</li>
+                        <li>Conseils locaux inclus</li>
+                    </ul>
+                    <p class="event-note">📞 04 95 XX XX XX</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Découpe organique -->
+    <div class="section-divider">
+        <svg viewBox="0 0 1440 150" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <!-- Vague avec maquis -->
+            <path d="M0,150 Q240,80 480,100 Q720,60 960,85 Q1200,70 1440,80 L1440,150 L0,150 Z" 
+                  class="wave-glass"/>
+            <path d="M0,150 Q180,90 360,110 Q540,70 720,95 Q900,80 1080,100 Q1260,75 1440,85 L1440,150 L0,150 Z" 
+                  fill="rgba(255, 255, 255, 0.2)"/>
+            <path d="M0,150 Q240,80 480,100 Q720,60 960,85 Q1200,70 1440,80" 
+                  class="wave-stroke"/>
+            <!-- Maquis corse -->
+            <circle cx="150" cy="85" r="2" fill="rgba(139, 125, 107, 0.4)"/>
+            <circle cx="300" cy="90" r="1.5" fill="rgba(139, 125, 107, 0.4)"/>
+            <circle cx="450" cy="75" r="2.5" fill="rgba(139, 125, 107, 0.4)"/>
+            <circle cx="600" cy="80" r="2" fill="rgba(139, 125, 107, 0.4)"/>
+            <circle cx="750" cy="85" r="1.8" fill="rgba(139, 125, 107, 0.4)"/>
+            <circle cx="900" cy="75" r="2.2" fill="rgba(139, 125, 107, 0.4)"/>
+        </svg>
+    </div>
+
+    <!-- Section Conseils -->
+    <section class="content-section section-glass">
+        <div class="container">
+            <h2 class="section-title">Conseils pour votre séjour</h2>
+            
+            <div class="grid-2">
+                <div class="glass-card hover-lift">
+                    <h3 class="mb-2">🧳 À emporter</h3>
+                    <ul style="color: var(--text-light); margin-left: 1.5rem;">
+                        <li>Tenue de cérémonie (évidemment !)</li>
+                        <li>Chaussures confortables pour la plage</li>
+                        <li>Crème solaire (soleil corse intense)</li>
+                        <li>Maillot de bain</li>
+                        <li>Appareil photo pour les paysages</li>
+                        <li>Bonne humeur (indispensable !)</li>
+                    </ul>
+                </div>
+
+                <div class="glass-card hover-lift">
+                    <h3 class="mb-2">💡 Bons plans</h3>
+                    <ul style="color: var(--text-light); margin-left: 1.5rem;">
+                        <li>Location de voiture recommandée</li>
+                        <li>Goûtez la charcuterie corse</li>
+                        <li>Visitez les calanques de Piana</li>
+                        <li>Détour par Bonifacio si possible</li>
+                        <li>Café serré obligatoire le matin</li>
+                        <li>Respectez la sieste corse 😴</li>
+                    </ul>
+                </div>
+
+                <div class="glass-card hover-lift">
+                    <h3 class="mb-2">📱 Contacts utiles</h3>
+                    <ul style="color: var(--text-light); margin-left: 1.5rem;">
+                        <li><strong>Urgences :</strong> 15 (SAMU)</li>
+                        <li><strong>Taxi Ajaccio :</strong> 04 95 XX XX XX</li>
+                        <li><strong>Location voiture :</strong> Aéroport</li>
+                        <li><strong>Office tourisme :</strong> 04 95 XX XX XX</li>
+                        <li><strong>Corentin :</strong> 06 XX XX XX XX</li>
+                        <li><strong>Lorine :</strong> 06 XX XX XX XX</li>
+                    </ul>
+                </div>
+
+                <div class="glass-card hover-lift">
+                    <h3 class="mb-2">🌞 Météo juillet</h3>
+                    <ul style="color: var(--text-light); margin-left: 1.5rem;">
+                        <li><strong>Température :</strong> 25-30°C</li>
+                        <li><strong>Eau de mer :</strong> 24°C</li>
+                        <li><strong>Ensoleillement :</strong> 12h/jour</li>
+                        <li><strong>Pluie :</strong> Très rare</li>
+                        <li><strong>Vent :</strong> Mistral possible</li>
+                        <li><strong>Conseil :</strong> Hydratez-vous !</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Découpe organique finale -->
+    <div class="section-divider">
+        <svg viewBox="0 0 1440 150" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <!-- Vague finale avec côte corse -->
+            <path d="M0,150 Q360,60 720,80 Q1080,65 1440,75 L1440,150 L0,150 Z" 
+                  class="wave-light"/>
+            <path d="M0,150 Q300,70 600,90 Q900,55 1200,75 Q1350,70 1440,75 L1440,150 L0,150 Z" 
+                  fill="rgba(139, 125, 107, 0.03)"/>
+            <path d="M0,150 Q360,60 720,80 Q1080,65 1440,75" 
+                  class="wave-stroke"/>
+            <!-- Côte rocheuse -->
+            <path d="M200,70 Q220,65 240,70" stroke="#8b7d6b" stroke-width="0.8" fill="none" opacity="0.4"/>
+            <path d="M600,75 Q620,70 640,75" stroke="#8b7d6b" stroke-width="0.8" fill="none" opacity="0.4"/>
+            <path d="M1000,65 Q1020,60 1040,65" stroke="#8b7d6b" stroke-width="0.8" fill="none" opacity="0.4"/>
+        </svg>
+    </div>
+
+    <!-- CTA Section -->
+    <section class="content-section section-light">
+        <div class="container-small text-center">
+            <h2 class="subsection-title">Des questions ?</h2>
+            <p class="section-subtitle">N'hésitez pas à nous contacter pour plus d'informations</p>
+            <div class="btn-group">
+                <a href="rsvp.html" class="btn btn-primary">Confirmer ma présence</a>
+                <a href="faq.html" class="btn btn-secondary">FAQ Corse</a>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Navigation mobile
+        const navToggle = document.querySelector('.nav-toggle');
+        const navLinks = document.querySelector('.nav-links');
+
+        navToggle.addEventListener('click', () => {
+            navToggle.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        // Fermer le menu mobile quand on clique sur un lien
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navToggle.classList.remove('active');
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // Fermer le menu mobile quand on clique ailleurs
+        document.addEventListener('click', (e) => {
+            if (!navToggle.contains(e.target) && !navLinks.contains(e.target)) {
+                navToggle.classList.remove('active');
+                navLinks.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html> 

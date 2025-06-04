@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ Corse - Lorine & Corentin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Dancing+Script:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Styles spécifiques à la FAQ */
+        .faq-item {
+            background: var(--glass-light);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            border: 1px solid var(--primary-light);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .faq-question {
+            padding: 2rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+
+        .faq-question:hover {
+            background: rgba(139, 125, 107, 0.05);
+        }
+
+        .faq-question h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin: 0;
+            flex: 1;
+        }
+
+        .faq-icon {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            transition: transform 0.3s ease;
+            margin-left: 1rem;
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(45deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 1000px;
+        }
+
+        .faq-answer-content {
+            padding: 2rem;
+            color: var(--text-light);
+            line-height: 1.7;
+        }
+
+        .faq-answer-content strong {
+            color: var(--text-dark);
+        }
+
+        .faq-answer-content ul {
+            margin: 1rem 0 1rem 1.5rem;
+        }
+
+        .faq-answer-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .fun-fact {
+            background: rgba(139, 125, 107, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 10px 10px 0;
+            font-style: italic;
+        }
+
+        .category-header {
+            text-align: center;
+            margin: 4rem 0 2rem;
+        }
+
+        .category-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .category-title {
+            font-family: var(--font-script);
+            font-size: 2.5rem;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+        }
+
+        .category-subtitle {
+            color: var(--text-light);
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-content">
+            <a href="index.html" class="nav-logo">L & C</a>
+            <ul class="nav-links">
+                <li><a href="programme.html">le programme</a></li>
+                <li><a href="infos-pratiques.html">infos pratiques</a></li>
+                <li><a href="rsvp.html">rsvp</a></li>
+                <li><a href="faq.html" class="active">faq corse</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section page-hero">
+        <!-- Illustration carte de la Corse -->
+        <svg class="page-illustration" viewBox="0 0 250 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Contour de la Corse -->
+            <path d="M120,50 Q130,45 140,50 Q150,40 160,50 Q170,45 175,55 Q180,65 175,75 Q170,85 165,95 Q160,105 155,115 Q150,125 145,135 Q140,145 135,140 Q130,135 125,130 Q120,125 115,120 Q110,115 105,110 Q100,105 95,100 Q90,95 95,85 Q100,75 105,65 Q110,55 115,50 Q118,48 120,50" 
+                  stroke="#8b7d6b" stroke-width="2" fill="none"/>
+            
+            <!-- Ajaccio -->
+            <circle cx="115" cy="110" r="3" fill="#8b7d6b"/>
+            <text x="125" y="115" font-family="Arial" font-size="8" fill="#8b7d6b">Ajaccio</text>
+            
+            <!-- Bastia -->
+            <circle cx="140" cy="60" r="2" fill="#8b7d6b" opacity="0.7"/>
+            <text x="145" y="65" font-family="Arial" font-size="6" fill="#8b7d6b" opacity="0.7">Bastia</text>
+            
+            <!-- Bonifacio -->
+            <circle cx="140" cy="140" r="2" fill="#8b7d6b" opacity="0.7"/>
+            <text x="145" y="145" font-family="Arial" font-size="6" fill="#8b7d6b" opacity="0.7">Bonifacio</text>
+            
+            <!-- Montagnes -->
+            <path d="M125,80 L130,70 L135,80" stroke="#8b7d6b" stroke-width="1" fill="none" opacity="0.5"/>
+            <path d="M135,85 L140,75 L145,85" stroke="#8b7d6b" stroke-width="1" fill="none" opacity="0.5"/>
+            <path d="M115,90 L120,80 L125,90" stroke="#8b7d6b" stroke-width="1" fill="none" opacity="0.5"/>
+            
+            <!-- Mer autour -->
+            <path d="M80,60 Q90,55 100,60" stroke="#8b7d6b" stroke-width="1" fill="none" opacity="0.3"/>
+            <path d="M70,100 Q80,95 90,100" stroke="#8b7d6b" stroke-width="1" fill="none" opacity="0.3"/>
+            <path d="M180,80 Q190,75 200,80" stroke="#8b7d6b" stroke-width="1" fill="none" opacity="0.3"/>
+            
+            <!-- Sanglier (symbole corse) -->
+            <ellipse cx="50" cy="120" rx="15" ry="8" stroke="#8b7d6b" stroke-width="1.5" fill="none" opacity="0.4"/>
+            <circle cx="45" cy="118" r="2" stroke="#8b7d6b" stroke-width="1" fill="none" opacity="0.4"/>
+            <path d="M42,116 L38,114 M42,120 L38,122" stroke="#8b7d6b" stroke-width="1" opacity="0.4"/>
+            
+            <!-- Fromage corse -->
+            <circle cx="200" cy="140" r="8" stroke="#8b7d6b" stroke-width="1" fill="none" opacity="0.4"/>
+            <circle cx="198" cy="138" r="1" fill="#8b7d6b" opacity="0.4"/>
+            <circle cx="202" cy="142" r="1" fill="#8b7d6b" opacity="0.4"/>
+        </svg>
+
+        <h1 class="page-title">FAQ Corse</h1>
+        <p class="page-subtitle">
+            Tout ce que vous avez toujours voulu savoir sur l'île de beauté<br>
+            sans jamais oser le demander !
+        </p>
+    </section>
+
+    <!-- Découpe organique -->
+    <div class="section-divider">
+        <svg viewBox="0 0 1440 150" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <!-- Vague avec contour de la Corse -->
+            <path d="M0,150 Q200,70 400,95 Q600,60 800,85 Q1000,70 1200,95 Q1350,65 1440,75 L1440,150 L0,150 Z" 
+                  class="wave-white"/>
+            <path d="M0,150 Q240,80 480,105 Q720,65 960,90 Q1200,75 1440,85 L1440,150 L0,150 Z" 
+                  fill="rgba(255, 255, 255, 0.3)"/>
+            <path d="M0,150 Q200,70 400,95 Q600,60 800,85 Q1000,70 1200,95 Q1350,65 1440,75" 
+                  class="wave-stroke"/>
+            <!-- Mini Corse dans la vague -->
+            <path d="M300,85 Q305,82 310,85 Q315,80 318,85 Q320,90 315,95 Q310,92 305,90 Q302,88 300,85" 
+                  stroke="#8b7d6b" stroke-width="0.6" fill="none" opacity="0.4"/>
+            <path d="M700,75 Q705,72 710,75 Q715,70 718,75 Q720,80 715,85 Q710,82 705,80 Q702,78 700,75" 
+                  stroke="#8b7d6b" stroke-width="0.6" fill="none" opacity="0.4"/>
+        </svg>
+    </div>
+
+    <!-- Section FAQ Culture -->
+    <section class="content-section section-white">
+        <div class="container-narrow">
+            <div class="category-header">
+                <div class="category-icon">🏝️</div>
+                <h2 class="category-title">Culture & Traditions</h2>
+                <p class="category-subtitle">Les bases pour comprendre l'âme corse</p>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>🤔 C'est vrai qu'en Corse on dit "continent" pour la France ?</h3>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        <p><strong>Absolument !</strong> En Corse, on ne dit jamais "aller en France" mais "aller sur le continent" ou "aller au continent". C'est une particularité linguistique qui témoigne de l'identité insulaire forte.</p>
+                        <div class="fun-fact">
+                            💡 <strong>Fun fact :</strong> Les Corses parlent aussi du "courrier du continent" pour les lettres qui arrivent de France métropolitaine !
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>🎵 On va entendre du chant corse ?</h3>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        <p><strong>Bien sûr !</strong> Le chant polyphonique corse est inscrit au patrimoine culturel immatériel de l'UNESCO. Ces chants traditionnels (paghjelle) accompagnent tous les moments importants de la vie corse.</p>
+                        <ul>
+                            <li><strong>A Tercera :</strong> la voix la plus grave</li>
+                            <li><strong>A Seconda :</strong> la voix intermédiaire</li>
+                            <li><strong>A Prima :</strong> la mélodie principale</li>
+                        </ul>
+                        <div class="fun-fact">
+                            🎶 Vous pourriez entendre "Diu vi salvi Regina", l'hymne traditionnel corse !
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>🐗 Les sangliers, c'est vraiment un truc en Corse ?</h3>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        <p><strong>Plus qu'un truc, c'est un symbole !</strong> Le sanglier représente la liberté et la fierté corse. On en trouve partout : dans le maquis, sur les logos, et surtout... dans les assiettes !</p>
+                        <div class="fun-fact">
+                            🍽️ <strong>Spécialité :</strong> Le civet de sanglier aux châtaignes est un incontournable de la gastronomie corse !
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Découpe organique -->
+    <div class="section-divider">
+        <svg viewBox="0 0 1440 150" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <!-- Vague inversée avec maquis -->
+            <path d="M0,0 Q240,60 480,40 Q720,70 960,50 Q1200,80 1440,60 L1440,0 L0,0 Z" 
+                  class="wave-primary"/>
+            <path d="M0,0 Q300,50 600,30 Q900,60 1200,40 Q1350,50 1440,45 L1440,0 L0,0 Z" 
+                  fill="rgba(139, 125, 107, 0.02)"/>
+            <path d="M0,0 Q240,60 480,40 Q720,70 960,50 Q1200,80 1440,60" 
+                  class="wave-stroke"/>
+            <!-- Buissons de maquis -->
+            <circle cx="200" cy="50" r="3" fill="rgba(139, 125, 107, 0.3)"/>
+            <circle cx="600" cy="35" r="2.5" fill="rgba(139, 125, 107, 0.3)"/>
+            <circle cx="1000" cy="45" r="3.5" fill="rgba(139, 125, 107, 0.3)"/>
+        </svg>
+    </div>
+
+    <!-- Section FAQ Gastronomie -->
+    <section class="content-section section-primary">
+        <div class="container-narrow">
+            <div class="category-header">
+                <div class="category-icon">🧀</div>
+                <h2 class="category-title">Gastronomie</h2>
+                <p class="category-subtitle">Les délices de l'île de beauté</p>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>🥓 C'est quoi exactement la charcuterie corse ?</h3>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        <p><strong>Un art de vivre !</strong> La charcuterie corse est élaborée avec des cochons nustrale élevés en liberté dans le maquis.</p>
+                        <ul>
+                            <li><strong>Coppa :</strong> échine de porc séchée</li>
+                            <li><strong>Lonzu :</strong> filet de porc séché</li>
+                            <li><strong>Prisuttu :</strong> jambon cru corse</li>
+                            <li><strong>Figatellu :</strong> saucisse de foie (un délice !)</li>
+                        </ul>
+                        <div class="fun-fact">
+                            🐷 Les cochons mangent des châtaignes et des glands, ce qui donne ce goût unique à la charcuterie !
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>🧀 Le brocciu, qu'est-ce que c'est ?</h3>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        <p><strong>LE fromage corse par excellence !</strong> C'est un fromage frais au lait de brebis ou de chèvre, qui accompagne tout en Corse.</p>
+                        <ul>
+                            <li>En omelette (frittata di brocciu)</li>
+                            <li>Dans les cannellonis (cannellonis au brocciu)</li>
+                            <li>En fiadone (gâteau au brocciu)</li>
+                            <li>Ou simplement sur une tartine !</li>
+                        </ul>
+                        <div class="fun-fact">
+                            🏆 <strong>AOP depuis 1998 :</strong> Le brocciu est protégé par une Appellation d'Origine Protégée !
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>🍷 Et pour boire, qu'est-ce qu'on recommande ?</h3>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        <p><strong>La Corse produit d'excellents vins !</strong> L'île compte 9 appellations d'origine contrôlée.</p>
+                        <ul>
+                            <li><strong>Patrimonio :</strong> rouge puissant, blanc sec</li>
+                            <li><strong>Ajaccio :</strong> rouge élégant</li>
+                            <li><strong>Muscat du Cap Corse :</strong> vin doux naturel</li>
+                            <li><strong>Pietra :</strong> bière corse à la châtaigne !</li>
+                        </ul>
+                        <div class="fun-fact">
+                            🍻 <strong>Originale :</strong> La Pietra est brassée avec de la farine de châtaigne, très rafraîchissante !
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Découpe organique -->
+    <div class="section-divider">
+        <svg viewBox="0 0 1440 150" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <!-- Vague avec plages -->
+            <path d="M0,150 Q300,70 600,90 Q900,50 1200,75 Q1350,65 1440,70 L1440,150 L0,150 Z" 
+                  class="wave-glass"/>
+            <path d="M0,150 Q240,80 480,100 Q720,60 960,85 Q1200,70 1440,80 L1440,150 L0,150 Z" 
+                  fill="rgba(255, 255, 255, 0.2)"/>
+            <path d="M0,150 Q300,70 600,90 Q900,50 1200,75 Q1350,65 1440,70" 
+                  class="wave-stroke"/>
+            <!-- Petites plages -->
+            <path d="M250,80 Q270,75 290,80" stroke="#8b7d6b" stroke-width="1.5" fill="none" opacity="0.4"/>
+            <path d="M650,75 Q670,70 690,75" stroke="#8b7d6b" stroke-width="1.5" fill="none" opacity="0.4"/>
+            <path d="M1050,70 Q1070,65 1090,70" stroke="#8b7d6b" stroke-width="1.5" fill="none" opacity="0.4"/>
+        </svg>
+    </div>
+
+    <!-- Section FAQ Pratique -->
+    <section class="content-section section-glass">
+        <div class="container-narrow">
+            <div class="category-header">
+                <div class="category-icon">🏖️</div>
+                <h2 class="category-title">Infos Pratiques</h2>
+                <p class="category-subtitle">Pour un séjour sans accroc</p>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>💰 C'est cher, la Corse ?</h3>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        <p><strong>C'est une île, donc oui, c'est plus cher que le continent !</strong> Mais avec quelques astuces, on s'en sort très bien.</p>
+                        <ul>
+                            <li>Les marchés locaux pour les produits frais</li>
+                            <li>Les restaurants familiaux plutôt que les pièges à touristes</li>
+                            <li>Les plages gratuites (et magnifiques !)</li>
+                            <li>La randonnée ne coûte rien et offre des vues imprenables</li>
+                        </ul>
+                        <div class="fun-fact">
+                            💡 <strong>Astuce :</strong> Évitez les restos de bord de mer dans les ports touristiques !
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>🚗 On a besoin d'une voiture ?</h3>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        <p><strong>Fortement recommandé !</strong> La Corse, c'est fait pour être exploré. Les transports en commun existent mais sont limités.</p>
+                        <ul>
+                            <li>Routes de montagne sinueuses (prenez votre temps !)</li>
+                            <li>Paysages à couper le souffle à chaque virage</li>
+                            <li>Liberté totale pour découvrir les criques secrètes</li>
+                            <li>Possibilité de fuir les foules</li>
+                        </ul>
+                        <div class="fun-fact">
+                            🐄 <strong>Attention :</strong> Vous pourriez croiser des vaches ou des cochons sur la route !
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>🏖️ Les plus belles plages près d'Ajaccio ?</h3>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        <p><strong>Vous avez l'embarras du choix !</strong> Ajaccio est entourée de plages magnifiques.</p>
+                        <ul>
+                            <li><strong>Plage de Capo di Feno :</strong> sauvage et ventée (surf possible)</li>
+                            <li><strong>Plage d'Isolella :</strong> familiale et protégée</li>
+                            <li><strong>Plage de Porticcio :</strong> sable fin, eau turquoise</li>
+                            <li><strong>Plage de Verghia :</strong> plus confidentielle</li>
+                        </ul>
+                        <div class="fun-fact">
+                            🌅 <strong>Conseil :</strong> Les couchers de soleil depuis la plage d'Ajaccio sont magiques !
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>🌿 C'est quoi exactement, le maquis ?</h3>
+                    <span class="faq-icon">+</span>
+                </div>
+                <div class="faq-answer">
+                    <div class="faq-answer-content">
+                        <p><strong>L'odeur de la Corse !</strong> Le maquis est la végétation méditerranéenne qui recouvre l'île et lui donne son parfum unique.</p>
+                        <ul>
+                            <li><strong>Immortelle :</strong> fleur jaune au parfum de curry</li>
+                            <li><strong>Myrte :</strong> baies utilisées pour la liqueur</li>
+                            <li><strong>Arbousier :</strong> fruits rouges comestibles</li>
+                            <li><strong>Lentisque :</strong> résine parfumée</li>
+                        </ul>
+                        <div class="fun-fact">
+                            👃 <strong>Incroyable :</strong> Napoléon disait qu'il reconnaîtrait la Corse les yeux fermés rien qu'à l'odeur du maquis !
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Découpe organique finale -->
+    <div class="section-divider">
+        <svg viewBox="0 0 1440 150" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <!-- Vague finale avec châtaignes -->
+            <path d="M0,150 Q360,60 720,85 Q1080,70 1440,80 L1440,150 L0,150 Z" 
+                  class="wave-light"/>
+            <path d="M0,150 Q300,70 600,90 Q900,55 1200,75 Q1350,70 1440,75 L1440,150 L0,150 Z" 
+                  fill="rgba(139, 125, 107, 0.03)"/>
+            <path d="M0,150 Q360,60 720,85 Q1080,70 1440,80" 
+                  class="wave-stroke"/>
+            <!-- Châtaignes -->
+            <circle cx="200" cy="75" r="2.5" fill="rgba(139, 125, 107, 0.5)"/>
+            <circle cx="450" cy="85" r="2" fill="rgba(139, 125, 107, 0.5)"/>
+            <circle cx="700" cy="75" r="3" fill="rgba(139, 125, 107, 0.5)"/>
+            <circle cx="950" cy="80" r="2.5" fill="rgba(139, 125, 107, 0.5)"/>
+        </svg>
+    </div>
+
+    <!-- CTA Section -->
+    <section class="content-section section-light">
+        <div class="container-small text-center">
+            <h2 class="subsection-title">Prêts pour l'aventure corse ?</h2>
+            <p class="section-subtitle">
+                Vous avez maintenant toutes les clés pour profiter pleinement<br>
+                de votre séjour sur l'île de beauté !
+            </p>
+            <div class="btn-group">
+                <a href="rsvp.html" class="btn btn-primary">Confirmer ma présence</a>
+                <a href="infos-pratiques.html" class="btn btn-secondary">Infos pratiques</a>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Fonctionnalité FAQ accordéon
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', function() {
+                const faqItem = this.closest('.faq-item');
+                const isActive = faqItem.classList.contains('active');
+                
+                // Fermer tous les autres items
+                document.querySelectorAll('.faq-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+                
+                // Ouvrir celui-ci s'il n'était pas déjà ouvert
+                if (!isActive) {
+                    faqItem.classList.add('active');
+                }
+            });
+        });
+
+        // Ouvrir le premier item par défaut
+        document.querySelector('.faq-item').classList.add('active');
+    </script>
+</body>
+</html> 

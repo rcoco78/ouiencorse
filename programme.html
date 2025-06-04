@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programme - Lorine & Corentin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Dancing+Script:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Styles spécifiques au programme accordéon */
+        .event-item {
+            background: var(--glass-light);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--primary-light);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .event-item:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .event-header {
+            padding: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+
+        .event-header:hover {
+            background: rgba(139, 125, 107, 0.05);
+        }
+
+        .event-left {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            flex: 1;
+        }
+
+        .event-time-compact {
+            background: var(--primary-light);
+            border-radius: 10px;
+            padding: 0.6rem 1rem;
+            font-size: 1rem;
+            color: var(--primary-color);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            text-align: center;
+            min-width: 80px;
+            flex-shrink: 0;
+        }
+
+        .event-title-compact {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin: 0;
+        }
+
+        .event-icon {
+            font-size: 1.3rem;
+            color: var(--primary-color);
+            transition: transform 0.3s ease;
+            margin-left: 1rem;
+        }
+
+        .event-item.active .event-icon {
+            transform: rotate(45deg);
+        }
+
+        .event-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .event-item.active .event-content {
+            max-height: 500px;
+        }
+
+        .event-content-inner {
+            padding: 0 1.5rem 1.5rem 1.5rem;
+        }
+
+        .event-description-full {
+            color: var(--text-light);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            font-weight: 300;
+            margin-bottom: 1rem;
+        }
+
+        .event-note-full {
+            font-style: italic;
+            color: var(--primary-color);
+            font-size: 1rem;
+            font-weight: 300;
+            background: rgba(139, 125, 107, 0.1);
+            border-left: 3px solid var(--primary-color);
+            padding: 0.8rem 1rem;
+            border-radius: 0 8px 8px 0;
+            margin-top: 1rem;
+        }
+
+        /* Style pour les day-blocks */
+        .day-block {
+            background: var(--glass-light);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: var(--shadow-medium);
+            border: 1px solid var(--primary-light);
+            position: relative;
+            margin-bottom: 4rem;
+        }
+
+        .events-list {
+            display: grid;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .event-left {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .event-time-compact {
+                min-width: auto;
+                align-self: flex-start;
+            }
+
+            .event-header {
+                padding: 1.2rem;
+            }
+
+            .event-content-inner {
+                padding: 0 1.2rem 1.2rem 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-content">
+            <a href="index.html" class="nav-logo">L & C</a>
+            <ul class="nav-links">
+                <li><a href="programme.html" class="active">le programme</a></li>
+                <li><a href="infos-pratiques.html">infos pratiques</a></li>
+                <li><a href="rsvp.html">rsvp</a></li>
+                <li><a href="faq.html">faq corse</a></li>
+            </ul>
+            <div class="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section page-hero">
+        <!-- Illustration église corse -->
+        <svg class="page-illustration" viewBox="0 0 250 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Église principale -->
+            <rect x="100" y="120" width="50" height="60" stroke="#8b7d6b" stroke-width="2" fill="none"/>
+            <path d="M85 120 L125 85 L165 120" stroke="#8b7d6b" stroke-width="2" fill="none"/>
+            
+            <!-- Clocher -->
+            <rect x="115" y="85" width="20" height="35" stroke="#8b7d6b" stroke-width="1.5" fill="none"/>
+            <path d="M110 85 L125 70 L140 85" stroke="#8b7d6b" stroke-width="1.5" fill="none"/>
+            <circle cx="125" cy="78" r="3" stroke="#8b7d6b" stroke-width="1" fill="none"/>
+            
+            <!-- Croix -->
+            <path d="M125 70 L125 65" stroke="#8b7d6b" stroke-width="1"/>
+            <path d="M122 67 L128 67" stroke="#8b7d6b" stroke-width="1"/>
+            
+            <!-- Porte et fenêtres -->
+            <rect x="118" y="155" width="14" height="25" stroke="#8b7d6b" stroke-width="1" fill="none"/>
+            <circle cx="125" cy="140" r="6" stroke="#8b7d6b" stroke-width="1" fill="none"/>
+            <path d="M125 134 L125 146" stroke="#8b7d6b" stroke-width="0.8"/>
+            <path d="M119 140 L131 140" stroke="#8b7d6b" stroke-width="0.8"/>
+            
+            <!-- Cyprès corses -->
+            <ellipse cx="70" cy="140" rx="4" ry="40" stroke="#3a3a3a" stroke-width="1.5" fill="none"/>
+            <ellipse cx="180" cy="135" rx="4" ry="45" stroke="#3a3a3a" stroke-width="1.5" fill="none"/>
+            <ellipse cx="60" cy="150" rx="3" ry="30" stroke="#3a3a3a" stroke-width="1" fill="none"/>
+            
+            <!-- Petite chapelle à droite -->
+            <rect x="190" y="145" width="25" height="35" stroke="#8b7d6b" stroke-width="1" fill="none" opacity="0.7"/>
+            <path d="M185 145 L202.5 132 L220 145" stroke="#8b7d6b" stroke-width="1" fill="none" opacity="0.7"/>
+            
+            <!-- Collines corses -->
+            <path d="M0 180 Q60 170 120 175 Q180 170 250 175" stroke="#8b7d6b" stroke-width="1" fill="none" opacity="0.6"/>
+            <path d="M0 190 Q80 185 160 188 Q200 185 250 188" stroke="#8b7d6b" stroke-width="0.8" fill="none" opacity="0.4"/>
+        </svg>
+
+        <h1 class="page-title">Le Programme</h1>
+        <p class="page-subtitle">
+            Trois jours de bonheur, de soleil, et de célébrations corses.<br>
+            Préparez-vous à une escapade mémorable !
+        </p>
+    </section>
+
+    <!-- Découpe organique -->
+    <div class="section-divider">
+        <svg viewBox="0 0 1440 150" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <!-- Vague avec cyprès -->
+            <path d="M0,150 Q200,80 400,100 Q600,70 800,95 Q1000,60 1200,85 Q1320,75 1440,80 L1440,150 L0,150 Z" 
+                  class="wave-white"/>
+            <path d="M0,150 Q240,90 480,110 Q720,70 960,95 Q1200,80 1440,90 L1440,150 L0,150 Z" 
+                  fill="rgba(255, 255, 255, 0.3)"/>
+            <path d="M0,150 Q200,80 400,100 Q600,70 800,95 Q1000,60 1200,85 Q1320,75 1440,80" 
+                  class="wave-stroke"/>
+            <!-- Petits cyprès sur la vague -->
+            <ellipse cx="300" cy="95" rx="1.5" ry="12" stroke="#8b7d6b" stroke-width="0.6" fill="none" opacity="0.4"/>
+            <ellipse cx="600" cy="85" rx="1.5" ry="10" stroke="#8b7d6b" stroke-width="0.6" fill="none" opacity="0.4"/>
+            <ellipse cx="900" cy="90" rx="1.5" ry="11" stroke="#8b7d6b" stroke-width="0.6" fill="none" opacity="0.4"/>
+        </svg>
+    </div>
+
+    <!-- Timeline Section -->
+    <section class="content-section section-white">
+        <div class="container-narrow">
+            <div class="timeline">
+                <!-- Jeudi 10 Juillet -->
+                <div class="day-block">
+                    <div class="day-header">
+                        <h3 class="day-date">Jeudi 10 Juillet</h3>
+                        <p class="day-theme">arrivée & détente</p>
+                    </div>
+                    <div class="events-list">
+                        <div class="event-item">
+                            <div class="event-header">
+                                <div class="event-left">
+                                    <div class="event-time-compact">toute la<br>journée</div>
+                                    <h4 class="event-title-compact">Arrivée en Corse</h4>
+                                </div>
+                                <span class="event-icon">+</span>
+                            </div>
+                            <div class="event-content">
+                                <div class="event-content-inner">
+                                    <p class="event-description-full">
+                                        Installez-vous tranquillement dans vos hébergements, 
+                                        découvrez Ajaccio, prenez l'apéro face à la mer. 
+                                        C'est le moment parfait pour vous acclimater à la douceur de vivre corse !
+                                    </p>
+                                    <div class="event-note-full">
+                                        🌅 On se retrouve demain pour les festivités ! Profitez de cette journée pour vous détendre et explorer les alentours.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Vendredi 11 Juillet -->
+                <div class="day-block">
+                    <div class="day-header">
+                        <h3 class="day-date">Vendredi 11 Juillet</h3>
+                        <p class="day-theme">le grand jour</p>
+                    </div>
+                    <div class="events-list">
+                        <div class="event-item">
+                            <div class="event-header">
+                                <div class="event-left">
+                                    <div class="event-time-compact">17h00</div>
+                                    <h4 class="event-title-compact">Cérémonie laïque</h4>
+                                </div>
+                                <span class="event-icon">+</span>
+                            </div>
+                            <div class="event-content">
+                                <div class="event-content-inner">
+                                    <p class="event-description-full">
+                                        Face à la mer méditerranée, sous le soleil corse, nous nous dirons "oui" 
+                                        dans un cadre idyllique. La cérémonie se déroulera en plein air avec vue 
+                                        sur le golfe d'Ajaccio.
+                                    </p>
+                                    <div class="event-note-full">
+                                        🕶️ Apportez vos lunettes de soleil et vos mouchoirs ! Durée prévue : 45 minutes
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="event-item">
+                            <div class="event-header">
+                                <div class="event-left">
+                                    <div class="event-time-compact">18h00</div>
+                                    <h4 class="event-title-compact">Vin d'honneur & photos</h4>
+                                </div>
+                                <span class="event-icon">+</span>
+                            </div>
+                            <div class="event-content">
+                                <div class="event-content-inner">
+                                    <p class="event-description-full">
+                                        Champagne, canapés corses, et session photo avec vue sur le golfe. 
+                                        Moment de détente et de convivialité pour célébrer notre union 
+                                        avec les spécialités locales !
+                                    </p>
+                                    <div class="event-note-full">
+                                        📸 Le moment parfait pour les selfies ! Photographe professionnel présent
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="event-item">
+                            <div class="event-header">
+                                <div class="event-left">
+                                    <div class="event-time-compact">20h30</div>
+                                    <h4 class="event-title-compact">Dîner & discours</h4>
+                                </div>
+                                <span class="event-icon">+</span>
+                            </div>
+                            <div class="event-content">
+                                <div class="event-content-inner">
+                                    <p class="event-description-full">
+                                        Menu corse traditionnel concocté avec des produits locaux : charcuterie, 
+                                        brocciu, vins d'Ajaccio, et quelques surprises gustatives. 
+                                        Les discours ponctueront ce moment émouvant.
+                                    </p>
+                                    <div class="event-note-full">
+                                        🍽️ Préparez vos estomacs et vos cœurs ! Menu adapté aux régimes spéciaux
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="event-item">
+                            <div class="event-header">
+                                <div class="event-left">
+                                    <div class="event-time-compact">23h00</div>
+                                    <h4 class="event-title-compact">Soirée dansante</h4>
+                                </div>
+                                <span class="event-icon">+</span>
+                            </div>
+                            <div class="event-content">
+                                <div class="event-content-inner">
+                                    <p class="event-description-full">
+                                        DJ, piste de danse sous les étoiles, et énergie jusqu'au bout de la nuit ! 
+                                        Mix entre hits internationaux et musique corse pour faire danser 
+                                        toutes les générations.
+                                    </p>
+                                    <div class="event-note-full">
+                                        👠 Les talons sont optionnels après minuit ! Dernier shuttle retour à 2h00
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Samedi 12 Juillet -->
+                <div class="day-block">
+                    <div class="day-header">
+                        <h3 class="day-date">Samedi 12 Juillet</h3>
+                        <p class="day-theme">récupération & exploration</p>
+                    </div>
+                    <div class="events-list">
+                        <div class="event-item">
+                            <div class="event-header">
+                                <div class="event-left">
+                                    <div class="event-time-compact">10h00</div>
+                                    <h4 class="event-title-compact">Brunch de récupération</h4>
+                                </div>
+                                <span class="event-icon">+</span>
+                            </div>
+                            <div class="event-content">
+                                <div class="event-content-inner">
+                                    <p class="event-description-full">
+                                        Pour ceux qui ont survécu à la soirée ! Café corsé, jus d'orange frais, 
+                                        viennoiseries, et anecdotes de la veille au programme. 
+                                        Moment décontracté pour prolonger la fête.
+                                    </p>
+                                    <div class="event-note-full">
+                                        ☕ Facultatif mais recommandé pour les survivants ! Lieu : terrasse de l'hôtel
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="event-item">
+                            <div class="event-header">
+                                <div class="event-left">
+                                    <div class="event-time-compact">14h00</div>
+                                    <h4 class="event-title-compact">Temps libre</h4>
+                                </div>
+                                <span class="event-icon">+</span>
+                            </div>
+                            <div class="event-content">
+                                <div class="event-content-inner">
+                                    <p class="event-description-full">
+                                        Plage, sieste réparatrice, balade dans le centre d'Ajaccio, 
+                                        shopping de souvenirs corses, visite de la maison de Napoléon... 
+                                        Profitez de l'île de beauté à votre rythme !
+                                    </p>
+                                    <div class="event-note-full">
+                                        🏖️ Nos recommandations : plage de Porticcio (15 min en voiture) ou centre historique d'Ajaccio à pied
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Découpe organique -->
+    <div class="section-divider">
+        <svg viewBox="0 0 1440 150" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <!-- Vague avec maquis corse -->
+            <path d="M0,150 Q360,60 720,85 Q1080,70 1440,80 L1440,150 L0,150 Z" 
+                  class="wave-light"/>
+            <path d="M0,150 Q240,80 480,100 Q720,60 960,85 Q1200,70 1440,80 L1440,150 L0,150 Z" 
+                  fill="rgba(139, 125, 107, 0.02)"/>
+            <path d="M0,150 Q360,60 720,85 Q1080,70 1440,80" 
+                  class="wave-stroke"/>
+            <!-- Maquis détails -->
+            <circle cx="180" cy="75" r="2" fill="rgba(139, 125, 107, 0.3)"/>
+            <circle cx="420" cy="85" r="1.5" fill="rgba(139, 125, 107, 0.3)"/>
+            <circle cx="680" cy="70" r="2.5" fill="rgba(139, 125, 107, 0.3)"/>
+            <circle cx="920" cy="80" r="2" fill="rgba(139, 125, 107, 0.3)"/>
+        </svg>
+    </div>
+
+    <!-- CTA Section -->
+    <section class="content-section section-light">
+        <div class="container-small text-center">
+            <h2 class="subsection-title">Prêts pour l'aventure ?</h2>
+            <p class="section-subtitle">Consultez les infos pratiques et confirmez votre présence</p>
+            <div class="btn-group">
+                <a href="rsvp.html" class="btn btn-primary">Confirmer ma présence</a>
+                <a href="infos-pratiques.html" class="btn btn-secondary">Infos pratiques</a>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Navigation mobile
+        const navToggle = document.querySelector('.nav-toggle');
+        const navLinks = document.querySelector('.nav-links');
+
+        navToggle.addEventListener('click', () => {
+            navToggle.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        // Fermer le menu mobile quand on clique sur un lien
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navToggle.classList.remove('active');
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // Fermer le menu mobile quand on clique ailleurs
+        document.addEventListener('click', (e) => {
+            if (!navToggle.contains(e.target) && !navLinks.contains(e.target)) {
+                navToggle.classList.remove('active');
+                navLinks.classList.remove('active');
+            }
+        });
+
+        // Fonctionnalité accordéon pour les événements
+        document.querySelectorAll('.event-header').forEach(header => {
+            header.addEventListener('click', function() {
+                const eventItem = this.closest('.event-item');
+                const isActive = eventItem.classList.contains('active');
+                
+                // Optionnel : fermer tous les autres events du même day-block
+                // const dayBlock = this.closest('.day-block');
+                // dayBlock.querySelectorAll('.event-item').forEach(item => {
+                //     item.classList.remove('active');
+                // });
+                
+                // Toggle de l'event actuel
+                if (isActive) {
+                    eventItem.classList.remove('active');
+                } else {
+                    eventItem.classList.add('active');
+                }
+            });
+        });
+
+        // Ouvrir le premier événement de chaque journée par défaut
+        document.querySelectorAll('.day-block').forEach(dayBlock => {
+            const firstEvent = dayBlock.querySelector('.event-item');
+            if (firstEvent) {
+                firstEvent.classList.add('active');
+            }
+        });
+    </script>
+</body>
+</html> 

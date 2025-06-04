@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lorine & Corentin - Mariage en Corse</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Dancing+Script:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-content">
+            <a href="index.html" class="nav-logo">L & C</a>
+            <ul class="nav-links">
+                <li><a href="programme.html">le programme</a></li>
+                <li><a href="infos-pratiques.html">infos pratiques</a></li>
+                <li><a href="rsvp.html">rsvp</a></li>
+                <li><a href="faq.html">faq corse</a></li>
+            </ul>
+            <div class="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <!-- Illustration principale - Olivier méditerranéen avec côte corse -->
+        <svg class="main-illustration" viewBox="0 0 300 350" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Côte rocheuse en arrière-plan -->
+            <path d="M50 280 Q100 260 150 270 Q200 250 250 260 Q280 250 300 255" 
+                  stroke="#8b7d6b" stroke-width="1.5" fill="none" opacity="0.6"/>
+            
+            <!-- Olivier principal -->
+            <ellipse cx="150" cy="200" rx="60" ry="80" stroke="#3a3a3a" stroke-width="2" fill="none"/>
+            <path d="M150 120 Q160 180 150 240" stroke="#8b7d6b" stroke-width="3" fill="none"/>
+            
+            <!-- Branches d'olivier détaillées -->
+            <path d="M120 160 Q140 150 160 160" stroke="#3a3a3a" stroke-width="1.5" fill="none"/>
+            <path d="M110 180 Q130 170 150 180" stroke="#3a3a3a" stroke-width="1.5" fill="none"/>
+            <path d="M160 170 Q180 160 200 170" stroke="#3a3a3a" stroke-width="1.5" fill="none"/>
+            <path d="M130 200 Q150 190 170 200" stroke="#3a3a3a" stroke-width="1.5" fill="none"/>
+            
+            <!-- Feuilles d'olivier stylisées -->
+            <ellipse cx="125" cy="155" rx="4" ry="12" stroke="#3a3a3a" stroke-width="0.8" fill="none" transform="rotate(-20 125 155)"/>
+            <ellipse cx="145" cy="150" rx="4" ry="12" stroke="#3a3a3a" stroke-width="0.8" fill="none" transform="rotate(10 145 150)"/>
+            <ellipse cx="165" cy="155" rx="4" ry="12" stroke="#3a3a3a" stroke-width="0.8" fill="none" transform="rotate(-15 165 155)"/>
+            <ellipse cx="115" cy="175" rx="4" ry="12" stroke="#3a3a3a" stroke-width="0.8" fill="none" transform="rotate(25 115 175)"/>
+            <ellipse cx="135" cy="170" rx="4" ry="12" stroke="#3a3a3a" stroke-width="0.8" fill="none" transform="rotate(-10 135 170)"/>
+            <ellipse cx="155" cy="175" rx="4" ry="12" stroke="#3a3a3a" stroke-width="0.8" fill="none" transform="rotate(20 155 175)"/>
+            <ellipse cx="175" cy="170" rx="4" ry="12" stroke="#3a3a3a" stroke-width="0.8" fill="none" transform="rotate(-25 175 170)"/>
+            <ellipse cx="195" cy="175" rx="4" ry="12" stroke="#3a3a3a" stroke-width="0.8" fill="none" transform="rotate(15 195 175)"/>
+            
+            <!-- Olives dispersées -->
+            <circle cx="130" cy="165" r="2" fill="#8b7d6b" opacity="0.7"/>
+            <circle cx="160" cy="160" r="2" fill="#8b7d6b" opacity="0.7"/>
+            <circle cx="140" cy="185" r="2" fill="#8b7d6b" opacity="0.7"/>
+            <circle cx="170" cy="180" r="2" fill="#8b7d6b" opacity="0.7"/>
+            
+            <!-- Petit village corse au loin -->
+            <rect x="220" y="250" width="12" height="15" stroke="#8b7d6b" stroke-width="0.8" fill="none" opacity="0.5"/>
+            <path d="M214 250 L226 240 L238 250" stroke="#8b7d6b" stroke-width="0.8" fill="none" opacity="0.5"/>
+            <rect x="240" y="255" width="10" height="12" stroke="#8b7d6b" stroke-width="0.8" fill="none" opacity="0.5"/>
+            <path d="M235 255 L245 247 L255 255" stroke="#8b7d6b" stroke-width="0.8" fill="none" opacity="0.5"/>
+            
+            <!-- Mer en arrière-plan -->
+            <path d="M0 300 Q50 295 100 300 Q150 295 200 300 Q250 295 300 300" 
+                  stroke="#8b7d6b" stroke-width="0.8" fill="none" opacity="0.4"/>
+        </svg>
+
+        <!-- Illustrations flottantes -->
+        <svg class="floating-illustration floating" style="top: 20%; left: 10%; width: 80px; height: 100px;" viewBox="0 0 80 100" fill="none">
+            <!-- Petite branche d'olivier -->
+            <path d="M40 20 Q35 50 40 80" stroke="#8b7d6b" stroke-width="1.5" fill="none"/>
+            <ellipse cx="30" cy="35" rx="3" ry="8" stroke="#3a3a3a" stroke-width="0.6" fill="none" transform="rotate(-20 30 35)"/>
+            <ellipse cx="50" cy="40" rx="3" ry="8" stroke="#3a3a3a" stroke-width="0.6" fill="none" transform="rotate(15 50 40)"/>
+            <ellipse cx="25" cy="55" rx="3" ry="8" stroke="#3a3a3a" stroke-width="0.6" fill="none" transform="rotate(-30 25 55)"/>
+            <ellipse cx="55" cy="60" rx="3" ry="8" stroke="#3a3a3a" stroke-width="0.6" fill="none" transform="rotate(25 55 60)"/>
+        </svg>
+
+        <svg class="floating-illustration floating" style="bottom: 25%; right: 15%; width: 60px; height: 60px;" viewBox="0 0 60 60" fill="none">
+            <!-- Petit coquillage -->
+            <path d="M30 30 Q35 25 40 30 Q45 35 40 40 Q35 45 30 40 Q25 35 30 30" stroke="#8b7d6b" stroke-width="1" fill="none"/>
+            <path d="M30 30 Q32 28 34 30 Q36 32 34 34 Q32 36 30 34 Q28 32 30 30" stroke="#8b7d6b" stroke-width="0.6" fill="none"/>
+        </svg>
+
+        <div class="hero-content">
+            <p class="wedding-day">wedding day</p>
+            <h1 class="hero-title">Lorine & Corentin</h1>
+            <p class="hero-date">11 juillet 2025</p>
+        </div>
+    </section>
+
+    <!-- Découpe organique - Vagues côte corse -->
+    <div class="section-divider">
+        <svg viewBox="0 0 1440 150" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <!-- Vague principale avec relief -->
+            <path d="M0,150 Q120,90 240,110 Q360,70 480,95 Q600,80 720,105 Q840,65 960,90 Q1080,75 1200,100 Q1320,85 1440,95 L1440,150 L0,150 Z" 
+                  class="wave-white"/>
+            <!-- Vague secondaire pour la profondeur -->
+            <path d="M0,150 Q180,100 360,120 Q540,85 720,110 Q900,75 1080,100 Q1260,80 1440,90 L1440,150 L0,150 Z" 
+                  fill="rgba(255, 255, 255, 0.4)"/>
+            <!-- Contour de vague -->
+            <path d="M0,150 Q120,90 240,110 Q360,70 480,95 Q600,80 720,105 Q840,65 960,90 Q1080,75 1200,100 Q1320,85 1440,95" 
+                  class="wave-stroke"/>
+            <!-- Petites vagues de détail -->
+            <path d="M0,140 Q60,130 120,135 Q180,125 240,130 Q300,120 360,125" 
+                  stroke="#8b7d6b" stroke-width="0.8" fill="none" opacity="0.2"/>
+        </svg>
+    </div>
+
+    <!-- Section Invitation -->
+    <section class="content-section section-white">
+        <div class="container-narrow">
+            <h2 class="section-title">Chers amis !</h2>
+            <p class="section-subtitle">
+                Nous avons l'immense joie de vous annoncer notre mariage qui sera célébré en Corse, 
+                sur cette île de beauté qui nous tient tant à cœur. Nous espérons que vous pourrez 
+                nous rejoindre pour partager ce moment magique sous le soleil méditerranéen.
+            </p>
+        </div>
+    </section>
+
+    <!-- Découpe organique -->
+    <div class="section-divider">
+        <svg viewBox="0 0 1440 150" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <!-- Vague inversée -->
+            <path d="M0,0 Q240,60 480,40 Q720,70 960,50 Q1200,80 1440,60 L1440,0 L0,0 Z" 
+                  class="wave-primary"/>
+            <path d="M0,0 Q360,50 720,30 Q1080,60 1440,45 L1440,0 L0,0 Z" 
+                  fill="rgba(139, 125, 107, 0.02)"/>
+            <path d="M0,0 Q240,60 480,40 Q720,70 960,50 Q1200,80 1440,60" 
+                  class="wave-stroke"/>
+        </svg>
+    </div>
+
+    <!-- Section Calendar -->
+    <section class="content-section section-primary">
+        <div class="container-small">
+            <h3 class="subsection-title">Juillet 2025</h3>
+            <div class="calendar">
+                <div class="calendar-header">JUILLET</div>
+                <div class="calendar-grid">
+                    <div class="calendar-day-header">Lu</div>
+                    <div class="calendar-day-header">Ma</div>
+                    <div class="calendar-day-header">Me</div>
+                    <div class="calendar-day-header">Je</div>
+                    <div class="calendar-day-header">Ve</div>
+                    <div class="calendar-day-header">Sa</div>
+                    <div class="calendar-day-header">Di</div>
+                    
+                    <div class="calendar-day"></div>
+                    <div class="calendar-day">1</div>
+                    <div class="calendar-day">2</div>
+                    <div class="calendar-day">3</div>
+                    <div class="calendar-day">4</div>
+                    <div class="calendar-day">5</div>
+                    <div class="calendar-day">6</div>
+                    
+                    <div class="calendar-day">7</div>
+                    <div class="calendar-day">8</div>
+                    <div class="calendar-day">9</div>
+                    <div class="calendar-day">10</div>
+                    <div class="calendar-day wedding-day">11</div>
+                    <div class="calendar-day">12</div>
+                    <div class="calendar-day">13</div>
+                    
+                    <div class="calendar-day">14</div>
+                    <div class="calendar-day">15</div>
+                    <div class="calendar-day">16</div>
+                    <div class="calendar-day">17</div>
+                    <div class="calendar-day">18</div>
+                    <div class="calendar-day">19</div>
+                    <div class="calendar-day">20</div>
+                    
+                    <div class="calendar-day">21</div>
+                    <div class="calendar-day">22</div>
+                    <div class="calendar-day">23</div>
+                    <div class="calendar-day">24</div>
+                    <div class="calendar-day">25</div>
+                    <div class="calendar-day">26</div>
+                    <div class="calendar-day">27</div>
+                    
+                    <div class="calendar-day">28</div>
+                    <div class="calendar-day">29</div>
+                    <div class="calendar-day">30</div>
+                    <div class="calendar-day">31</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Découpe organique -->
+    <div class="section-divider">
+        <svg viewBox="0 0 1440 150" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <!-- Vague complexe -->
+            <path d="M0,150 Q180,80 360,100 Q540,60 720,85 Q900,70 1080,95 Q1260,55 1440,75 L1440,150 L0,150 Z" 
+                  class="wave-glass"/>
+            <path d="M0,150 Q240,90 480,110 Q720,70 960,95 Q1200,80 1440,90 L1440,150 L0,150 Z" 
+                  fill="rgba(255, 255, 255, 0.2)"/>
+            <path d="M0,150 Q180,80 360,100 Q540,60 720,85 Q900,70 1080,95 Q1260,55 1440,75" 
+                  class="wave-stroke"/>
+        </svg>
+    </div>
+
+    <!-- Navigation rapide -->
+    <section class="content-section section-glass">
+        <div class="container">
+            <div class="grid-auto">
+                <a href="programme.html" class="glass-card hover-lift hover-shine">
+                    <h3>Le Programme</h3>
+                    <p>3 jours de festivités sur l'île de beauté</p>
+                </a>
+                
+                <a href="infos-pratiques.html" class="glass-card hover-lift hover-shine">
+                    <h3>Infos Pratiques</h3>
+                    <p>transport, hébergement & conseils</p>
+                </a>
+                
+                <a href="rsvp.html" class="glass-card hover-lift hover-shine">
+                    <h3>RSVP</h3>
+                    <p>confirmez votre présence avant le 1er juin</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Découpe organique finale -->
+    <div class="section-divider">
+        <svg viewBox="0 0 1440 150" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <!-- Vague finale avec détails -->
+            <path d="M0,150 Q300,70 600,90 Q900,50 1200,75 Q1350,65 1440,70 L1440,150 L0,150 Z" 
+                  class="wave-light"/>
+            <path d="M0,150 Q240,80 480,100 Q720,60 960,85 Q1200,70 1440,80 L1440,150 L0,150 Z" 
+                  fill="rgba(139, 125, 107, 0.03)"/>
+            <path d="M0,150 Q300,70 600,90 Q900,50 1200,75 Q1350,65 1440,70" 
+                  class="wave-stroke"/>
+            <!-- Mousse de vague -->
+            <circle cx="200" cy="85" r="3" fill="rgba(255,255,255,0.6)"/>
+            <circle cx="450" cy="95" r="2" fill="rgba(255,255,255,0.5)"/>
+            <circle cx="750" cy="75" r="2.5" fill="rgba(255,255,255,0.4)"/>
+        </svg>
+    </div>
+
+    <!-- CTA Section -->
+    <section class="content-section section-light">
+        <div class="container-small text-center">
+            <h2 class="subsection-title">Rejoignez-nous en Corse</h2>
+            <p class="section-subtitle">Confirmez votre présence et découvrez toutes les informations pratiques</p>
+            <div class="btn-group">
+                <a href="rsvp.html" class="btn btn-primary">Confirmer ma présence</a>
+                <a href="programme.html" class="btn btn-secondary">Découvrir le programme</a>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Navigation mobile
+        const navToggle = document.querySelector('.nav-toggle');
+        const navLinks = document.querySelector('.nav-links');
+
+        navToggle.addEventListener('click', () => {
+            navToggle.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        // Fermer le menu mobile quand on clique sur un lien
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navToggle.classList.remove('active');
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // Fermer le menu mobile quand on clique ailleurs
+        document.addEventListener('click', (e) => {
+            if (!navToggle.contains(e.target) && !navLinks.contains(e.target)) {
+                navToggle.classList.remove('active');
+                navLinks.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html> 

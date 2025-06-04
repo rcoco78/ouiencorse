@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RSVP - Lorine & Corentin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Dancing+Script:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Styles spécifiques au formulaire */
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--text-dark);
+            margin-bottom: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-size: 0.9rem;
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            font-size: 1rem;
+            font-family: var(--font-sans);
+            border: 2px solid rgba(139, 125, 107, 0.2);
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            color: var(--text-medium);
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(139, 125, 107, 0.1);
+            background: rgba(255, 255, 255, 1);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-radio-group {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .form-radio-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            cursor: pointer;
+            padding: 1rem 1.5rem;
+            border: 2px solid rgba(139, 125, 107, 0.2);
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .form-radio-item:hover {
+            border-color: var(--primary-color);
+            background: rgba(255, 255, 255, 1);
+        }
+
+        .form-radio-item input[type="radio"] {
+            margin: 0;
+            transform: scale(1.2);
+            accent-color: var(--primary-color);
+        }
+
+        .form-radio-item.selected {
+            border-color: var(--primary-color);
+            background: rgba(139, 125, 107, 0.1);
+        }
+
+        .checkbox-group {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+            padding: 1rem;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .checkbox-item:hover {
+            background: rgba(139, 125, 107, 0.05);
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            transform: scale(1.2);
+            accent-color: var(--primary-color);
+        }
+
+        .form-submit {
+            width: 100%;
+            margin-top: 2rem;
+        }
+
+        .required {
+            color: var(--primary-color);
+        }
+
+        .save-date-banner {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: var(--background-light);
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .save-date-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="80" r="1.5" fill="rgba(255,255,255,0.1)"/><circle cx="60" cy="30" r="1" fill="rgba(255,255,255,0.1)"/></svg>');
+            pointer-events: none;
+        }
+
+        .save-date-banner h3 {
+            font-family: var(--font-script);
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .deadline-warning {
+            background: rgba(255, 193, 7, 0.1);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .deadline-warning strong {
+            color: #d4a017;
+        }
+
+        @media (max-width: 768px) {
+            .form-radio-group {
+                flex-direction: column;
+            }
+            
+            .form-radio-item {
+                min-width: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-content">
+            <a href="index.html" class="nav-logo">L & C</a>
+            <ul class="nav-links">
+                <li><a href="programme.html">le programme</a></li>
+                <li><a href="infos-pratiques.html">infos pratiques</a></li>
+                <li><a href="rsvp.html" class="active">rsvp</a></li>
+                <li><a href="faq.html">faq corse</a></li>
+            </ul>
+            <div class="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section page-hero">
+        <!-- Illustration cœurs et anneaux -->
+        <svg class="page-illustration" viewBox="0 0 250 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Anneaux entrelacés -->
+            <circle cx="110" cy="100" r="25" stroke="#8b7d6b" stroke-width="3" fill="none"/>
+            <circle cx="140" cy="100" r="25" stroke="#8b7d6b" stroke-width="3" fill="none"/>
+            
+            <!-- Cœurs flottants -->
+            <path d="M50,80 Q45,70 40,80 Q35,70 30,80 Q35,90 50,100 Q65,90 70,80 Q65,70 60,80 Q55,70 50,80" 
+                  stroke="#8b7d6b" stroke-width="1.5" fill="none" opacity="0.6"/>
+            <path d="M200,60 Q195,50 190,60 Q185,50 180,60 Q185,70 200,80 Q215,70 220,60 Q215,50 210,60 Q205,50 200,60" 
+                  stroke="#8b7d6b" stroke-width="1.5" fill="none" opacity="0.6"/>
+            
+            <!-- Petits cœurs -->
+            <path d="M80,50 Q78,46 76,50 Q74,46 72,50 Q74,54 80,58 Q86,54 88,50 Q86,46 84,50 Q82,46 80,50" 
+                  stroke="#8b7d6b" stroke-width="1" fill="none" opacity="0.4"/>
+            <path d="M170,130 Q168,126 166,130 Q164,126 162,130 Q164,134 170,138 Q176,134 178,130 Q176,126 174,130 Q172,126 170,130" 
+                  stroke="#8b7d6b" stroke-width="1" fill="none" opacity="0.4"/>
+            
+            <!-- Calendrier -->
+            <rect x="180" y="110" width="40" height="30" stroke="#8b7d6b" stroke-width="1.5" fill="none" opacity="0.7"/>
+            <path d="M185,115 L190,115 M195,115 L200,115 M205,115 L210,115" stroke="#8b7d6b" stroke-width="0.8" opacity="0.7"/>
+            <path d="M185,120 L190,120 M195,120 L200,120 M205,120 L210,120" stroke="#8b7d6b" stroke-width="0.8" opacity="0.7"/>
+            <path d="M185,125 L190,125 M195,125 L200,125 M205,125 L210,125" stroke="#8b7d6b" stroke-width="0.8" opacity="0.7"/>
+            <circle cx="200" cy="120" r="2" fill="#8b7d6b" opacity="0.8"/>
+            
+            <!-- "11" sur le calendrier -->
+            <text x="200" y="125" font-family="Arial" font-size="6" fill="#8b7d6b" text-anchor="middle" opacity="0.9">11</text>
+        </svg>
+
+        <h1 class="page-title">RSVP</h1>
+        <p class="page-subtitle">
+            Confirmez votre présence pour notre grand jour<br>
+            et aidez-nous à organiser cette belle fête !
+        </p>
+    </section>
+
+    <!-- Découpe organique -->
+    <div class="section-divider">
+        <svg viewBox="0 0 1440 150" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <!-- Vague romantique avec cœurs -->
+            <path d="M0,150 Q240,70 480,95 Q720,60 960,85 Q1200,70 1440,80 L1440,150 L0,150 Z" 
+                  class="wave-white"/>
+            <path d="M0,150 Q180,80 360,105 Q540,65 720,90 Q900,75 1080,100 Q1260,65 1440,85 L1440,150 L0,150 Z" 
+                  fill="rgba(255, 255, 255, 0.3)"/>
+            <path d="M0,150 Q240,70 480,95 Q720,60 960,85 Q1200,70 1440,80" 
+                  class="wave-stroke"/>
+            <!-- Petits cœurs dans la vague -->
+            <path d="M300,85 Q298,82 296,85 Q294,82 292,85 Q294,88 300,91 Q306,88 308,85 Q306,82 304,85 Q302,82 300,85" 
+                  stroke="#8b7d6b" stroke-width="0.6" fill="none" opacity="0.3"/>
+            <path d="M700,75 Q698,72 696,75 Q694,72 692,75 Q694,78 700,81 Q706,78 708,75 Q706,72 704,75 Q702,72 700,75" 
+                  stroke="#8b7d6b" stroke-width="0.6" fill="none" opacity="0.3"/>
+            <path d="M1100,80 Q1098,77 1096,80 Q1094,77 1092,80 Q1094,83 1100,86 Q1106,83 1108,80 Q1106,77 1104,80 Q1102,77 1100,80" 
+                  stroke="#8b7d6b" stroke-width="0.6" fill="none" opacity="0.3"/>
+        </svg>
+    </div>
+
+    <!-- Section Formulaire -->
+    <section class="content-section section-white">
+        <div class="container-small">
+            <!-- Save the Date Banner -->
+            <div class="save-date-banner">
+                <h3>Save the Date !</h3>
+                <p style="font-size: 1.2rem; margin: 0;">Vendredi 11 Juillet 2025 • Ajaccio, Corse</p>
+            </div>
+
+            <!-- Deadline Warning -->
+            <div class="deadline-warning">
+                <strong>⏰ Merci de confirmer votre présence avant le 1er juin 2025</strong><br>
+                Cela nous aidera énormément pour l'organisation !
+            </div>
+
+            <!-- Formulaire RSVP -->
+            <form class="glass-card-large" action="#" method="POST">
+                <h2 class="section-title mb-4">Votre réponse</h2>
+
+                <!-- Présence -->
+                <div class="form-group">
+                    <label class="form-label">Serez-vous présent(e) ? <span class="required">*</span></label>
+                    <div class="form-radio-group">
+                        <label class="form-radio-item">
+                            <input type="radio" name="presence" value="oui" required>
+                            <span>
+                                <strong>✅ Oui, avec plaisir !</strong><br>
+                                <small style="color: var(--text-light);">J'ai hâte de célébrer avec vous</small>
+                            </span>
+                        </label>
+                        <label class="form-radio-item">
+                            <input type="radio" name="presence" value="non" required>
+                            <span>
+                                <strong>❌ Non, désolé(e)</strong><br>
+                                <small style="color: var(--text-light);">Je ne pourrai pas être présent(e)</small>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Informations personnelles -->
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label class="form-label" for="prenom">Prénom <span class="required">*</span></label>
+                        <input type="text" id="prenom" name="prenom" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="nom">Nom <span class="required">*</span></label>
+                        <input type="text" id="nom" name="nom" class="form-input" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="email">Email <span class="required">*</span></label>
+                    <input type="email" id="email" name="email" class="form-input" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="telephone">Téléphone</label>
+                    <input type="tel" id="telephone" name="telephone" class="form-input">
+                </div>
+
+                <!-- Accompagnants -->
+                <div class="form-group">
+                    <label class="form-label" for="accompagnants">Nombre d'accompagnants</label>
+                    <select id="accompagnants" name="accompagnants" class="form-select">
+                        <option value="0">Je viens seul(e)</option>
+                        <option value="1">+ 1 accompagnant</option>
+                        <option value="2">+ 2 accompagnants</option>
+                        <option value="3">+ 3 accompagnants</option>
+                        <option value="plus">Plus de 3 (préciser dans les commentaires)</option>
+                    </select>
+                </div>
+
+                <!-- Nom des accompagnants -->
+                <div class="form-group">
+                    <label class="form-label" for="noms-accompagnants">Nom(s) de vos accompagnants</label>
+                    <input type="text" id="noms-accompagnants" name="noms-accompagnants" class="form-input" placeholder="Prénom Nom, Prénom Nom...">
+                </div>
+
+                <!-- Régimes alimentaires -->
+                <div class="form-group">
+                    <label class="form-label">Régimes alimentaires / Allergies</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="regime[]" value="vegetarien">
+                            <span>🌱 Végétarien</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="regime[]" value="vegan">
+                            <span>🥗 Végan</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="regime[]" value="sans-gluten">
+                            <span>🌾 Sans gluten</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="regime[]" value="allergies">
+                            <span>⚠️ Allergies (préciser dans les commentaires)</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Transport -->
+                <div class="form-group">
+                    <label class="form-label" for="transport">Comment comptez-vous venir en Corse ?</label>
+                    <select id="transport" name="transport" class="form-select">
+                        <option value="">Sélectionnez votre moyen de transport</option>
+                        <option value="avion">✈️ Avion</option>
+                        <option value="ferry">⛴️ Ferry</option>
+                        <option value="deja-sur-place">🏖️ Déjà sur place</option>
+                        <option value="autre">🚗 Autre</option>
+                    </select>
+                </div>
+
+                <!-- Hébergement -->
+                <div class="form-group">
+                    <label class="form-label">Avez-vous besoin d'aide pour l'hébergement ?</label>
+                    <div class="form-radio-group">
+                        <label class="form-radio-item">
+                            <input type="radio" name="hebergement" value="non">
+                            <span>
+                                <strong>🏨 C'est bon</strong><br>
+                                <small style="color: var(--text-light);">J'ai déjà mon hébergement</small>
+                            </span>
+                        </label>
+                        <label class="form-radio-item">
+                            <input type="radio" name="hebergement" value="oui">
+                            <span>
+                                <strong>🙋‍♀️ Oui, merci !</strong><br>
+                                <small style="color: var(--text-light);">J'aimerais vos recommandations</small>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Message -->
+                <div class="form-group">
+                    <label class="form-label" for="message">Message pour les mariés</label>
+                    <textarea id="message" name="message" class="form-textarea" placeholder="Vos petits mots doux, questions, ou demandes particulières..."></textarea>
+                </div>
+
+                <!-- Submit -->
+                <button type="submit" class="btn btn-primary form-submit">
+                    💌 Envoyer ma réponse
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Découpe organique -->
+    <div class="section-divider">
+        <svg viewBox="0 0 1440 150" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <!-- Vague avec enveloppes -->
+            <path d="M0,150 Q360,60 720,85 Q1080,70 1440,80 L1440,150 L0,150 Z" 
+                  class="wave-light"/>
+            <path d="M0,150 Q300,70 600,90 Q900,55 1200,75 Q1350,70 1440,75 L1440,150 L0,150 Z" 
+                  fill="rgba(139, 125, 107, 0.03)"/>
+            <path d="M0,150 Q360,60 720,85 Q1080,70 1440,80" 
+                  class="wave-stroke"/>
+            <!-- Petites enveloppes -->
+            <path d="M250,75 L270,75 L260,85 Z" stroke="#8b7d6b" stroke-width="0.8" fill="none" opacity="0.4"/>
+            <path d="M650,80 L670,80 L660,90 Z" stroke="#8b7d6b" stroke-width="0.8" fill="none" opacity="0.4"/>
+            <path d="M1050,75 L1070,75 L1060,85 Z" stroke="#8b7d6b" stroke-width="0.8" fill="none" opacity="0.4"/>
+        </svg>
+    </div>
+
+    <!-- CTA Section -->
+    <section class="content-section section-light">
+        <div class="container-small text-center">
+            <h2 class="subsection-title">Merci d'avance !</h2>
+            <p class="section-subtitle">
+                Votre réponse nous aide énormément pour l'organisation.<br>
+                En cas de question, n'hésitez pas à nous contacter directement.
+            </p>
+            <div class="btn-group">
+                <a href="infos-pratiques.html" class="btn btn-secondary">Infos pratiques</a>
+                <a href="faq.html" class="btn btn-secondary">FAQ Corse</a>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Navigation mobile
+        const navToggle = document.querySelector('.nav-toggle');
+        const navLinks = document.querySelector('.nav-links');
+
+        navToggle.addEventListener('click', () => {
+            navToggle.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        // Fermer le menu mobile quand on clique sur un lien
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navToggle.classList.remove('active');
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // Fermer le menu mobile quand on clique ailleurs
+        document.addEventListener('click', (e) => {
+            if (!navToggle.contains(e.target) && !navLinks.contains(e.target)) {
+                navToggle.classList.remove('active');
+                navLinks.classList.remove('active');
+            }
+        });
+
+        // Interactivité pour les radios
+        document.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                // Retirer la classe selected de tous les items du même groupe
+                const groupName = this.name;
+                document.querySelectorAll(`input[name="${groupName}"]`).forEach(r => {
+                    r.closest('.form-radio-item').classList.remove('selected');
+                });
+                // Ajouter la classe selected à l'item sélectionné
+                this.closest('.form-radio-item').classList.add('selected');
+            });
+        });
+
+        // Animation pour les champs de focus
+        document.querySelectorAll('.form-input, .form-select, .form-textarea').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'scale(1.02)';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body>
+</html> 
