@@ -4,9 +4,11 @@
   "description": "Site de mariage en Corse",
   "scripts": {
     "start": "vercel dev",
-    "deploy": "vercel deploy --prod"
+    "deploy": "vercel deploy --prod",
+    "generate-og": "node scripts/convert-svg.js"
   },
   "dependencies": {
-    "vercel": "^32.0.0"
+    "vercel": "^32.0.0",
+    "sharp": "^0.33.2"
   }
 } 

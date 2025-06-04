@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+    <!-- Fond avec dégradé -->
+    <defs>
+        <linearGradient id="bg-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#8b7d6b;stop-opacity:0.1"/>
+            <stop offset="100%" style="stop-color:#8b7d6b;stop-opacity:0.2"/>
+        </linearGradient>
+    </defs>
+    
+    <!-- Rectangle de fond -->
+    <rect width="1200" height="630" fill="url(#bg-gradient)"/>
+    
+    <!-- Vagues décoratives -->
+    <path d="M0,400 Q300,350 600,380 Q900,330 1200,360 L1200,630 L0,630 Z" 
+          fill="#8b7d6b" opacity="0.1"/>
+    <path d="M0,450 Q400,400 800,430 Q1200,380 1200,400 L1200,630 L0,630 Z" 
+          fill="#8b7d6b" opacity="0.05"/>
+    
+    <!-- Olivier stylisé -->
+    <g transform="translate(900, 200) scale(2)">
+        <ellipse cx="0" cy="0" rx="40" ry="60" stroke="#8b7d6b" stroke-width="2" fill="none"/>
+        <path d="M0 -40 Q10 0 0 40" stroke="#8b7d6b" stroke-width="2" fill="none"/>
+        <path d="M-20 -20 Q-10 0 -20 20" stroke="#8b7d6b" stroke-width="1.5" fill="none"/>
+        <path d="M20 -20 Q10 0 20 20" stroke="#8b7d6b" stroke-width="1.5" fill="none"/>
+    </g>
+    
+    <!-- Texte principal -->
+    <text x="600" y="250" font-family="Dancing Script" font-size="80" fill="#3a3a3a" text-anchor="middle">
+        L &amp; C
+    </text>
+    
+    <!-- Sous-titre -->
+    <text x="600" y="320" font-family="Inter" font-size="40" fill="#8b7d6b" text-anchor="middle">
+        Mariage en Corse
+    </text>
+    
+    <!-- Date -->
+    <text x="600" y="380" font-family="Inter" font-size="30" fill="#8b7d6b" text-anchor="middle">
+        11 juillet 2025
+    </text>
+    
+    <!-- URL du site -->
+    <text x="600" y="550" font-family="Inter" font-size="24" fill="#8b7d6b" text-anchor="middle">
+        ouiencorse.vercel.app
+    </text>
+</svg> 
