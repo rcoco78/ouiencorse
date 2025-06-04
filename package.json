@@ -1,0 +1,12 @@
+{
+  "name": "mariage-corse",
+  "version": "1.0.0",
+  "description": "Site de mariage en Corse",
+  "scripts": {
+    "start": "vercel dev",
+    "deploy": "vercel deploy --prod"
+  },
+  "dependencies": {
+    "vercel": "^32.0.0"
+  }
+} 
