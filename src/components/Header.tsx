@@ -1,5 +1,7 @@
+
 import * as React from "react";
 import { Button } from "@/components/ui/Button";
+import { Lock } from "lucide-react";
 
 export const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
@@ -15,34 +17,36 @@ export const Header: React.FC = () => {
   };
 
   return (
-    <header className="flex w-full items-center leading-none justify-between flex-wrap px-16 py-6 max-md:max-w-full max-md:px-5">
-      <div className="self-stretch flex-1 shrink basis-[0%] min-w-60 gap-2 text-3xl text-black font-semibold tracking-[-0.6px] my-auto max-md:max-w-full">
-        <h1>L & C</h1>
+    <header className="flex w-full items-center justify-between px-16 py-8 max-md:max-w-full max-md:px-5">
+      <div className="flex-1">
+        <h1 className="text-4xl text-black font-light italic tracking-wide">
+          L & C
+        </h1>
       </div>
       
-      <nav className="self-stretch flex min-w-60 items-center gap-6 text-base text-black font-medium tracking-[-0.08px] flex-wrap my-auto">
+      <nav className="flex items-center gap-12 text-base text-black font-normal">
         <button 
-          className="self-stretch my-auto hover:text-[#A79885] transition-colors"
+          className="hover:text-[#A79885] transition-colors"
           onClick={() => handleNavClick("Programme")}
           aria-label="View wedding programme"
         >
           Programme
         </button>
         <button 
-          className="self-stretch my-auto hover:text-[#A79885] transition-colors"
+          className="hover:text-[#A79885] transition-colors"
           onClick={() => handleNavClick("Infos pratiques")}
           aria-label="View practical information"
         >
           Infos pratiques
         </button>
-        <Button 
-          variant="primary" 
-          size="md"
+        <button 
+          className="text-gray-400 hover:text-[#A79885] transition-colors flex items-center gap-2"
           onClick={handleSaveTheDate}
           aria-label="Save the wedding date"
         >
           Save the date
-        </Button>
+          <Lock size={16} className="text-gray-400" />
+        </button>
       </nav>
     </header>
   );
