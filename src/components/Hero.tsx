@@ -1,35 +1,22 @@
 
 import * as React from "react";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 import { Lock } from "lucide-react";
+import { SaveTheDateForm } from "./SaveTheDateForm";
 
 export const Hero: React.FC = () => {
   const [isFormVisible, setIsFormVisible] = React.useState(false);
-  const [email, setEmail] = React.useState("");
-  const [name, setName] = React.useState("");
-  const [isSubmitted, setIsSubmitted] = React.useState(false);
+
+  // Check URL parameters to determine if plus one is allowed
+  const urlParams = new URLSearchParams(window.location.search);
+  const allowPlusOne = urlParams.get('plusone') === '1';
 
   const handleSaveTheDate = () => {
     setIsFormVisible(true);
   };
 
-  const handleFormSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (name.trim() && email.trim()) {
-      setIsSubmitted(true);
-      setTimeout(() => {
-        setIsFormVisible(false);
-        setIsSubmitted(false);
-        setName("");
-        setEmail("");
-      }, 2000);
-    }
-  };
-
   const handleCloseForm = () => {
     setIsFormVisible(false);
-    setName("");
-    setEmail("");
   };
 
   return (
@@ -87,7 +74,6 @@ export const Hero: React.FC = () => {
         {/* Save the date button */}
         <div className="flex items-center">
           <Button 
-            variant="primary" 
             size="lg"
             className="bg-[#A79885] hover:bg-[#96876E] text-white px-8 py-4 text-lg font-medium flex items-center gap-3"
             onClick={handleSaveTheDate}
@@ -98,85 +84,14 @@ export const Hero: React.FC = () => {
           </Button>
         </div>
 
-        {/* Save the Date Form Modal */}
-        {isFormVisible && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-xl p-6 w-full max-w-md">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-xl font-semibold text-black">Save the Date</h3>
-                <button 
-                  onClick={handleCloseForm}
-                  className="text-gray-500 hover:text-gray-700 text-xl"
-                  aria-label="Close form"
-                >
-                  ×
-                </button>
-              </div>
-              
-              {!isSubmitted ? (
-                <form onSubmit={handleFormSubmit} className="space-y-4">
-                  <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-                      Your Name
-                    </label>
-                    <input
-                      type="text"
-                      id="name"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#A79885] focus:border-transparent"
-                      placeholder="Enter your full name"
-                      required
-                    />
-                  </div>
-                  
-                  <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                      Email Address
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#A79885] focus:border-transparent"
-                      placeholder="Enter your email"
-                      required
-                    />
-                  </div>
-                  
-                  <div className="flex gap-3 pt-2">
-                    <Button 
-                      type="submit" 
-                      variant="primary" 
-                      className="flex-1"
-                    >
-                      Save My Date
-                    </Button>
-                    <Button 
-                      type="button" 
-                      variant="secondary" 
-                      onClick={handleCloseForm}
-                      className="flex-1"
-                    >
-                      Cancel
-                    </Button>
-                  </div>
-                </form>
-              ) : (
-                <div className="text-center py-4">
-                  <div className="text-green-600 text-lg font-medium mb-2">
-                    ✓ Thank you, {name}!
-                  </div>
-                  <p className="text-gray-600">
-                    We'll send wedding details to {email}
-                  </p>
-                </div>
-              )}
-            </div>
-          </div>
-        )}
+        {/* Save the Date Form */}
+        <SaveTheDateForm 
+          isVisible={isFormVisible}
+          onClose={handleCloseForm}
+          allowPlusOne={allowPlusOne}
+        />
       </section>
     </main>
   );
 };
+

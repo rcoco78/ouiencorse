@@ -1,6 +1,6 @@
 
 import * as React from "react";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 import { Lock } from "lucide-react";
 
 export const Header: React.FC = () => {
@@ -51,3 +51,4 @@ export const Header: React.FC = () => {
     </header>
   );
 };
+
