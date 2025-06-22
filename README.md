@@ -1,73 +1,53 @@
-# Welcome to your Lovable project
+# Site Web du Mariage de L & C
 
-## Project info
+Ce projet est le site web "Save the Date" pour le mariage de L & C.
 
-**URL**: https://lovable.dev/projects/a64bbec4-83c4-4900-9b44-4d22e60c0f97
+## Aperçu
 
-## How can I edit this code?
+Le site présente les informations de base sur l'événement et permet aux invités de confirmer leur présence via un formulaire. Il a été développé en utilisant React, TypeScript, Vite, et stylisé avec Tailwind CSS et shadcn/ui.
 
-There are several ways of editing your application.
+## Fonctionnalités
 
-**Use Lovable**
+- **Page d'accueil** : Présente la date (11.07.2026) et le lieu du mariage (Corse, près d'Ajaccio) avec un design personnalisé.
+- **Formulaire "Save the Date"** :
+    - Les invités peuvent soumettre leur nom, prénom et email.
+    - Un champ conditionnel permet d'ajouter des accompagnants. Ce champ n'est visible que si l'URL contient le paramètre `?withGuests=true`.
+    - Les réponses sont envoyées à une feuille Google Sheets via un webhook créé avec Google Apps Script.
+- **Design Responsive** : Le site est entièrement responsive et s'adapte aux appareils mobiles et de bureau.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/a64bbec4-83c4-4900-9b44-4d22e60c0f97) and start prompting.
+## Technologies utilisées
 
-Changes made via Lovable will be committed automatically to this repo.
+- **Framework** : React avec Vite
+- **Langage** : TypeScript
+- **Style** : Tailwind CSS
+- **Composants UI** : shadcn/ui
+- **Déploiement** : Vercel
 
-**Use your preferred IDE**
+## Développement local
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+Pour lancer le projet localement, suivez ces étapes :
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+1.  **Cloner le dépôt et s'y déplacer**
+    ```sh
+    git clone <URL_DU_REPO>
+    cd ui-replica-canvas-pro
+    ```
 
-Follow these steps:
+2.  **Installer les dépendances**
+    ```sh
+    npm install
+    ```
+    ou
+    ```sh
+    bun install
+    ```
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+3.  **Lancer le serveur de développement**
+    ```sh
+    npm run dev
+    ```
+    Le site sera accessible à l'adresse `http://localhost:5173`.
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+## Scripts Google Apps
 
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/a64bbec4-83c4-4900-9b44-4d22e60c0f97) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+Un script a été mis en place sur une feuille Google Sheets pour agir comme un webhook et collecter les réponses du formulaire. Le script est configuré pour créer des colonnes dynamiques pour les informations des accompagnants si elles sont fournies.
