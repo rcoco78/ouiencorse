@@ -6,8 +6,8 @@ import { Separator } from "@/components/ui/separator";
 
 export default function Index() {
   return (
-    <div className="bg-cream min-h-screen w-full font-sans overflow-x-hidden">
-      <div className="container mx-auto px-6 sm:px-8">
+    <div className="bg-cream min-h-screen w-full font-sans overflow-x-hidden flex flex-col">
+      <div className="container mx-auto px-6 sm:px-8 flex flex-col flex-grow">
         {/* Header */}
         <header className="py-8 sm:py-12">
           <div className="flex items-center justify-center md:justify-between">
@@ -28,15 +28,22 @@ export default function Index() {
         </header>
 
         {/* Hero Section */}
-        <main className="py-12 lg:py-16">
+        <main className="py-12 lg:py-16 flex-grow">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             {/* SVG Section */}
-            <div className="flex justify-center order-2 lg:order-1">
-              <img
-                src="/corsica.svg"
-                alt="Corse"
-                className="w-full max-w-sm lg:max-w-md h-auto text-savethedate-brown/80"
-              />
+            <div className="order-2 lg:order-1 flex justify-center items-center">
+              <div className="relative">
+                <img
+                  src="/lovable-uploads/2.png"
+                  alt="Couple"
+                  className="w-full rounded shadow-xl"
+                />
+                <img
+                  src="/corsica2.svg"
+                  alt="Carte de la Corse"
+                  className="absolute top-0 right-0 z-10 w-full max-w-[12rem] -translate-y-1/4 translate-x-1/4"
+                />
+              </div>
             </div>
 
             {/* Text Section */}
@@ -51,10 +58,11 @@ export default function Index() {
               </p>
 
               <p className="text-gray-600 max-w-md leading-relaxed mb-8 sm:mb-10 font-light text-sm sm:text-base">
-                Nous sommes très heureux de vous convier à notre mariage qui
-                célèbrera notre amour et notre engagement. Nous avons hâte de
-                partager ce moment unique avec vous en Corse, une terre qui
-                nous est chère.
+                On est très heureux de vous embarquer dans cette belle aventure :
+                notre mariage ! Cap sur la Corse, entre mer et maquis, une île
+                qu'on aime profondément. On a hâte de vivre ce moment unique
+                avec vous, entourés de soleil, d'amour, de notre famille et de
+                nos amis.
               </p>
 
               <SaveTheDateForm>

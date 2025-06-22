@@ -26,6 +26,7 @@ import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { toast } from "sonner";
 import React from "react";
+import { useSearchParams } from "react-router-dom";
 import { Separator } from "./ui/separator";
 
 const guestSchema = z.object({
@@ -54,6 +55,9 @@ const formSchema = z.object({
 });
 
 export function SaveTheDateForm({ children }: { children: React.ReactNode }) {
+  const [searchParams] = useSearchParams();
+  const canHaveGuests = searchParams.get("withGuests") === "true";
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -216,7 +220,7 @@ export function SaveTheDateForm({ children }: { children: React.ReactNode }) {
                     )}
                   />
 
-                  {presence === "yes" && (
+                  {presence === "yes" && canHaveGuests && (
                     <>
                       <FormField
                         control={form.control}
