@@ -2,6 +2,7 @@
 import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface FormData {
   firstName: string;
@@ -28,25 +29,84 @@ export const SaveTheDateForm: React.FC<SaveTheDateFormProps> = ({
     attendance: "",
   });
   const [isSubmitted, setIsSubmitted] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const { toast } = useToast();
+
+  // Webhook URL - vous devrez remplacer cette URL par votre webhook Google Sheets
+  const WEBHOOK_URL = "https://hooks.zapier.com/hooks/catch/YOUR_WEBHOOK_ID/"; // Remplacez par votre URL
 
   const updateFormData = (field: keyof FormData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Form submitted:", formData);
-    setIsSubmitted(true);
-    setTimeout(() => {
-      onClose();
-      setIsSubmitted(false);
-      setFormData({
-        firstName: "",
-        lastName: "",
-        email: "",
-        attendance: "",
+  const sendToGoogleSheets = async (data: FormData) => {
+    try {
+      const payload = {
+        timestamp: new Date().toISOString(),
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+        attendance: data.attendance,
+        attendanceLabel: data.attendance === "yes" ? "Oui, je compte venir !" : 
+                        data.attendance === "no" ? "Non, je ne pourrai malheureusement pas venir" : 
+                        "Je ne sais pas encore",
+        allowPlusOne: allowPlusOne,
+        source: "Save the Date Form"
+      };
+
+      console.log("Sending to webhook:", payload);
+
+      const response = await fetch(WEBHOOK_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        mode: "no-cors",
+        body: JSON.stringify(payload),
       });
-    }, 2000);
+
+      return true;
+    } catch (error) {
+      console.error("Error sending to Google Sheets:", error);
+      throw error;
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    try {
+      // Envoyer vers Google Sheets
+      await sendToGoogleSheets(formData);
+      
+      console.log("Form submitted successfully:", formData);
+      setIsSubmitted(true);
+      
+      toast({
+        title: "Réponse envoyée !",
+        description: `Merci ${formData.firstName}, votre réponse a été enregistrée.`,
+      });
+
+      setTimeout(() => {
+        onClose();
+        setIsSubmitted(false);
+        setFormData({
+          firstName: "",
+          lastName: "",
+          email: "",
+          attendance: "",
+        });
+      }, 3000);
+    } catch (error) {
+      toast({
+        title: "Erreur",
+        description: "Une erreur s'est produite lors de l'envoi. Veuillez réessayer.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const canSubmit = formData.firstName && formData.lastName && formData.email && formData.attendance;
@@ -83,6 +143,7 @@ export const SaveTheDateForm: React.FC<SaveTheDateFormProps> = ({
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#A79885] focus:border-transparent"
                     placeholder="Votre prénom"
                     required
+                    disabled={isLoading}
                   />
                 </div>
                 
@@ -98,6 +159,7 @@ export const SaveTheDateForm: React.FC<SaveTheDateFormProps> = ({
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#A79885] focus:border-transparent"
                     placeholder="Votre nom"
                     required
+                    disabled={isLoading}
                   />
                 </div>
               </div>
@@ -114,6 +176,7 @@ export const SaveTheDateForm: React.FC<SaveTheDateFormProps> = ({
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#A79885] focus:border-transparent"
                   placeholder="votre.email@exemple.com"
                   required
+                  disabled={isLoading}
                 />
               </div>
 
@@ -136,6 +199,7 @@ export const SaveTheDateForm: React.FC<SaveTheDateFormProps> = ({
                         onChange={(e) => updateFormData("attendance", e.target.value)}
                         className="text-[#A79885] focus:ring-[#A79885]"
                         required
+                        disabled={isLoading}
                       />
                       <span className="text-gray-700">{option.label}</span>
                     </label>
@@ -148,15 +212,16 @@ export const SaveTheDateForm: React.FC<SaveTheDateFormProps> = ({
               <Button 
                 type="submit" 
                 className="flex-1 bg-[#A79885] hover:bg-[#96876E]"
-                disabled={!canSubmit}
+                disabled={!canSubmit || isLoading}
               >
-                Envoyer ma réponse
+                {isLoading ? "Envoi en cours..." : "Envoyer ma réponse"}
               </Button>
               <Button 
                 type="button" 
                 variant="outline"
                 onClick={onClose}
                 className="flex-1"
+                disabled={isLoading}
               >
                 Annuler
               </Button>
