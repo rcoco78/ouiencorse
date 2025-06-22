@@ -30,3 +30,4 @@ dist-ssr
 
 # sensitive files
 send-email.js
+emails.txt
