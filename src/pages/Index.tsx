@@ -53,11 +53,17 @@ export default function Index() {
                 <h2 className="-mt-2 sm:-mt-4">Day</h2>
               </div>
 
-              <p className="font-sans text-[#6E6E6E] tracking-[0.2em] text-base sm:text-lg my-6 sm:my-8">
-                11 . 07 . 2026
-              </p>
+              <div className="flex items-center justify-center lg:justify-start space-x-3 my-6 sm:my-8">
+                <p className="font-sans text-[#6E6E6E] tracking-[0.2em] text-base sm:text-lg">
+                  11 . 07 . 2026
+                </p>
+                <span className="text-stone-400 pb-1">•</span>
+                <p className="font-sans text-stone-500 text-sm tracking-wider">
+                  à 2 pas d'Ajaccio
+                </p>
+              </div>
 
-              <p className="text-gray-600 max-w-md leading-relaxed mb-8 sm:mb-10 font-light text-sm sm:text-base">
+              <p className="text-gray-600 max-w-md leading-relaxed mb-8 sm:mb-10 font-light text-sm sm:text-base text-justify">
                 On est très heureux de vous embarquer dans cette belle aventure :
                 notre mariage ! Cap sur la Corse, entre mer et maquis, une île
                 qu'on aime profondément. On a hâte de vivre ce moment unique
