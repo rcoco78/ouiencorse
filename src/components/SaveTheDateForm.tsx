@@ -119,13 +119,13 @@ export const SaveTheDateForm: React.FC<SaveTheDateFormProps> = ({
 
               <div>
                 <p className="text-sm font-medium text-gray-700 mb-3">
-                  Serez-vous disponible et comptez-vous venir ? *
+                  Comptez-vous venir à notre mariage le 11 juillet 2026 ? *
                 </p>
                 <div className="space-y-2">
                   {[
-                    { value: "yes", label: "Oui, je serai présent(e)" },
-                    { value: "no", label: "Non, je ne pourrai pas venir" },
-                    { value: "unsure", label: "Pas encore sûr(e)" }
+                    { value: "yes", label: "Oui, je compte venir !" },
+                    { value: "no", label: "Non, je ne pourrai malheureusement pas venir" },
+                    { value: "unsure", label: "Je ne sais pas encore" }
                   ].map((option) => (
                     <label key={option.value} className="flex items-center space-x-2 cursor-pointer">
                       <input
