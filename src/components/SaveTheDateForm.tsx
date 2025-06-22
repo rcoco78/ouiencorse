@@ -24,6 +24,13 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { toast } from "sonner";
 import React from "react";
 import { useSearchParams } from "react-router-dom";
@@ -255,11 +262,25 @@ export function SaveTheDateForm({ children }: { children: React.ReactNode }) {
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel className="font-sans font-medium text-stone-700">
-                              Nombre d'accompagnants
+                              Je serai accompagné(e) de...
                             </FormLabel>
-                            <FormControl>
-                              <Input type="number" min="0" {...field} />
-                            </FormControl>
+                            <Select
+                              onValueChange={(value) =>
+                                field.onChange(parseInt(value, 10))
+                              }
+                              defaultValue={String(field.value)}
+                            >
+                              <FormControl>
+                                <SelectTrigger>
+                                  <SelectValue placeholder="Sélectionnez le nombre d'accompagnants" />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                <SelectItem value="1">1 personne</SelectItem>
+                                <SelectItem value="2">2 personnes</SelectItem>
+                                <SelectItem value="3">3 personnes</SelectItem>
+                              </SelectContent>
+                            </Select>
                             <FormMessage />
                           </FormItem>
                         )}
