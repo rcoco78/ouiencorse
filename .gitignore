@@ -23,3 +23,10 @@ dist-ssr
 *.sln
 *.sw?
 .env
+
+# misc
+.DS_Store
+*.pem
+
+# sensitive files
+send-email.js
