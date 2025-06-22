@@ -86,21 +86,11 @@ export default function Index() {
 
         <footer className="py-8 text-center">
           <Separator className="my-4 bg-savethedate-brown/20" />
-          <div className="flex flex-col md:flex-row items-center justify-center md:space-x-4 space-y-2 md:space-y-0">
-            <div className="flex items-center space-x-1">
-              <span className="font-dancing text-lg font-medium text-stone-500">
-                L
-              </span>
-              <span className="font-sans text-[10px] font-thin text-stone-500">
-                &
-              </span>
-              <span className="font-dancing text-lg font-medium text-stone-500">
-                C
-              </span>
-            </div>
-            <span className="hidden md:inline-block text-stone-400">•</span>
-            <p className="font-sans text-[11px] font-light tracking-widest text-stone-400">
-              se déroulera à 15 minutes d'Ajaccio le 11.07.2026
+          <div className="flex justify-center items-center">
+            <p className="font-sans text-xs font-light tracking-widest text-stone-500">
+              11.07.2026
+              <span className="mx-2 text-stone-400">•</span>
+              À 15 minutes d'Ajaccio
             </p>
           </div>
         </footer>
