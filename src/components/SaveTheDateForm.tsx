@@ -98,12 +98,39 @@ export function SaveTheDateForm({ children }: { children: React.ReactNode }) {
     }
   }, [presence, form])
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-    if (values.presence === "yes") {
-      toast.success("Génial ! Nous avons hâte de célébrer ce moment avec vous.");
-    } else {
-      toast.info("Merci d'avoir prévenu ! Vous nous manquerez.");
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const webhookUrl = import.meta.env.VITE_GOOGLE_SHEET_WEBHOOK_URL;
+    if (!webhookUrl) {
+      console.error("L'URL du webhook Google Sheet n'est pas définie.");
+      toast.error("Erreur de configuration, impossible de soumettre.");
+      return;
+    }
+
+    const toastId = toast.loading("Envoi de votre réponse...");
+
+    try {
+      const response = await fetch(webhookUrl, {
+        method: "POST",
+        mode: "no-cors", // Important pour les webhooks Apps Script simples
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      });
+
+      // Avec mode: 'no-cors', on ne peut pas lire la réponse,
+      // on suppose donc que tout s'est bien passé si fetch ne lève pas d'erreur.
+      toast.success(
+        values.presence === "yes"
+          ? "Génial ! Nous avons hâte de célébrer avec vous."
+          : "Merci d'avoir prévenu ! Vous nous manquerez.",
+        { id: toastId }
+      );
+    } catch (error) {
+      console.error("Erreur lors de l'envoi au webhook:", error);
+      toast.error("Oups, une erreur est survenue. Veuillez réessayer.", {
+        id: toastId,
+      });
     }
   }
 
