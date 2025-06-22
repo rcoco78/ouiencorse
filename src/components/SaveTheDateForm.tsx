@@ -108,11 +108,11 @@ export function SaveTheDateForm({ children }: { children: React.ReactNode }) {
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="w-11/12 max-w-4xl bg-cream border-savethedate-brown/20 p-0 rounded-lg">
         <div className="grid md:grid-cols-2">
-          <div className="hidden md:block">
+          <div className="hidden md:flex items-start justify-center rounded-l-lg p-8">
             <img
-              src="/lovable-uploads/1542fdf8-f794-496a-ab73-43b3ae9b35fc.png"
+              src="/corsica.svg"
               alt="Mariage en Corse"
-              className="object-cover h-full w-full rounded-l-lg"
+              className="object-contain h-full w-full"
             />
           </div>
 

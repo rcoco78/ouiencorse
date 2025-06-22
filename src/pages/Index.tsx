@@ -51,9 +51,10 @@ export default function Index() {
               </p>
 
               <p className="text-gray-600 max-w-md leading-relaxed mb-8 sm:mb-10 font-light text-sm sm:text-base">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco.
+                Nous sommes très heureux de vous convier à notre mariage qui
+                célèbrera notre amour et notre engagement. Nous avons hâte de
+                partager ce moment unique avec vous en Corse, une terre qui
+                nous est chère.
               </p>
 
               <SaveTheDateForm>
