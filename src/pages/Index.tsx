@@ -59,7 +59,7 @@ export default function Index() {
                 </p>
                 <span className="text-stone-400 pb-1">•</span>
                 <p className="font-sans text-stone-500 text-sm tracking-wider">
-                  à 2 pas d'Ajaccio
+                  à 15 min d'ajaccio
                 </p>
               </div>
 
