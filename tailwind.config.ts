@@ -18,7 +18,13 @@ export default {
 			}
 		},
 		extend: {
+			fontFamily: {
+				sans: ["Inter", "sans-serif"],
+				dancing: ["Dancing Script", "cursive"],
+			},
 			colors: {
+				cream: "#FAF4EE",
+				"savethedate-brown": "#A79885",
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
