@@ -270,11 +270,11 @@ export function SaveTheDateForm({ children }: { children: React.ReactNode }) {
                               }
                               defaultValue={String(field.value)}
                             >
-                              <FormControl>
+                            <FormControl>
                                 <SelectTrigger>
                                   <SelectValue placeholder="Sélectionnez le nombre d'accompagnants" />
                                 </SelectTrigger>
-                              </FormControl>
+                            </FormControl>
                               <SelectContent>
                                 <SelectItem value="1">1 personne</SelectItem>
                                 <SelectItem value="2">2 personnes</SelectItem>

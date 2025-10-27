@@ -1,50 +1,97 @@
 // send-email.js
-const nodemailer = require('nodemailer');
-const fs = require('fs');
-const path = require('path');
+import nodemailer from 'nodemailer';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+// Nécessaire pour obtenir le chemin du répertoire avec les modules ES
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // --- Configuration à remplir ---
-// Remplacez par vos informations
-const GMAIL_ADDRESS = 'VOTRE_ADRESSE@gmail.com'; 
-const GMAIL_APP_PASSWORD = 'VOTRE_MOT_DE_PASSE_APPLICATION'; 
-
-// Remplacez par votre liste d'invités
-const recipientEmails = [
-    'invite1@email.com', 
-    'invite2@email.com',
-    // Ajoutez autant d'adresses que nécessaire
-]; 
-
+const EMAIL_ADDRESS = 'corentinrobert648@gmail.com'; // Votre adresse e-mail (Gmail ou OVH)
+const EMAIL_PASSWORD = 'dpwu hqvo tdpc gkyb'; // Le mot de passe de l'e-mail ou mot de passe d'application
 const subject = 'Save the Date - Mariage Lorine & Corentin';
+const baseUrl = 'https://www.ouiencorse.fr';
 // --- Fin de la configuration ---
 
-// Crée le "transporteur" qui enverra l'email.
+// --- Configuration du transporteur (décommentez celui que vous utilisez) ---
+
+// Configuration pour GMAIL
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: GMAIL_ADDRESS,
-    pass: GMAIL_APP_PASSWORD, // IMPORTANT: Utilisez un mot de passe d'application généré depuis votre compte Google
+    user: EMAIL_ADDRESS,
+    pass: EMAIL_PASSWORD, // Doit être un mot de passe d'application
   },
 });
 
-// Lit le contenu de votre fichier HTML
-const htmlPath = path.join(__dirname, 'email', 'index.html');
-const htmlContent = fs.readFileSync(htmlPath, 'utf8');
+// Configuration pour OVH
+// const transporter = nodemailer.createTransport({
+//   host: "ssl0.ovh.net",
+//   port: 465,
+//   secure: true,
+//   auth: {
+//     user: EMAIL_ADDRESS,
+//     pass: EMAIL_PASSWORD, // Le vrai mot de passe de l'e-mail
+//   },
+// });
+// --- Fin de la configuration du transporteur ---
 
-// Configure les options de l'e-mail
-const mailOptions = {
-  from: `Lorine & Corentin <${GMAIL_ADDRESS}>`,
-  to: GMAIL_ADDRESS, // Envoi à votre propre adresse
-  bcc: recipientEmails.join(', '), // *** VOS INVITÉS SONT EN COPIE CACHÉE (Bcc) ***
-  subject: subject,
-  html: htmlContent,
-};
 
-// Envoie l'e-mail
-transporter.sendMail(mailOptions, (error, info) => {
-  if (error) {
-    return console.log('Erreur lors de l\'envoi de l\'e-mail:', error);
-  }
-  console.log('E-mail envoyé avec succès ! Réponse du serveur:', info.response);
-  console.log('Un e-mail de test a été envoyé à votre adresse et les invités ont été placés en Bcc (copie cachée).');
-}); 
+// --- Lecture et parsing de la liste d'invités ---
+let guests = [];
+try {
+    const emailsFilePath = path.join(__dirname, 'emails.txt');
+    const emailsFileContent = fs.readFileSync(emailsFilePath, 'utf8');
+    
+    guests = emailsFileContent
+        .split('\n')
+        .map(line => {
+            const [email, withGuests] = line.trim().split(',');
+            return { email, withGuests: withGuests === 'true' };
+        })
+        .filter(guest => guest.email && !guest.email.startsWith('#'));
+
+} catch (error) {
+    console.error("\nErreur : Impossible de lire le fichier 'emails.txt'.", error);
+    process.exit(1);
+}
+
+if (guests.length === 0) {
+    console.error("\nErreur : Le fichier 'emails.txt' est vide ou ne contient aucune adresse e-mail valide.\n");
+    process.exit(1);
+}
+// --- Fin de la lecture ---
+
+
+// --- Logique d'envoi ---
+async function sendAllEmails() {
+    console.log(`Début de l'envoi à ${guests.length} invité(s)...`);
+    const htmlTemplate = fs.readFileSync(path.join(__dirname, 'public', 'email', 'index.html'), 'utf8');
+    let emailsSent = 0;
+    
+    for (const guest of guests) {
+        const confirmationUrl = guest.withGuests ? `${baseUrl}?withGuests=true` : baseUrl;
+        const personalHtml = htmlTemplate.replace('%%CONFIRMATION_URL%%', confirmationUrl);
+        
+        const mailOptions = {
+            from: `Lorine & Corentin <${EMAIL_ADDRESS}>`,
+            to: guest.email,
+            subject: subject,
+            html: personalHtml,
+        };
+
+        try {
+            await transporter.sendMail(mailOptions);
+            console.log(`- E-mail envoyé avec succès à : ${guest.email}`);
+            emailsSent++;
+        } catch (error) {
+            console.error(`! Erreur lors de l'envoi à ${guest.email}:`, error);
+        }
+    }
+    
+    console.log(`\nEnvoi terminé. ${emailsSent}/${guests.length} e-mails ont été envoyés avec succès.`);
+}
+
+sendAllEmails(); 

@@ -12,7 +12,7 @@ export default function Index() {
         <header className="py-8 sm:py-12">
           <div className="flex items-center justify-center md:justify-between">
             {/* L & C Logo */}
-            <div className="flex items-center space-x-1">
+            <a href="/" className="flex items-center space-x-1 hover:opacity-80 transition-opacity">
               <span className="font-dancing text-2xl font-medium text-stone-800">
                 L
               </span>
@@ -22,7 +22,7 @@ export default function Index() {
               <span className="font-dancing text-2xl font-medium text-stone-800">
                 C
               </span>
-            </div>
+            </a>
             <Navigation />
           </div>
         </header>
@@ -38,11 +38,11 @@ export default function Index() {
                   alt="Couple"
                   className="w-full rounded shadow-xl"
                 />
-                <img
+              <img
                   src="/corsica2.svg"
                   alt="Carte de la Corse"
                   className="absolute top-0 right-0 z-10 w-full max-w-[12rem] -translate-y-1/4 translate-x-1/4"
-                />
+              />
               </div>
             </div>
 
@@ -55,8 +55,8 @@ export default function Index() {
 
               <div className="flex items-center justify-center lg:justify-start space-x-3 my-6 sm:my-8">
                 <p className="font-sans text-[#6E6E6E] tracking-[0.2em] text-base sm:text-lg">
-                  11 . 07 . 2026
-                </p>
+                11 . 07 . 2026
+              </p>
                 <span className="text-stone-400 pb-1">•</span>
                 <p className="font-sans text-stone-500 text-sm tracking-wider">
                   à 15 min d'Ajaccio
@@ -88,9 +88,9 @@ export default function Index() {
           <Separator className="my-4 bg-savethedate-brown/20" />
           <div className="flex justify-center items-center">
             <p className="font-sans text-xs font-light tracking-widest text-stone-500">
-              11.07.2026
+              10-12.07.2026
               <span className="mx-2 text-stone-400">•</span>
-              À 15 minutes d'Ajaccio
+              Calcatoggio, Corse
             </p>
           </div>
         </footer>

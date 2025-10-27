@@ -43,9 +43,9 @@ Pour lancer le projet localement, suivez ces étapes :
     ```
 
 3.  **Lancer le serveur de développement**
-    ```sh
-    npm run dev
-    ```
+```sh
+npm run dev
+```
     Le site sera accessible à l'adresse `http://localhost:5173`.
 
 ## Scripts Google Apps

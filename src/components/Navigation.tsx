@@ -7,45 +7,41 @@ import {
   SheetClose,
 } from "@/components/ui/sheet";
 import { useMediaQuery } from "@/hooks/use-media-query";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 
 const NavLinks = () => (
-  <TooltipProvider>
-    <div className="flex items-center space-x-8">
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <span className="cursor-not-allowed select-none font-sans font-light text-stone-500">
-            Programme
-          </span>
-        </TooltipTrigger>
-        <TooltipContent side="bottom">
-          <p>En cours de préparation</p>
-        </TooltipContent>
-      </Tooltip>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <span className="cursor-not-allowed select-none font-sans font-light text-stone-500">
-            Infos pratiques
-          </span>
-        </TooltipTrigger>
-        <TooltipContent side="bottom">
-          <p>En cours de préparation</p>
-        </TooltipContent>
-      </Tooltip>
-      <a
-        href="#"
-        className="flex items-center font-sans font-light text-savethedate-brown"
-      >
-        Save the date
-        <Lock className="ml-2 h-4 w-4" />
-      </a>
-    </div>
-  </TooltipProvider>
+  <div className="flex items-center space-x-8">
+    <a
+      href="/programme"
+      className="font-sans font-light text-stone-700 hover:text-savethedate-brown transition-colors"
+    >
+      Programme
+    </a>
+    <a
+      href="/infos-pratiques"
+      className="font-sans font-light text-stone-700 hover:text-savethedate-brown transition-colors"
+    >
+      Infos pratiques
+    </a>
+    <a
+      href="/liste-mariage"
+      className="font-sans font-light text-stone-700 hover:text-savethedate-brown transition-colors"
+    >
+      Liste de mariage
+    </a>
+    <a
+      href="/playlist"
+      className="font-sans font-light text-stone-700 hover:text-savethedate-brown transition-colors"
+    >
+      Playlist
+    </a>
+    <a
+      href="#"
+      className="flex items-center font-sans font-light text-savethedate-brown"
+    >
+      Save the date
+      <Lock className="ml-2 h-4 w-4" />
+    </a>
+  </div>
 );
 
 export function Navigation() {
