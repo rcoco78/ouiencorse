@@ -82,7 +82,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     res.setHeader("Cache-Control", "public, s-maxage=60");
     return res.status(200).json({ tracks });
   } catch (err) {
-    console.error("Spotify search error:", err);
-    return res.status(500).json({ error: "Search failed" });
+    const msg = err instanceof Error ? err.message : String(err);
+    console.error("Spotify search error:", msg);
+    return res.status(500).json({ error: msg });
   }
 }
