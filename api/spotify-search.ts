@@ -27,10 +27,7 @@ async function getAccessToken(): Promise<string> {
     body: "grant_type=client_credentials",
   });
 
-  if (!res.ok) {
-    const body = await res.text();
-    throw new Error(`Failed to get Spotify token: ${res.status} ${body}`);
-  }
+  if (!res.ok) throw new Error("Failed to get Spotify token");
 
   const data = (await res.json()) as { access_token: string; expires_in: number };
   tokenCache = {
@@ -85,8 +82,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     res.setHeader("Cache-Control", "public, s-maxage=60");
     return res.status(200).json({ tracks });
   } catch (err) {
-    const msg = err instanceof Error ? err.message : String(err);
-    console.error("Spotify search error:", msg);
-    return res.status(500).json({ error: msg });
+    console.error("Spotify search error:", err);
+    return res.status(500).json({ error: "Search failed" });
   }
 }
