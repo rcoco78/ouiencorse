@@ -229,14 +229,10 @@ export default function Playlist() {
   const { data: songs = [], isLoading } = useQuery({
     queryKey: ['songs'],
     queryFn: fetchSongs,
-    refetchInterval: (query) => {
-      // Ne pas refetch pendant les 5s après un vote (évite que le CDN écrase l'optimiste)
-      if (Date.now() < refetchPausedUntil.current) return false;
-      return 30_000;
-    },
-    staleTime: 10_000,
-    refetchOnMount: true,
+    staleTime: Infinity,   // Ne jamais considérer les données comme périmées
+    refetchOnMount: true,  // Charger une fois au montage
     refetchOnWindowFocus: false,
+    refetchInterval: false,
   });
 
   const addSongMutation = useMutation({
@@ -281,11 +277,10 @@ export default function Playlist() {
       return { previousSongs };
     },
     onSuccess: (data) => {
+      // Le serveur renvoie la liste fraîche post-écriture — on l'utilise directement
       if (data?.allSongs) {
         queryClient.setQueryData(['songs'], data.allSongs);
       }
-      // Refetch différé pour réconcilier avec la vraie base
-      setTimeout(() => queryClient.invalidateQueries({ queryKey: ['songs'] }), 4_000);
     },
     onError: (_err, _songId, context) => {
       if (context?.previousSongs) {
