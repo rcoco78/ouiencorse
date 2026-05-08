@@ -1,6 +1,5 @@
 import { ArrowUp, Music2, Plus, Search, X } from "lucide-react";
 import { Navigation } from "@/components/Navigation";
-import { LogoMonogram } from "@/components/LogoMonogram";
 import { SiteFooter } from "@/components/SiteFooter";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -314,8 +313,17 @@ export default function Playlist() {
         {/* Header */}
         <header className="py-8 sm:py-12">
           <div className="flex items-center justify-between">
-            <a href="/" className="hover:opacity-80 transition-opacity">
-              <LogoMonogram />
+            {/* L & C Logo */}
+            <a href="/" className="flex items-center space-x-1 hover:opacity-80 transition-opacity">
+              <span className="font-dancing text-2xl font-medium text-stone-800">
+                L
+              </span>
+              <span className="font-sans text-sm font-thin text-stone-800">
+                &
+              </span>
+              <span className="font-dancing text-2xl font-medium text-stone-800">
+                C
+              </span>
             </a>
             <Navigation />
           </div>
