@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { CheckCircle } from "lucide-react";
+import { CheckCircle, UserPlus, X } from "lucide-react";
 import { toast } from "sonner";
 import { Navigation } from "@/components/Navigation";
 import { SiteFooter } from "@/components/SiteFooter";
@@ -74,6 +74,9 @@ function PageHeader() {
 
 export default function Presence() {
   const [submitted, setSubmitted] = useState(false);
+  const [hasAccompanist, setHasAccompanist] = useState(false);
+  const [accompFirstName, setAccompFirstName] = useState("");
+  const [accompLastName, setAccompLastName] = useState("");
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -90,12 +93,17 @@ export default function Presence() {
   async function onSubmit(values: FormValues) {
     const toastId = toast.loading("Envoi en cours…");
     try {
-      const res = await fetch("/api/presence", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
-      });
-      if (!res.ok) throw new Error("Erreur serveur");
+      const submissions = [values];
+      if (hasAccompanist && accompFirstName.trim()) {
+        submissions.push({ ...values, firstName: accompFirstName.trim(), lastName: accompLastName.trim() });
+      }
+      await Promise.all(submissions.map(data =>
+        fetch("/api/presence", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        }).then(r => { if (!r.ok) throw new Error(); })
+      ));
       toast.success("C'est noté. On vous attend avec impatience.", { id: toastId });
       setSubmitted(true);
     } catch {
@@ -138,7 +146,7 @@ export default function Presence() {
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 relative z-10">
                   {/* Identité */}
-                  <div className="warm-card p-6">
+                  <div className="warm-card p-6 space-y-4">
                     <div className="grid grid-cols-2 gap-4">
                       <FormField control={form.control} name="firstName" render={({ field }) => (
                         <FormItem>
@@ -159,6 +167,40 @@ export default function Presence() {
                         </FormItem>
                       )} />
                     </div>
+
+                    {hasAccompanist && (
+                      <div className="grid grid-cols-2 gap-4 pt-3 border-t border-savethedate-brown/10">
+                        <div>
+                          <label className="text-sm font-medium text-stone-700 block mb-1.5">Prénom</label>
+                          <Input
+                            placeholder="Marie"
+                            value={accompFirstName}
+                            onChange={e => setAccompFirstName(e.target.value)}
+                            className="bg-cream border-savethedate-brown/20 rounded-sm"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-sm font-medium text-stone-700 block mb-1.5">Nom</label>
+                          <Input
+                            placeholder="Dupont"
+                            value={accompLastName}
+                            onChange={e => setAccompLastName(e.target.value)}
+                            className="bg-cream border-savethedate-brown/20 rounded-sm"
+                          />
+                        </div>
+                      </div>
+                    )}
+
+                    <button
+                      type="button"
+                      onClick={() => { setHasAccompanist(v => !v); setAccompFirstName(""); setAccompLastName(""); }}
+                      className="flex items-center gap-1.5 text-sm text-savethedate-brown/70 hover:text-savethedate-brown transition-colors"
+                    >
+                      {hasAccompanist
+                        ? <><X className="w-3.5 h-3.5" /> Retirer l'accompagnant(e)</>
+                        : <><UserPlus className="w-3.5 h-3.5" /> Ajouter un(e) accompagnant(e)</>
+                      }
+                    </button>
                   </div>
 
                   {/* Jours */}
