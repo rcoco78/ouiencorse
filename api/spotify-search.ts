@@ -27,7 +27,10 @@ async function getAccessToken(): Promise<string> {
     body: "grant_type=client_credentials",
   });
 
-  if (!res.ok) throw new Error("Failed to get Spotify token");
+  if (!res.ok) {
+    const body = await res.text();
+    throw new Error(`Failed to get Spotify token: ${res.status} ${body}`);
+  }
 
   const data = (await res.json()) as { access_token: string; expires_in: number };
   tokenCache = {
