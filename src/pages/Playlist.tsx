@@ -237,8 +237,18 @@ export default function Playlist() {
 
   const addSongMutation = useMutation({
     mutationFn: addSong,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['songs'] });
+    onSuccess: (data) => {
+      // Mise à jour optimiste : injecter la nouvelle chanson directement dans le cache
+      if (data?.song) {
+        queryClient.setQueryData<Song[]>(['songs'], (prev = []) => [
+          ...prev,
+          data.song,
+        ]);
+      }
+      // Invalider pour avoir la version serveur ensuite (rattrape le CDN)
+      setTimeout(() => {
+        queryClient.invalidateQueries({ queryKey: ['songs'] });
+      }, 3000);
       setIsDialogOpen(false);
       setTitle('');
       setArtist('');
