@@ -106,8 +106,7 @@
   /* Conteneur "invitation" — fond chaud parchemin, ombre dorée légère, sans bordure froide */
   .warm-card {
     background-color: #F5EDE3;
-    border: 1px solid rgba(139, 90, 43, 0.18);
-    box-shadow: 0 2px 20px rgba(139, 90, 43, 0.08);
+    border: 1px solid rgba(139, 90, 43, 0.15);
     border-radius: 2px;
   }
 
