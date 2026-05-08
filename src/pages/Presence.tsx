@@ -8,7 +8,6 @@ import { Navigation } from "@/components/Navigation";
 import { SiteFooter } from "@/components/SiteFooter";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
   Form,
   FormControl,
@@ -217,19 +216,23 @@ export default function Presence() {
                           onClick={() => field.onChange(!field.value)}
                         >
                           <div className="flex items-start space-x-4">
-                            <FormControl>
-                              <Checkbox
-                                checked={field.value}
-                                onCheckedChange={field.onChange}
-                                onClick={(e) => e.stopPropagation()}
-                                className="mt-0.5 border-savethedate-brown/40 data-[state=checked]:bg-savethedate-brown data-[state=checked]:border-savethedate-brown"
-                              />
-                            </FormControl>
+                            {/* Indicateur visuel uniquement — pas d'événement */}
+                            <div className={`mt-0.5 w-4 h-4 rounded-sm border flex-shrink-0 flex items-center justify-center transition-colors ${
+                              field.value
+                                ? "bg-savethedate-brown border-savethedate-brown"
+                                : "border-savethedate-brown/40 bg-transparent"
+                            }`}>
+                              {field.value && (
+                                <svg className="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 12 12">
+                                  <path d="M2 6l3 3 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                                </svg>
+                              )}
+                            </div>
                             <div className="flex-grow">
                               <div className="flex items-center gap-2 mb-0.5">
-                                <FormLabel className="font-sans font-medium text-stone-800 cursor-pointer">
+                                <span className="font-sans font-medium text-stone-800 text-sm">
                                   {label}
-                                </FormLabel>
+                                </span>
                                 {highlight && (
                                   <span className="text-xs text-savethedate-brown font-medium tracking-wide">
                                     Le grand jour
