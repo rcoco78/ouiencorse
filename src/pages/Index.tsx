@@ -1,8 +1,5 @@
-import { Lock } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { Navigation } from "@/components/Navigation";
-import { SaveTheDateForm } from "@/components/SaveTheDateForm";
-import { Separator } from "@/components/ui/separator";
+import { SiteFooter } from "@/components/SiteFooter";
 
 export default function Index() {
   return (
@@ -10,7 +7,7 @@ export default function Index() {
       <div className="container mx-auto px-6 sm:px-8 flex flex-col flex-grow">
         {/* Header */}
         <header className="py-8 sm:py-12">
-          <div className="flex items-center justify-center md:justify-between">
+          <div className="flex items-center justify-between">
             {/* L & C Logo */}
             <a href="/" className="flex items-center space-x-1 hover:opacity-80 transition-opacity">
               <span className="font-dancing text-2xl font-medium text-stone-800">
@@ -59,41 +56,22 @@ export default function Index() {
               </p>
                 <span className="text-stone-400 pb-1">•</span>
                 <p className="font-sans text-stone-500 text-sm tracking-wider">
-                  à 15 min d'Ajaccio
+                  Calcatoggio
                 </p>
               </div>
 
-              <p className="text-gray-600 max-w-md leading-relaxed mb-8 sm:mb-10 font-light text-sm sm:text-base text-justify">
+              <p className="text-gray-600 max-w-md leading-relaxed font-light text-sm sm:text-base text-justify">
                 On est très heureux de vous embarquer dans cette belle aventure :
                 notre mariage ! Cap sur la Corse, entre mer et maquis, une île
                 qu'on aime profondément. On a hâte de vivre ce moment unique
                 avec vous, entourés de soleil, d'amour, de notre famille et de
                 nos amis.
               </p>
-
-              <SaveTheDateForm>
-                <Button
-                  size="lg"
-                  className="bg-savethedate-brown text-white hover:bg-savethedate-brown/90 border border-savethedate-brown/50 rounded-sm px-8 text-base sm:text-lg"
-                >
-                  Save the date
-                  <Lock className="ml-3 h-5 w-5" />
-                </Button>
-              </SaveTheDateForm>
             </div>
           </div>
         </main>
 
-        <footer className="py-8 text-center">
-          <Separator className="my-4 bg-savethedate-brown/20" />
-          <div className="flex justify-center items-center">
-            <p className="font-sans text-xs font-light tracking-widest text-stone-500">
-              10-12.07.2026
-              <span className="mx-2 text-stone-400">•</span>
-              Calcatoggio, Corse
-            </p>
-          </div>
-        </footer>
+        <SiteFooter />
       </div>
     </div>
   );

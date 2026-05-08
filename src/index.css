@@ -101,3 +101,20 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer components {
+  /* Conteneur "invitation" — fond chaud parchemin, ombre dorée légère, sans bordure froide */
+  .warm-card {
+    background-color: #fdfaf7;
+    border: 1px solid rgba(139, 90, 43, 0.13);
+    box-shadow: 0 2px 20px rgba(139, 90, 43, 0.06);
+    border-radius: 2px;
+  }
+
+  /* Note douce en bas de page */
+  .warm-note {
+    background-color: rgba(139, 90, 43, 0.04);
+    border: 1px solid rgba(139, 90, 43, 0.10);
+    border-radius: 2px;
+  }
+}
