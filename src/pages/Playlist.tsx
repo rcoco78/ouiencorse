@@ -223,7 +223,6 @@ export default function Playlist() {
   const [albumImage, setAlbumImage] = useState('');
   const [spotifyUrl, setSpotifyUrl] = useState('');
   const [addedBy, setAddedBy] = useState('');
-  const [comment, setComment] = useState('');
   const [votedSongs, setVotedSongs] = useState<Set<string>>(new Set());
   const refetchPausedUntil = useRef<number>(0);
 
@@ -260,7 +259,6 @@ export default function Playlist() {
       setAlbumImage('');
       setSpotifyUrl('');
       setAddedBy('');
-      setComment('');
     },
   });
 
@@ -302,7 +300,6 @@ export default function Playlist() {
         title: title.trim(),
         artist: artist.trim(),
         addedBy: addedBy.trim() || undefined,
-        comment: comment.trim() || undefined,
         albumImage: albumImage || undefined,
         spotifyUrl: spotifyUrl || undefined,
       });
@@ -403,15 +400,6 @@ export default function Playlist() {
                           value={addedBy}
                           onChange={(e) => setAddedBy(e.target.value)}
                           placeholder="Ex : Marie"
-                          className="bg-white border-savethedate-brown/20 rounded-sm"
-                        />
-                      </div>
-                      <div>
-                        <label className="text-sm font-medium text-stone-700 mb-1 block">Pourquoi ce morceau ? <span className="text-stone-400 font-normal">(optionnel)</span></label>
-                        <Input
-                          value={comment}
-                          onChange={(e) => setComment(e.target.value)}
-                          placeholder="Un souvenir, une émotion…"
                           className="bg-white border-savethedate-brown/20 rounded-sm"
                         />
                       </div>
