@@ -1,4 +1,5 @@
 import { Navigation } from "@/components/Navigation";
+import { LogoMonogram } from "@/components/LogoMonogram";
 import { SiteFooter } from "@/components/SiteFooter";
 
 function Item({ label, detail, note }: { label: string; detail?: string; note?: string }) {
@@ -17,10 +18,8 @@ export default function Programme() {
       <div className="container mx-auto px-6 sm:px-8 flex flex-col flex-grow">
         <header className="py-8 sm:py-12">
           <div className="flex items-center justify-between">
-            <a href="/" className="flex items-center space-x-1 hover:opacity-80 transition-opacity">
-              <span className="font-dancing text-2xl font-medium text-stone-800">L</span>
-              <span className="font-sans text-sm font-thin text-stone-800">&</span>
-              <span className="font-dancing text-2xl font-medium text-stone-800">C</span>
+            <a href="/" className="hover:opacity-80 transition-opacity">
+              <LogoMonogram />
             </a>
             <Navigation />
           </div>
