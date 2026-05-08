@@ -224,15 +224,20 @@ export default function Playlist() {
   const [spotifyUrl, setSpotifyUrl] = useState('');
   const [addedBy, setAddedBy] = useState('');
   const [comment, setComment] = useState('');
+  const [votedSongs, setVotedSongs] = useState<Set<string>>(new Set());
+  const refetchPausedUntil = useRef<number>(0);
 
   const { data: songs = [], isLoading } = useQuery({
     queryKey: ['songs'],
     queryFn: fetchSongs,
-    refetchInterval: 2000, // Rafraîchir toutes les 2 secondes pour voir les votes en direct
-    staleTime: 0, // Les données sont immédiatement considérées comme périmées
-    cacheTime: 0, // Pas de cache
+    refetchInterval: (query) => {
+      // Ne pas refetch pendant les 5s après un vote (évite que le CDN écrase l'optimiste)
+      if (Date.now() < refetchPausedUntil.current) return false;
+      return 30_000;
+    },
+    staleTime: 10_000,
     refetchOnMount: true,
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: false,
   });
 
   const addSongMutation = useMutation({
@@ -262,40 +267,32 @@ export default function Playlist() {
   const voteMutation = useMutation({
     mutationFn: voteForSong,
     onMutate: async (songId) => {
-      // Annuler les requêtes en cours pour éviter les conflits
       await queryClient.cancelQueries({ queryKey: ['songs'] });
-      
-      // Snapshot de la valeur précédente
       const previousSongs = queryClient.getQueryData<Song[]>(['songs']);
-      
-      // Mise à jour optimiste
+      // Mise à jour optimiste instantanée (compte + classement)
       if (previousSongs) {
-        const optimisticSongs = previousSongs.map(song => 
-          song.id === songId 
-            ? { ...song, votes: (song.votes || 0) + 1 }
-            : song
-        ).sort((a, b) => b.votes - a.votes);
-        queryClient.setQueryData(['songs'], optimisticSongs);
+        const updated = previousSongs
+          .map(s => s.id === songId ? { ...s, votes: (s.votes || 0) + 1 } : s)
+          .sort((a, b) => b.votes - a.votes);
+        queryClient.setQueryData(['songs'], updated);
       }
-      
+      // Marquer comme voté immédiatement
+      setVotedSongs(prev => new Set(prev).add(songId));
+      // Geler le refetch 5s pour que le CDN ait le temps de se mettre à jour
+      refetchPausedUntil.current = Date.now() + 5_000;
       return { previousSongs };
     },
     onSuccess: (data) => {
-      // Mettre à jour avec les données retournées par le serveur
-      if (data && data.allSongs) {
+      if (data?.allSongs) {
         queryClient.setQueryData(['songs'], data.allSongs);
       }
-      // Invalider pour forcer un refresh final
-      queryClient.invalidateQueries({ queryKey: ['songs'] });
+      // Refetch différé pour réconcilier avec la vraie base
+      setTimeout(() => queryClient.invalidateQueries({ queryKey: ['songs'] }), 4_000);
     },
-    onError: (error, songId, context) => {
-      console.error('Error voting:', error);
-      // En cas d'erreur, restaurer la valeur précédente
+    onError: (_err, _songId, context) => {
       if (context?.previousSongs) {
         queryClient.setQueryData(['songs'], context.previousSongs);
       }
-      // Invalider pour récupérer les dernières données
-      queryClient.invalidateQueries({ queryKey: ['songs'] });
     },
   });
 
@@ -497,13 +494,19 @@ export default function Playlist() {
                       <div className="flex-shrink-0">
                         <button
                           onClick={() => handleVote(song.id)}
-                          className={`flex flex-col items-center justify-center w-14 h-14 border border-savethedate-brown/30 rounded-sm hover:bg-savethedate-brown/10 transition-all duration-200 group active:scale-95 ${
-                            voteMutation.isPending ? 'opacity-50 cursor-wait' : 'cursor-pointer hover:border-savethedate-brown/50 hover:shadow-sm'
+                          className={`flex flex-col items-center justify-center w-14 h-14 border rounded-sm transition-all duration-200 group active:scale-95 ${
+                            votedSongs.has(song.id)
+                              ? 'bg-savethedate-brown border-savethedate-brown cursor-default'
+                              : 'border-savethedate-brown/30 hover:bg-savethedate-brown/10 hover:border-savethedate-brown/50 hover:shadow-sm cursor-pointer'
                           }`}
-                          disabled={voteMutation.isPending}
+                          disabled={votedSongs.has(song.id)}
                         >
-                          <ArrowUp className="w-5 h-5 text-savethedate-brown group-hover:scale-110 group-active:scale-95 transition-transform duration-200" />
-                          <span className="text-xs font-semibold text-savethedate-brown mt-1 transition-all duration-200 group-hover:text-savethedate-brown/80">
+                          <ArrowUp className={`w-5 h-5 transition-transform duration-200 ${
+                            votedSongs.has(song.id) ? 'text-white' : 'text-savethedate-brown group-hover:scale-110'
+                          }`} />
+                          <span className={`text-xs font-semibold mt-1 transition-all duration-200 ${
+                            votedSongs.has(song.id) ? 'text-white' : 'text-savethedate-brown'
+                          }`}>
                             {song.votes || 0}
                           </span>
                         </button>
