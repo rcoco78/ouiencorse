@@ -67,8 +67,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       allowOverwrite: true,
     });
 
-    // Google Sheets — fire-and-forget, ne bloque pas la réponse
-    appendRow('Menu', [
+    await appendRow('Menu', [
       entry.submittedAt,
       entry.firstName,
       entry.lastName,
@@ -76,7 +75,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       entry.plat,
       entry.dessert,
       entry.notes || '',
-    ]).catch(() => {});
+    ]);
 
     return res.status(200).json({ success: true });
   }
