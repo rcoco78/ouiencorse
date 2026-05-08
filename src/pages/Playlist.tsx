@@ -1,4 +1,4 @@
-import { ArrowUp, Plus, Search, X } from "lucide-react";
+import { ArrowUp, Music2, Plus, Search, X } from "lucide-react";
 import { Navigation } from "@/components/Navigation";
 import { SiteFooter } from "@/components/SiteFooter";
 import { Button } from "@/components/ui/button";
@@ -440,7 +440,9 @@ export default function Playlist() {
                           className="w-12 h-12 rounded-sm object-cover flex-shrink-0"
                         />
                       ) : (
-                        <div className="w-12 h-12 rounded-sm bg-savethedate-brown/10 flex-shrink-0" />
+                        <div className="w-12 h-12 rounded-sm bg-savethedate-brown/10 flex-shrink-0 flex items-center justify-center">
+                          <Music2 className="w-5 h-5 text-savethedate-brown/30" />
+                        </div>
                       )}
 
                       {/* Contenu */}

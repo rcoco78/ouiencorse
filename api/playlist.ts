@@ -1,6 +1,51 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { put } from '@vercel/blob';
 
+// ── Spotify token cache ───────────────────────────────────────────────────────
+let tokenCache: { token: string; expiresAt: number } | null = null;
+
+async function getSpotifyToken(): Promise<string | null> {
+  const id = process.env.SPOTIFY_CLIENT_ID;
+  const secret = process.env.SPOTIFY_CLIENT_SECRET;
+  if (!id || !secret) return null;
+  const now = Date.now();
+  if (tokenCache && tokenCache.expiresAt > now + 10_000) return tokenCache.token;
+  const res = await fetch('https://accounts.spotify.com/api/token', {
+    method: 'POST',
+    headers: {
+      Authorization: `Basic ${Buffer.from(`${id}:${secret}`).toString('base64')}`,
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: 'grant_type=client_credentials',
+  });
+  if (!res.ok) return null;
+  const data = await res.json() as { access_token: string; expires_in: number };
+  tokenCache = { token: data.access_token, expiresAt: now + data.expires_in * 1000 };
+  return tokenCache.token;
+}
+
+async function enrichSongs(songs: Record<string, Song>, token: string): Promise<{ enriched: Record<string, Song>; changed: boolean }> {
+  let changed = false;
+  for (const song of Object.values(songs)) {
+    if (song.albumImage) continue;
+    try {
+      const q = encodeURIComponent(`${song.title} ${song.artist}`);
+      const res = await fetch(`https://api.spotify.com/v1/search?q=${q}&type=track&limit=1&market=FR`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!res.ok) continue;
+      const data = await res.json() as { tracks: { items: { album: { images: { url: string }[] }; external_urls: { spotify: string } }[] } };
+      const track = data.tracks?.items?.[0];
+      if (track) {
+        song.albumImage = track.album.images[2]?.url ?? track.album.images[0]?.url;
+        song.spotifyUrl = song.spotifyUrl ?? track.external_urls.spotify;
+        changed = true;
+      }
+    } catch { /* ignore */ }
+  }
+  return { enriched: songs, changed };
+}
+
 interface Song {
   id: string;
   title: string;
@@ -46,8 +91,24 @@ export default async function handler(
           }
         });
         if (fetchResponse.ok) {
-          const songs = await fetchResponse.json() as Record<string, Song>;
+          let songs = await fetchResponse.json() as Record<string, Song>;
           if (songs && typeof songs === 'object') {
+            // Enrichir en arrière-plan les songs sans pochette
+            const needsEnrich = Object.values(songs).some(s => !s.albumImage);
+            if (needsEnrich) {
+              const token = await getSpotifyToken();
+              if (token) {
+                const { enriched, changed } = await enrichSongs(songs, token);
+                songs = enriched;
+                if (changed) {
+                  // Sauvegarder silencieusement (pas attendu par le client)
+                  put(BLOB_KEY, JSON.stringify(songs), {
+                    access: 'public', contentType: 'application/json',
+                    token: BLOB_READ_WRITE_TOKEN, allowOverwrite: true,
+                  }).catch(() => {});
+                }
+              }
+            }
             const songsArray = Object.values(songs).sort((a, b) => b.votes - a.votes);
             return response.status(200).json(songsArray);
           }
