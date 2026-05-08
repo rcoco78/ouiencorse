@@ -9,7 +9,7 @@ export default defineConfig(({ mode }) => ({
     host: "::",
     port: 8080,
     proxy: {
-      "/api/spotify-search": "http://localhost:3333",
+      "/api": "http://localhost:3333",
     },
   },
   plugins: [

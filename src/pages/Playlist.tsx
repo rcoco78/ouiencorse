@@ -442,8 +442,7 @@ export default function Playlist() {
                 songs.map((song, index) => (
                   <div
                     key={song.id}
-                    className="warm-card p-6 flex items-start space-x-4 hover:shadow-[0_4px_24px_rgba(139,90,43,0.10)] hover:border-savethedate-brown/25 transition-all duration-300 opacity-0 animate-in fade-in slide-in-from-bottom-4"
-                    style={{ animationDelay: `${index * 100}ms`, animationFillMode: 'forwards' }}
+                    className="warm-card p-6 flex items-start space-x-4 hover:shadow-[0_4px_24px_rgba(139,90,43,0.10)] hover:border-savethedate-brown/25 transition-all duration-300"
                   >
                     <div className="flex items-start gap-4 flex-grow">
                       {/* Numéro */}
