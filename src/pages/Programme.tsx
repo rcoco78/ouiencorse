@@ -3,7 +3,7 @@ import { SiteFooter } from "@/components/SiteFooter";
 
 function Item({ label, detail, note }: { label: string; detail?: string; note?: string }) {
   return (
-    <div>
+    <div className="text-center">
       <p className="font-sans font-medium text-stone-800 text-sm">{label}</p>
       {detail && <p className="text-stone-600 text-sm mt-0.5">{detail}</p>}
       {note && <p className="text-stone-400 text-xs italic mt-0.5">{note}</p>}
@@ -39,8 +39,8 @@ export default function Programme() {
 
             <div className="relative z-10 divide-y divide-savethedate-brown/15 max-w-2xl mx-auto">
               {/* Vendredi */}
-              <div className="py-10">
-                <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1 mb-6">
+              <div className="py-10 text-center">
+                <div className="mb-6">
                   <h2 className="font-dancing text-3xl text-stone-800">Vendredi 10 juillet</h2>
                   <span className="text-stone-400 text-xs italic">Pour ceux qui peuvent arriver la veille</span>
                 </div>
@@ -51,8 +51,8 @@ export default function Programme() {
               </div>
 
               {/* Samedi */}
-              <div className="py-10">
-                <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1 mb-6">
+              <div className="py-10 text-center">
+                <div className="mb-6">
                   <h2 className="font-dancing text-3xl text-stone-800">Samedi 11 juillet</h2>
                   <span className="text-savethedate-brown text-xs font-medium tracking-widest uppercase">Le grand jour</span>
                 </div>
@@ -64,7 +64,7 @@ export default function Programme() {
               </div>
 
               {/* Dimanche */}
-              <div className="py-10">
+              <div className="py-10 text-center">
                 <div className="mb-6">
                   <h2 className="font-dancing text-3xl text-stone-800">Dimanche 12 juillet</h2>
                 </div>
