@@ -1,5 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { put } from '@vercel/blob';
+import { appendRow } from '../lib/google-sheets';
 
 const BLOB_KEY = 'wedding-menu.json';
 const BLOB_PUBLIC_URL = `https://jnawyojr66erpw9f.public.blob.vercel-storage.com/${BLOB_KEY}`;
@@ -65,6 +66,17 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       token: BLOB_READ_WRITE_TOKEN,
       allowOverwrite: true,
     });
+
+    // Google Sheets — fire-and-forget, ne bloque pas la réponse
+    appendRow('Menu', [
+      entry.submittedAt,
+      entry.firstName,
+      entry.lastName,
+      entry.entree,
+      entry.plat,
+      entry.dessert,
+      entry.notes || '',
+    ]).catch(() => {});
 
     return res.status(200).json({ success: true });
   }
