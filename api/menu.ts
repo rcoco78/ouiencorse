@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { put } from '@vercel/blob';
-import { appendRow } from '../lib/google-sheets';
+import { appendRow } from '../lib/google-sheets.js';
 
 const BLOB_KEY = 'wedding-menu.json';
 const BLOB_PUBLIC_URL = `https://jnawyojr66erpw9f.public.blob.vercel-storage.com/${BLOB_KEY}`;
