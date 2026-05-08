@@ -211,8 +211,8 @@ export default function Presence() {
                         <div
                           className={`rounded-sm border p-5 cursor-pointer transition-all duration-200 ${
                             field.value
-                              ? "bg-savethedate-brown/[0.05] border-savethedate-brown/40 shadow-[0_2px_12px_rgba(139,90,43,0.08)]"
-                              : "bg-[#fdfaf7] border-savethedate-brown/13 shadow-[0_2px_12px_rgba(139,90,43,0.05)] hover:border-savethedate-brown/25"
+                              ? "bg-savethedate-brown/[0.12] border-savethedate-brown/40 shadow-[0_2px_12px_rgba(139,90,43,0.10)]"
+                              : "bg-[#fdfaf7] border-savethedate-brown/20 hover:border-savethedate-brown/30 hover:bg-savethedate-brown/[0.04]"
                           }`}
                           onClick={() => field.onChange(!field.value)}
                         >
@@ -221,6 +221,7 @@ export default function Presence() {
                               <Checkbox
                                 checked={field.value}
                                 onCheckedChange={field.onChange}
+                                onClick={(e) => e.stopPropagation()}
                                 className="mt-0.5 border-savethedate-brown/40 data-[state=checked]:bg-savethedate-brown data-[state=checked]:border-savethedate-brown"
                               />
                             </FormControl>
