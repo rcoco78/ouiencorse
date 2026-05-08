@@ -3,7 +3,7 @@ import { SiteFooter } from "@/components/SiteFooter";
 
 function Item({ label, detail }: { label: string; detail?: string }) {
   return (
-    <div>
+    <div className="text-center">
       <p className="font-sans font-medium text-stone-800 text-sm">{label}</p>
       {detail && <p className="text-stone-600 text-sm mt-0.5">{detail}</p>}
     </div>
@@ -39,7 +39,7 @@ export default function InfosPratiques() {
             <div className="relative z-10 divide-y divide-savethedate-brown/15 max-w-2xl mx-auto">
 
               {/* Comment venir */}
-              <div className="py-10">
+              <div className="py-10 text-center">
                 <h2 className="font-dancing text-3xl text-stone-800 mb-6">Comment venir ?</h2>
                 <div className="space-y-5">
                   <Item label="En avion" detail="Aéroport d'Ajaccio (AJX) — vols directs depuis Paris, Lyon, Marseille, Nice" />
@@ -48,7 +48,7 @@ export default function InfosPratiques() {
               </div>
 
               {/* Le lieu */}
-              <div className="py-10">
+              <div className="py-10 text-center">
                 <h2 className="font-dancing text-3xl text-stone-800 mb-6">Le lieu</h2>
                 <div className="mb-6">
                   <p className="font-medium text-stone-800">Calcatoggio</p>
@@ -62,7 +62,7 @@ export default function InfosPratiques() {
               </div>
 
               {/* Hébergement */}
-              <div className="py-10">
+              <div className="py-10 text-center">
                 <h2 className="font-dancing text-3xl text-stone-800 mb-6">Où dormir ?</h2>
                 <div className="space-y-7">
                   <div>
@@ -91,14 +91,14 @@ export default function InfosPratiques() {
               </div>
 
               {/* Tenue */}
-              <div className="py-10">
+              <div className="py-10 text-center">
                 <h2 className="font-dancing text-3xl text-stone-800 mb-4">Tenue</h2>
                 <p className="text-stone-600 text-sm">Pas de thème exigé.</p>
                 <p className="text-stone-400 text-xs italic mt-2">Si possible, évitez les gros motifs — et pensez qu'il fera chaud.</p>
               </div>
 
               {/* Contact */}
-              <div className="py-10">
+              <div className="py-10 text-center">
                 <h2 className="font-dancing text-3xl text-stone-800 mb-6">Questions ?</h2>
                 <p className="text-stone-600 text-sm mb-5">Écrivez-nous directement :</p>
                 <div className="space-y-3 text-sm">

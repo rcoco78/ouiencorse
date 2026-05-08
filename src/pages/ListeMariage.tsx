@@ -113,12 +113,12 @@ export default function ListeMariage() {
             {/* Catégories — éditorial avec dividers */}
             <div className="relative z-10 divide-y divide-savethedate-brown/15 max-w-2xl mx-auto mt-4">
               {CATEGORIES.map(({ id, icon: Icon, title, description, detail, action }) => (
-                <div key={id} className="py-10">
-                  <div className="flex items-baseline gap-3 mb-2">
+                <div key={id} className="py-10 text-center">
+                  <div className="mb-2">
                     <h2 className="font-dancing text-3xl text-stone-800">{title}</h2>
                     <span className="text-savethedate-brown text-xs tracking-wide">{description}</span>
                   </div>
-                  <p className="text-stone-600 text-sm leading-relaxed mb-5">{detail}</p>
+                  <p className="text-stone-600 text-sm leading-relaxed mb-5 max-w-md mx-auto">{detail}</p>
                   {action && (
                     action.href ? (
                       <a href={action.href} target="_blank" rel="noopener noreferrer"
@@ -126,7 +126,7 @@ export default function ListeMariage() {
                         {action.label}
                       </a>
                     ) : action.copy ? (
-                      <div>
+                      <div className="flex flex-col items-center">
                         <p className="text-stone-400 text-xs mb-2">IBAN pour virement</p>
                         <CopyButton text={action.copy} />
                       </div>
