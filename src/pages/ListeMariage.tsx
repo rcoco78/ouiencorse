@@ -122,7 +122,7 @@ export default function ListeMariage() {
                   {action && (
                     action.href ? (
                       <a href={action.href} target="_blank" rel="noopener noreferrer"
-                        className="inline-flex items-center text-sm bg-savethedate-brown text-white rounded-sm px-4 py-2 hover:bg-savethedate-brown/90 transition-colors">
+                        className="warm-cta inline-flex items-center text-sm bg-savethedate-brown text-white rounded-sm px-4 py-2 hover:bg-savethedate-brown/90 transition-colors">
                         {action.label}
                       </a>
                     ) : action.copy ? (

@@ -105,10 +105,32 @@
 @layer components {
   /* Conteneur "invitation" — fond chaud parchemin, ombre dorée légère, sans bordure froide */
   .warm-card {
-    background-color: #fdfaf7;
-    border: 1px solid rgba(139, 90, 43, 0.13);
-    box-shadow: 0 2px 20px rgba(139, 90, 43, 0.06);
+    background-color: #F5EDE3;
+    border: 1px solid rgba(139, 90, 43, 0.18);
+    box-shadow: 0 2px 20px rgba(139, 90, 43, 0.08);
     border-radius: 2px;
+  }
+
+  /* CTA principal — lift subtil au hover */
+  .warm-cta {
+    transition: transform 200ms ease, box-shadow 200ms ease;
+  }
+  .warm-cta:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(139, 90, 43, 0.20);
+  }
+  .warm-cta:active {
+    transform: translateY(0);
+    box-shadow: none;
+  }
+
+  /* Input — transition de focus douce */
+  input:focus-visible,
+  textarea:focus-visible {
+    outline: none;
+    border-color: rgba(139, 90, 43, 0.45) !important;
+    box-shadow: 0 0 0 3px rgba(139, 90, 43, 0.08);
+    transition: border-color 200ms ease, box-shadow 200ms ease;
   }
 
   /* Note douce en bas de page */

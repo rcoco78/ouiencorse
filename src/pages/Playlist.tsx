@@ -401,7 +401,7 @@ export default function Playlist() {
                       <Button
                         onClick={handleAddSong}
                         disabled={!title.trim() || !artist.trim() || addSongMutation.isPending}
-                        className="w-full bg-savethedate-brown text-white hover:bg-savethedate-brown/90 rounded-sm"
+                        className="warm-cta w-full bg-savethedate-brown text-white hover:bg-savethedate-brown/90 rounded-sm"
                       >
                         {addSongMutation.isPending ? 'Ajout…' : 'Ajouter à la playlist'}
                       </Button>

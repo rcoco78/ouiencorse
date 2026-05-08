@@ -19,8 +19,8 @@ const ACTION_LINKS = [
   { href: "/menu",     label: "Menu du soir" },
 ];
 
-const linkClass = "font-sans font-light text-stone-700 hover:text-savethedate-brown transition-colors";
-const actionLinkClass = "font-sans font-light text-savethedate-brown hover:text-savethedate-brown/70 transition-colors";
+const linkClass = "relative font-sans font-light text-stone-700 hover:text-savethedate-brown transition-colors after:content-[''] after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-0 after:bg-savethedate-brown after:transition-[width] after:duration-300 hover:after:w-full";
+const actionLinkClass = "relative font-sans font-light text-savethedate-brown hover:text-savethedate-brown/70 transition-colors after:content-[''] after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-0 after:bg-savethedate-brown/50 after:transition-[width] after:duration-300 hover:after:w-full";
 
 export function Navigation() {
   const isDesktop = useMediaQuery("(min-width: 768px)");

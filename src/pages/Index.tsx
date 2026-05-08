@@ -30,16 +30,21 @@ export default function Index() {
             {/* SVG Section */}
             <div className="order-2 lg:order-1 flex justify-center items-center">
               <div className="relative">
+                {/* Corse en fond, déborde derrière la photo */}
                 <img
-                  src="/lovable-uploads/2.png"
-                  alt="Couple"
-                  className="w-full rounded shadow-xl"
-                />
-              <img
                   src="/corsica2.svg"
-                  alt="Carte de la Corse"
-                  className="absolute top-0 right-0 z-10 w-full max-w-[12rem] -translate-y-1/4 translate-x-1/4"
-              />
+                  alt=""
+                  aria-hidden
+                  className="absolute -top-16 -right-16 z-0 w-[70%] opacity-50 pointer-events-none select-none"
+                />
+                {/* Photo au-dessus */}
+                <div className="relative overflow-hidden rounded shadow-xl group z-10">
+                  <img
+                    src="/lovable-uploads/2.png"
+                    alt="Couple"
+                    className="w-full transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                  />
+                </div>
               </div>
             </div>
 

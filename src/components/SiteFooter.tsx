@@ -49,7 +49,7 @@ export function SiteFooter() {
                 <li key={href}>
                   <a
                     href={href}
-                    className="text-sm font-light text-stone-600 hover:text-savethedate-brown transition-colors"
+                    className="relative text-sm font-light text-stone-600 hover:text-savethedate-brown transition-colors after:content-[''] after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-0 after:bg-savethedate-brown after:transition-[width] after:duration-300 hover:after:w-full"
                   >
                     {label}
                   </a>

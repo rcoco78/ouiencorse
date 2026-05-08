@@ -97,14 +97,11 @@ export default function Menu() {
       <div className="container mx-auto px-6 sm:px-8 flex flex-col flex-grow">
         <PageHeader />
 
-        <main className="py-12 lg:py-16 flex-grow relative">
-          <div className="max-w-2xl mx-auto relative">
-            {/* Décors */}
-            <img src="/Calque_21.svg" alt="" aria-hidden className="absolute top-0 left-0 z-0 w-full max-w-[10rem] sm:max-w-[12rem] -translate-y-1/4 -translate-x-1/4 opacity-20 pointer-events-none" />
-            <img src="/corsica2.svg" alt="" aria-hidden className="absolute top-0 right-0 z-0 w-full max-w-[10rem] sm:max-w-[12rem] -translate-y-1/4 translate-x-1/4 opacity-20 pointer-events-none" />
+        <main className="py-12 lg:py-16 flex-grow">
+          <div className="max-w-2xl mx-auto">
 
             {/* Titre */}
-            <div className="text-center mb-10 relative z-10">
+            <div className="text-center mb-10">
               <h1 className="font-dancing text-5xl sm:text-6xl text-stone-800 mb-3">
                 Menu du soir
               </h1>
@@ -114,7 +111,7 @@ export default function Menu() {
             </div>
 
             {submitted ? (
-              <div className="warm-card p-10 text-center relative z-10">
+              <div className="warm-card p-10 text-center">
                 <CheckCircle className="w-12 h-12 text-savethedate-brown mx-auto mb-4" />
                 <h2 className="font-dancing text-3xl text-stone-800 mb-3">
                   C'est noté.
@@ -124,13 +121,13 @@ export default function Menu() {
                 </p>
               </div>
             ) : (
-              <div className="warm-card p-8 relative z-10">
+              <div className="warm-card p-8">
                 <p className="text-stone-500 text-sm mb-8 italic">Un choix par personne — si vous êtes en couple, prenez chacun deux minutes.</p>
 
                 <Form {...form}>
                   <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                     {/* Identité */}
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <FormField control={form.control} name="firstName" render={({ field }) => (
                         <FormItem>
                           <FormLabel className="text-stone-700">Prénom</FormLabel>
@@ -230,7 +227,7 @@ export default function Menu() {
                     <Button
                       type="submit"
                       disabled={form.formState.isSubmitting}
-                      className="w-full bg-savethedate-brown text-white hover:bg-savethedate-brown/90 rounded-sm"
+                      className="warm-cta w-full bg-savethedate-brown text-white hover:bg-savethedate-brown/90 rounded-sm"
                     >
                       {form.formState.isSubmitting ? "Envoi…" : "Valider mes choix"}
                     </Button>
