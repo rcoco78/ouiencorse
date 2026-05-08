@@ -363,8 +363,8 @@ export default function Playlist() {
             {/* Message principal */}
             <div className="mb-10 relative z-10 text-center">
                 <p className="text-stone-600 leading-relaxed mb-6">
-                  Proposez les morceaux qui vous font bouger, votez pour ceux des autres.
-                  Ce sera la soirée de tout le monde.
+                  Proposez les morceaux qui vous font bouger, votez pour ceux des autres.<br />
+                  On partagera la liste avec le DJ — il ne pourra pas tout passer, mais les plus votés auront leurs chances.
                 </p>
                 <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                   <DialogTrigger asChild>
