@@ -8,7 +8,6 @@ import Programme from "./pages/Programme";
 import InfosPratiques from "./pages/InfosPratiques";
 import ListeMariage from "./pages/ListeMariage";
 import Playlist from "./pages/Playlist";
-import Menu from "./pages/Menu";
 import Presence from "./pages/Presence";
 import SaveTheDate from "./pages/SaveTheDate";
 import NotFound from "./pages/NotFound";
@@ -27,7 +26,6 @@ const App = () => (
           <Route path="/infos-pratiques" element={<InfosPratiques />} />
           <Route path="/liste-mariage" element={<ListeMariage />} />
           <Route path="/playlist" element={<Playlist />} />
-          <Route path="/menu" element={<Menu />} />
           <Route path="/presence" element={<Presence />} />
           <Route path="/save-the-date" element={<SaveTheDate />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

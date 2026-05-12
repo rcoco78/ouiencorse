@@ -1,4 +1,4 @@
-import { Gift, Plane, Home, Copy, Check } from "lucide-react";
+import { Plane, Home, Copy, Check } from "lucide-react";
 import { Navigation } from "@/components/Navigation";
 import { SiteFooter } from "@/components/SiteFooter";
 import { useState } from "react";
@@ -26,7 +26,7 @@ const CATEGORIES: GiftCategory[] = [
     title: "Voyage de noces",
     description: "Notre aventure au Japon",
     detail:
-      "Après 12 ans ensemble, on rêve de découvrir le Japon pour notre voyage de noces. Votre participation, même modeste, nous aidera à concrétiser ce rêve.",
+      "On rêve de découvrir le Japon pour notre voyage de noces. Votre participation, même modeste, nous aidera à concrétiser ce rêve.",
     action: CAGNOTTE_URL
       ? { label: "Participer à la cagnotte", href: CAGNOTTE_URL }
       : undefined,
@@ -34,21 +34,13 @@ const CATEGORIES: GiftCategory[] = [
   {
     id: "maison",
     icon: Home,
-    title: "Notre futur chez-nous",
-    description: "Aménagement & projets",
+    title: "Notre nouveau chez-nous",
+    description: "Système son & aménagement",
     detail:
-      "On cherche encore notre nid douillet. Une contribution pour l'aménagement ou de futurs projets serait magnifique.",
+      "On aimerait s'équiper d'un beau système son pour notre nouveau chez-nous — et financer d'autres petits projets d'aménagement.",
     action: IBAN
       ? { label: "Copier l'IBAN", copy: IBAN }
       : undefined,
-  },
-  {
-    id: "cadeaux",
-    icon: Gift,
-    title: "Cadeaux traditionnels",
-    description: "Art de la table, linge, déco…",
-    detail:
-      "Si vous préférez offrir quelque chose de concret : art de la table (vaisselle, couverts, verres), cuisine (robot, casseroles), décoration, linge de maison ou petit électroménager.",
   },
 ];
 
@@ -108,13 +100,17 @@ export default function ListeMariage() {
               <p className="text-stone-400 text-sm mt-3 italic">
                 Si vous tenez à nous faire un cadeau, voici ce qui nous toucherait vraiment.
               </p>
+              <p className="text-stone-400 text-xs italic mt-4">
+                Une cagnotte sera disponible le jour J — CB ou espèces.
+              </p>
             </div>
 
             {/* Catégories — éditorial avec dividers */}
             <div className="relative z-10 divide-y divide-savethedate-brown/15 max-w-2xl mx-auto mt-4">
               {CATEGORIES.map(({ id, icon: Icon, title, description, detail, action }) => (
                 <div key={id} className="py-10 text-center">
-                  <div className="mb-2">
+                  <div className="mb-3">
+                    <Icon className="w-6 h-6 text-savethedate-brown/40 mx-auto mb-4" strokeWidth={1} />
                     <h2 className="font-dancing text-3xl text-stone-800">{title}</h2>
                     <span className="text-savethedate-brown text-xs tracking-wide">{description}</span>
                   </div>
@@ -136,12 +132,6 @@ export default function ListeMariage() {
               ))}
             </div>
 
-            {/* Note finale */}
-            <div className="mt-4 p-5 warm-note relative z-10 max-w-2xl mx-auto">
-              <p className="text-center text-stone-600 italic text-sm">
-                Des questions sur la liste ? Écrivez-nous. La seule chose indispensable, c'est vous.
-              </p>
-            </div>
           </div>
         </main>
 

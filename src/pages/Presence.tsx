@@ -17,6 +17,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
+const MENU_OPTIONS = [
+  { value: "viande", label: "Viande", sublabel: "Veau corse" },
+  { value: "poisson", label: "Poisson", sublabel: "Rascasse" },
+] as const;
+
+type MenuChoice = "viande" | "poisson";
+
 const formSchema = z
   .object({
     firstName: z.string().min(2, "Prénom requis"),
@@ -24,11 +31,16 @@ const formSchema = z
     vendredi: z.boolean(),
     samedi: z.boolean(),
     brunch: z.boolean(),
+    menuChoice: z.enum(["viande", "poisson"]).optional(),
     notes: z.string().optional(),
   })
   .refine((d) => d.vendredi || d.samedi || d.brunch, {
     message: "Cochez au moins une journée",
     path: ["samedi"],
+  })
+  .refine((d) => !d.samedi || d.menuChoice !== undefined, {
+    message: "Merci de choisir votre menu",
+    path: ["menuChoice"],
   });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -58,6 +70,40 @@ const JOURS = [
   },
 ];
 
+function MenuPicker({
+  value,
+  onChange,
+  error,
+}: {
+  value: MenuChoice | undefined;
+  onChange: (v: MenuChoice) => void;
+  error?: string;
+}) {
+  return (
+    <div className="mt-3 pt-3 border-t border-savethedate-brown/10">
+      <p className="text-xs text-stone-400 italic mb-3">Votre menu pour le dîner du samedi</p>
+      <div className="flex flex-col gap-2">
+        {MENU_OPTIONS.map(({ value: v, label, sublabel }) => (
+          <button
+            key={v}
+            type="button"
+            onClick={() => onChange(v)}
+            className={`flex items-center justify-between text-left px-4 py-3 rounded-sm border transition-all duration-200 ${
+              value === v
+                ? "bg-savethedate-brown/[0.10] border-savethedate-brown/40"
+                : "border-savethedate-brown/15 hover:border-savethedate-brown/25 hover:bg-savethedate-brown/[0.03]"
+            }`}
+          >
+            <span className="text-sm text-stone-800">{label}</span>
+            <span className="text-xs text-stone-400 italic">{sublabel}</span>
+          </button>
+        ))}
+      </div>
+      {error && <p className="text-xs text-red-500 mt-1.5">{error}</p>}
+    </div>
+  );
+}
+
 function PageHeader() {
   return (
     <header className="py-8 sm:py-12">
@@ -73,18 +119,21 @@ function PageHeader() {
   );
 }
 
-
 export default function Presence() {
   const [submitted, setSubmitted] = useState(false);
-  const [accompanists, setAccompanists] = useState<{ firstName: string; lastName: string }[]>([]);
+  const [accompanists, setAccompanists] = useState<{
+    firstName: string;
+    lastName: string;
+    menuChoice?: MenuChoice;
+  }[]>([]);
 
   function addAccompanist() {
-    setAccompanists(prev => [...prev, { firstName: "", lastName: "" }]);
+    setAccompanists(prev => [...prev, { firstName: "", lastName: "", menuChoice: undefined }]);
   }
   function removeAccompanist(i: number) {
     setAccompanists(prev => prev.filter((_, idx) => idx !== i));
   }
-  function updateAccompanist(i: number, field: "firstName" | "lastName", value: string) {
+  function updateAccompanist(i: number, field: "firstName" | "lastName" | "menuChoice", value: string) {
     setAccompanists(prev => prev.map((a, idx) => idx === i ? { ...a, [field]: value } : a));
   }
 
@@ -96,18 +145,44 @@ export default function Presence() {
       vendredi: false,
       samedi: true,
       brunch: false,
+      menuChoice: undefined,
       notes: "",
     },
   });
 
+  const samediChecked = form.watch("samedi");
+
+  // Validation accompagnants : menu requis si samedi coché
+  const [accompMenuErrors, setAccompMenuErrors] = useState<Record<number, string>>({});
+
   async function onSubmit(values: FormValues) {
+    // Valider les menus des accompagnants
+    if (samediChecked) {
+      const errors: Record<number, string> = {};
+      accompanists.forEach((a, i) => {
+        if (a.firstName.trim() && !a.menuChoice) {
+          errors[i] = "Merci de choisir un menu";
+        }
+      });
+      if (Object.keys(errors).length > 0) {
+        setAccompMenuErrors(errors);
+        return;
+      }
+    }
+    setAccompMenuErrors({});
+
     const toastId = toast.loading("Envoi en cours…");
     try {
       const submissions = [
         values,
         ...accompanists
           .filter(a => a.firstName.trim())
-          .map(a => ({ ...values, firstName: a.firstName.trim(), lastName: a.lastName.trim() })),
+          .map(a => ({
+            ...values,
+            firstName: a.firstName.trim(),
+            lastName: a.lastName.trim(),
+            menuChoice: a.menuChoice,
+          })),
       ];
       await Promise.all(submissions.map(data =>
         fetch("/api/presence", {
@@ -156,6 +231,7 @@ export default function Presence() {
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                   {/* Identité */}
                   <div className="warm-card p-6 space-y-4">
+                    {/* Personne principale */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <FormField control={form.control} name="firstName" render={({ field }) => (
                         <FormItem>
@@ -177,36 +253,59 @@ export default function Presence() {
                       )} />
                     </div>
 
-                    {accompanists.map((a, i) => (
-                      <div key={i} className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-3 border-t border-savethedate-brown/10">
-                        <div>
-                          <label className="text-sm font-medium text-stone-700 block mb-1.5">Prénom</label>
-                          <Input
-                            placeholder="Marie"
-                            value={a.firstName}
-                            onChange={e => updateAccompanist(i, "firstName", e.target.value)}
-                            className="bg-cream border-savethedate-brown/20 rounded-sm"
+                    {/* Menu principal si samedi */}
+                    {samediChecked && (
+                      <FormField control={form.control} name="menuChoice" render={({ field }) => (
+                        <FormItem>
+                          <MenuPicker
+                            value={field.value}
+                            onChange={field.onChange}
+                            error={form.formState.errors.menuChoice?.message}
                           />
-                        </div>
-                        <div className="relative">
-                          <label className="text-sm font-medium text-stone-700 block mb-1.5">Nom</label>
-                          <div className="flex items-center gap-2">
+                        </FormItem>
+                      )} />
+                    )}
+
+                    {/* Accompagnants */}
+                    {accompanists.map((a, i) => (
+                      <div key={i} className="pt-3 border-t border-savethedate-brown/10">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <div>
+                            <label className="text-sm font-medium text-stone-700 block mb-1.5">Prénom</label>
                             <Input
-                              placeholder="Dupont"
-                              value={a.lastName}
-                              onChange={e => updateAccompanist(i, "lastName", e.target.value)}
-                              className="bg-cream border-savethedate-brown/20 rounded-sm flex-1"
+                              placeholder="Marie"
+                              value={a.firstName}
+                              onChange={e => updateAccompanist(i, "firstName", e.target.value)}
+                              className="bg-cream border-savethedate-brown/20 rounded-sm"
                             />
-                            <button
-                              type="button"
-                              onClick={() => removeAccompanist(i)}
-                              className="text-stone-400 hover:text-stone-600 transition-colors flex-shrink-0"
-                              aria-label="Retirer"
-                            >
-                              <X className="w-4 h-4" />
-                            </button>
+                          </div>
+                          <div className="relative">
+                            <label className="text-sm font-medium text-stone-700 block mb-1.5">Nom</label>
+                            <div className="flex items-center gap-2">
+                              <Input
+                                placeholder="Dupont"
+                                value={a.lastName}
+                                onChange={e => updateAccompanist(i, "lastName", e.target.value)}
+                                className="bg-cream border-savethedate-brown/20 rounded-sm flex-1"
+                              />
+                              <button
+                                type="button"
+                                onClick={() => removeAccompanist(i)}
+                                className="text-stone-400 hover:text-stone-600 transition-colors flex-shrink-0"
+                                aria-label="Retirer"
+                              >
+                                <X className="w-4 h-4" />
+                              </button>
+                            </div>
                           </div>
                         </div>
+                        {samediChecked && (
+                          <MenuPicker
+                            value={a.menuChoice}
+                            onChange={(v) => updateAccompanist(i, "menuChoice", v)}
+                            error={accompMenuErrors[i]}
+                          />
+                        )}
                       </div>
                     ))}
 
@@ -233,7 +332,6 @@ export default function Presence() {
                           onClick={() => field.onChange(!field.value)}
                         >
                           <div className="flex items-start space-x-4">
-                            {/* Indicateur visuel uniquement — pas d'événement */}
                             <div className={`mt-0.5 w-4 h-4 rounded-sm border flex-shrink-0 flex items-center justify-center transition-colors ${
                               field.value
                                 ? "bg-savethedate-brown border-savethedate-brown"

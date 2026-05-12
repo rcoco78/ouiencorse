@@ -1,3 +1,4 @@
+import { ArrowUpRight } from "lucide-react";
 import { Navigation } from "@/components/Navigation";
 import { SiteFooter } from "@/components/SiteFooter";
 
@@ -51,8 +52,18 @@ export default function InfosPratiques() {
               <div className="py-10 text-center">
                 <h2 className="font-dancing text-3xl text-stone-800 mb-6">Le lieu</h2>
                 <div className="mb-6">
-                  <p className="font-medium text-stone-800">Calcatoggio</p>
-                  <p className="text-stone-500 text-sm mt-0.5">Village corse, 25-30 min en voiture d'Ajaccio</p>
+                  <p className="font-medium text-stone-800">Cérémonie laïque</p>
+                  <p className="text-stone-600 text-sm mt-1">Lieu dit Aghja i Frassi</p>
+                  <p className="text-stone-500 text-sm">20111 Calcatoggio</p>
+                  <a
+                    href="https://maps.google.com/?q=Aghja+i+Frassi,+20111+Calcatoggio"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block mt-2 text-xs text-savethedate-brown hover:underline underline-offset-2"
+                  >
+                    <span className="inline-flex items-center gap-1">Voir sur Maps <ArrowUpRight className="w-3 h-3" strokeWidth={1.5} /></span>
+                  </a>
+                  <p className="text-stone-400 text-xs italic mt-3">Village corse, 25-30 min en voiture d'Ajaccio</p>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <img src="https://sf2.telestar.fr/wp-content/uploads/telestarv2/2025/06/capture-decran-2025-06-19-a-08.54.01-645x428.png" alt="Calcatoggio" className="w-full h-44 object-cover rounded-sm" />
@@ -120,11 +131,6 @@ export default function InfosPratiques() {
 
             </div>
 
-            <div className="mt-4 p-5 warm-note relative z-10 max-w-2xl mx-auto">
-              <p className="text-center text-stone-600 italic text-sm">
-                Le lieu exact vous sera communiqué 2 mois avant la date. En attendant, réservez vos billets et votre hébergement à Ajaccio.
-              </p>
-            </div>
           </div>
         </main>
 

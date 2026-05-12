@@ -14,7 +14,6 @@ const FOOTER_LINKS = [
     group: "Votre participation",
     links: [
       { href: "/presence", label: "Confirmer ma présence" },
-      { href: "/menu",     label: "Choisir mon menu" },
     ],
   },
 ];

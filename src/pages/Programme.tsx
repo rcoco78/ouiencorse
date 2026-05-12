@@ -45,7 +45,7 @@ export default function Programme() {
                   <span className="text-stone-400 text-xs italic">Pour ceux qui peuvent arriver la veille</span>
                 </div>
                 <div className="space-y-5">
-                  <Item label="Mariage civil" detail="À Ajaccio" note="Vers 14h30 – 15h" />
+                  <Item label="Mariage civil" detail="Mairie d'Ajaccio — Place Foch, 20000 Ajaccio" note="Vers 14h30 – 15h" />
                   <Item label="Après-midi plage & apéro" />
                 </div>
               </div>
@@ -69,16 +69,11 @@ export default function Programme() {
                   <h2 className="font-dancing text-3xl text-stone-800">Dimanche 12 juillet</h2>
                 </div>
                 <div className="space-y-5">
-                  <Item label="Brunch" detail="Piscine, soleil et chill" />
+                  <Item label="Brunch" detail="Piscine, soleil et chill" note="Toujours au domaine" />
                 </div>
               </div>
             </div>
 
-            <div className="mt-4 p-5 warm-note relative z-10 max-w-2xl mx-auto">
-              <p className="text-center text-stone-600 italic text-sm">
-                On vous donnera tous les détails quelques semaines avant. D'ici là — préparez vos plus belles histoires et vos chaussures de danse.
-              </p>
-            </div>
           </div>
         </main>
 

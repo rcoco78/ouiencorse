@@ -16,7 +16,6 @@ const INFO_LINKS = [
 
 const ACTION_LINKS = [
   { href: "/presence", label: "Confirmer ma présence" },
-  { href: "/menu",     label: "Menu du soir" },
 ];
 
 const linkClass = "relative font-sans font-light text-stone-700 hover:text-savethedate-brown transition-colors after:content-[''] after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-0 after:bg-savethedate-brown after:transition-[width] after:duration-300 hover:after:w-full";
