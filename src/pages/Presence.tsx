@@ -370,26 +370,6 @@ export default function Presence() {
                   ))}
                   </div>
 
-                  {/* Notes */}
-                  <div className="warm-card p-6">
-                    <FormField control={form.control} name="notes" render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-stone-700">
-                          Une question ou un commentaire ?
-                          <span className="text-stone-400 font-normal ml-1">(optionnel)</span>
-                        </FormLabel>
-                        <FormControl>
-                          <Input
-                            placeholder="Ex : on arrivera vendredi soir…"
-                            className="bg-cream border-savethedate-brown/20 rounded-sm mt-2"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )} />
-                  </div>
-
                   <Button
                     type="submit"
                     disabled={form.formState.isSubmitting}
@@ -401,12 +381,6 @@ export default function Presence() {
               </Form>
             )}
 
-            {/* Note */}
-            <div className="mt-10 p-5 warm-note">
-              <p className="text-center text-stone-600 italic text-sm">
-                Pas d'inquiétude si vous ne savez pas encore pour le vendredi — vous pourrez nous le dire plus tard.
-              </p>
-            </div>
           </div>
         </main>
 
