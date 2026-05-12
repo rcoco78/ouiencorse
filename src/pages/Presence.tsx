@@ -65,7 +65,7 @@ const JOURS = [
     name: "brunch" as const,
     label: "Dimanche 12 juillet",
     time: "À partir de 11h",
-    sublabel: "Brunch, piscine, farniente",
+    sublabel: "Brunch & piscine",
     note: "",
   },
 ];
