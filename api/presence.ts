@@ -13,6 +13,7 @@ interface PresenceSubmission {
   vendredi: boolean;
   samedi: boolean;
   brunch: boolean;
+  menuChoice?: string;
   notes?: string;
 }
 
@@ -39,7 +40,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   if (req.method === 'POST') {
-    const { firstName, lastName, vendredi, samedi, brunch, notes } = req.body;
+    const { firstName, lastName, vendredi, samedi, brunch, menuChoice, notes } = req.body;
     if (!firstName || !lastName) {
       return res.status(400).json({ error: 'Champs manquants' });
     }
@@ -56,6 +57,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       vendredi: Boolean(vendredi),
       samedi: Boolean(samedi),
       brunch: Boolean(brunch),
+      menuChoice: menuChoice || undefined,
       notes: notes || undefined,
     };
     submissions.push(entry);
@@ -67,6 +69,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       allowOverwrite: true,
     });
 
+    const menuLabel = menuChoice === 'viande' ? 'Viande – Veau corse'
+      : menuChoice === 'poisson' ? 'Poisson – Rascasse'
+      : '';
+
     await appendRow('Présence', [
       entry.submittedAt,
       entry.firstName,
@@ -74,6 +80,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       entry.vendredi ? '✓' : '',
       entry.samedi   ? '✓' : '',
       entry.brunch   ? '✓' : '',
+      menuLabel,
       entry.notes || '',
     ]);
 
