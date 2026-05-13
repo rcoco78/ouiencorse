@@ -34,9 +34,6 @@ export function SiteFooter() {
           <p className="text-stone-500 text-sm font-light leading-relaxed max-w-xs">
             11 juillet 2026 · Calcatoggio, Corse
           </p>
-          <p className="text-stone-400 text-xs mt-3 italic">
-            Une question ? Écrivez-nous, on répond vite.
-          </p>
         </div>
 
         {/* Liens groupés */}
