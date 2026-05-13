@@ -27,18 +27,38 @@ async function getSpotifyToken(): Promise<string | null> {
 async function enrichSongs(songs: Record<string, Song>, token: string): Promise<{ enriched: Record<string, Song>; changed: boolean }> {
   let changed = false;
   for (const song of Object.values(songs)) {
-    if (song.albumImage) continue;
+    const needsImage = !song.albumImage;
+    const needsPreview = song.previewUrl === undefined;
+    if (!needsImage && !needsPreview) continue;
     try {
-      const q = encodeURIComponent(`${song.title} ${song.artist}`);
-      const res = await fetch(`https://api.spotify.com/v1/search?q=${q}&type=track&limit=1&market=FR`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (!res.ok) continue;
-      const data = await res.json() as { tracks: { items: { album: { images: { url: string }[] }; external_urls: { spotify: string } }[] } };
-      const track = data.tracks?.items?.[0];
+      // Si on a un spotifyUrl, on peut extraire l'ID et appeler tracks/{id} directement
+      const spotifyId = song.spotifyUrl?.match(/track\/([A-Za-z0-9]+)/)?.[1];
+      let track: { album: { images: { url: string }[] }; external_urls: { spotify: string }; preview_url: string | null } | undefined;
+
+      if (spotifyId) {
+        const res = await fetch(`https://api.spotify.com/v1/tracks/${spotifyId}?market=FR`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (res.ok) track = await res.json() as typeof track;
+      } else {
+        const q = encodeURIComponent(`${song.title} ${song.artist}`);
+        const res = await fetch(`https://api.spotify.com/v1/search?q=${q}&type=track&limit=1&market=FR`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (res.ok) {
+          const data = await res.json() as { tracks: { items: (typeof track)[] } };
+          track = data.tracks?.items?.[0];
+        }
+      }
+
       if (track) {
-        song.albumImage = track.album.images[2]?.url ?? track.album.images[0]?.url;
-        song.spotifyUrl = song.spotifyUrl ?? track.external_urls.spotify;
+        if (needsImage) {
+          song.albumImage = track.album.images[2]?.url ?? track.album.images[0]?.url;
+          song.spotifyUrl = song.spotifyUrl ?? track.external_urls.spotify;
+        }
+        if (needsPreview) {
+          song.previewUrl = track.preview_url ?? null;
+        }
         changed = true;
       }
     } catch { /* ignore */ }
@@ -94,8 +114,8 @@ export default async function handler(
         if (fetchResponse.ok) {
           let songs = await fetchResponse.json() as Record<string, Song>;
           if (songs && typeof songs === 'object') {
-            // Enrichir en arrière-plan les songs sans pochette
-            const needsEnrich = Object.values(songs).some(s => !s.albumImage);
+            // Enrichir en arrière-plan les songs sans pochette ou sans preview
+            const needsEnrich = Object.values(songs).some(s => !s.albumImage || s.previewUrl === undefined);
             if (needsEnrich) {
               const token = await getSpotifyToken();
               if (token) {
