@@ -228,25 +228,15 @@ export default function Playlist() {
   const [addedBy, setAddedBy] = useState('');
   const [votedSongs, setVotedSongs] = useState<Set<string>>(new Set());
   const [playingId, setPlayingId] = useState<string | null>(null);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
   const refetchPausedUntil = useRef<number>(0);
 
+  function getSpotifyId(spotifyUrl?: string) {
+    return spotifyUrl?.match(/track\/([A-Za-z0-9]+)/)?.[1] ?? null;
+  }
+
   function handlePlay(song: Song) {
-    if (!song.previewUrl) return;
-    if (playingId === song.id) {
-      audioRef.current?.pause();
-      setPlayingId(null);
-      return;
-    }
-    if (audioRef.current) {
-      audioRef.current.pause();
-    }
-    const audio = new Audio(song.previewUrl);
-    audio.volume = 0.7;
-    audio.play().catch(() => {});
-    audio.onended = () => setPlayingId(null);
-    audioRef.current = audio;
-    setPlayingId(song.id);
+    if (!getSpotifyId(song.spotifyUrl)) return;
+    setPlayingId(prev => prev === song.id ? null : song.id);
   }
 
   const { data: songs = [], isLoading } = useQuery({
@@ -446,9 +436,9 @@ export default function Playlist() {
                 </div>
               ) : (
                 songs.map((song, index) => (
+                  <div key={song.id} className="space-y-0">
                   <div
-                    key={song.id}
-                    className="warm-card p-6 flex items-start space-x-4 hover:shadow-[0_4px_24px_rgba(139,90,43,0.10)] hover:border-savethedate-brown/25 transition-all duration-300"
+                    className={`warm-card p-6 flex items-start space-x-4 hover:shadow-[0_4px_24px_rgba(139,90,43,0.10)] hover:border-savethedate-brown/25 transition-all duration-300 ${playingId === song.id ? 'rounded-b-none border-b-0' : ''}`}
                   >
                     <div className="flex items-start gap-4 flex-grow">
                       {/* Numéro */}
@@ -471,12 +461,12 @@ export default function Playlist() {
                             <Music2 className="w-5 h-5 text-savethedate-brown/30" />
                           </div>
                         )}
-                        {song.previewUrl && (
+                        {getSpotifyId(song.spotifyUrl) && (
                           <button
                             type="button"
                             onClick={() => handlePlay(song)}
                             className="absolute inset-0 rounded-sm flex items-center justify-center bg-black/40 opacity-0 group-hover/cover:opacity-100 transition-opacity duration-200"
-                            aria-label={playingId === song.id ? "Pause" : "Écouter un extrait"}
+                            aria-label={playingId === song.id ? "Fermer" : "Écouter un extrait"}
                           >
                             {playingId === song.id ? (
                               <Pause className="w-5 h-5 text-white" fill="white" />
@@ -539,6 +529,20 @@ export default function Playlist() {
                         </button>
                       </div>
                     </div>
+                  </div>
+                  {/* Spotify embed */}
+                  {playingId === song.id && getSpotifyId(song.spotifyUrl) && (
+                    <div className="border border-t-0 border-savethedate-brown/15 rounded-b-sm overflow-hidden">
+                      <iframe
+                        src={`https://open.spotify.com/embed/track/${getSpotifyId(song.spotifyUrl)}?utm_source=generator&theme=0`}
+                        width="100%"
+                        height="80"
+                        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                        loading="lazy"
+                        style={{ display: 'block', border: 'none' }}
+                      />
+                    </div>
+                  )}
                   </div>
                 ))
               )}
