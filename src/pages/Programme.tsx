@@ -69,7 +69,7 @@ export default function Programme() {
                   <h2 className="font-dancing text-3xl text-stone-800">Dimanche 12 juillet</h2>
                 </div>
                 <div className="space-y-5">
-                  <Item label="Brunch" detail="Piscine & chill" note="Toujours au domaine" />
+                  <Item label="Brunch" detail="Piscine & chill" note="Toujours au domaine · À partir de 11h" />
                 </div>
               </div>
             </div>
