@@ -57,7 +57,7 @@ export default function Programme() {
                   <span className="text-savethedate-brown text-xs font-medium tracking-widest uppercase">Le grand jour</span>
                 </div>
                 <div className="space-y-5">
-                  <Item label="Calcatoggio" detail="Village corse, 25 min d'Ajaccio" />
+                  <Item label="Calcatoggio" detail="Village corse, 25 min d'Ajaccio" note="Arrivée à partir de 16h" />
                   <Item label="Cérémonie laïque" detail="Vers 16h30" />
                   <Item label="Cocktail, dîner & soirée dansante" />
                 </div>
