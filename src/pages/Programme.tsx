@@ -45,7 +45,7 @@ export default function Programme() {
                   <span className="text-stone-400 text-xs italic">Pour ceux qui peuvent arriver la veille</span>
                 </div>
                 <div className="space-y-5">
-                  <Item label="Mariage civil" detail="Mairie d'Ajaccio — Place Foch, 20000 Ajaccio" note="Vers 14h30 – 15h" />
+                  <Item label="Mariage civil" detail="Mairie d'Ajaccio — Place Foch, 20000 Ajaccio" note="Vers 14h30 – 15h · Horaire à confirmer" />
                   <Item label="Après-midi plage & apéro" />
                 </div>
               </div>
