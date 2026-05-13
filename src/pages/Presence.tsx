@@ -212,7 +212,7 @@ export default function Presence() {
                 Vos jours de fête
               </h1>
               <p className="font-sans text-stone-600">
-                Trois jours vous attendent — dites-nous jusqu'où vous pouvez rester.
+                Trois jours vous attendent — dites-nous jusqu'à quand vous restez.
               </p>
             </div>
 

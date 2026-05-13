@@ -1,4 +1,4 @@
-import { ArrowUp, Music2, Plus, Search, X } from "lucide-react";
+import { ArrowUp, Music2, Pause, Play, Plus, Search, X } from "lucide-react";
 import { Navigation } from "@/components/Navigation";
 import { SiteFooter } from "@/components/SiteFooter";
 import { Button } from "@/components/ui/button";
@@ -23,6 +23,7 @@ interface Song {
   comment?: string;
   albumImage?: string;
   spotifyUrl?: string;
+  previewUrl?: string | null;
 }
 
 interface SpotifyTrack {
@@ -32,6 +33,7 @@ interface SpotifyTrack {
   album: string;
   image: string | null;
   spotifyUrl: string;
+  previewUrl?: string | null;
 }
 
 function SpotifySearch({
@@ -222,9 +224,30 @@ export default function Playlist() {
   const [artist, setArtist] = useState('');
   const [albumImage, setAlbumImage] = useState('');
   const [spotifyUrl, setSpotifyUrl] = useState('');
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [addedBy, setAddedBy] = useState('');
   const [votedSongs, setVotedSongs] = useState<Set<string>>(new Set());
+  const [playingId, setPlayingId] = useState<string | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   const refetchPausedUntil = useRef<number>(0);
+
+  function handlePlay(song: Song) {
+    if (!song.previewUrl) return;
+    if (playingId === song.id) {
+      audioRef.current?.pause();
+      setPlayingId(null);
+      return;
+    }
+    if (audioRef.current) {
+      audioRef.current.pause();
+    }
+    const audio = new Audio(song.previewUrl);
+    audio.volume = 0.7;
+    audio.play().catch(() => {});
+    audio.onended = () => setPlayingId(null);
+    audioRef.current = audio;
+    setPlayingId(song.id);
+  }
 
   const { data: songs = [], isLoading } = useQuery({
     queryKey: ['songs'],
@@ -254,6 +277,7 @@ export default function Playlist() {
       setArtist('');
       setAlbumImage('');
       setSpotifyUrl('');
+      setPreviewUrl(null);
       setAddedBy('');
     },
   });
@@ -297,6 +321,7 @@ export default function Playlist() {
         addedBy: addedBy.trim() || undefined,
         albumImage: albumImage || undefined,
         spotifyUrl: spotifyUrl || undefined,
+        previewUrl: previewUrl ?? undefined,
       });
     }
   };
@@ -387,6 +412,7 @@ export default function Playlist() {
                           setArtist(track.artist);
                           setAlbumImage(track.image ?? '');
                           setSpotifyUrl(track.spotifyUrl);
+                          setPreviewUrl(track.previewUrl ?? null);
                         }}
                       />
                       <div>
@@ -432,18 +458,34 @@ export default function Playlist() {
                         </span>
                       </div>
 
-                      {/* Pochette */}
-                      {song.albumImage ? (
-                        <img
-                          src={song.albumImage}
-                          alt=""
-                          className="w-12 h-12 rounded-sm object-cover flex-shrink-0"
-                        />
-                      ) : (
-                        <div className="w-12 h-12 rounded-sm bg-savethedate-brown/10 flex-shrink-0 flex items-center justify-center">
-                          <Music2 className="w-5 h-5 text-savethedate-brown/30" />
-                        </div>
-                      )}
+                      {/* Pochette avec bouton play */}
+                      <div className="relative group/cover flex-shrink-0 w-12 h-12">
+                        {song.albumImage ? (
+                          <img
+                            src={song.albumImage}
+                            alt=""
+                            className="w-12 h-12 rounded-sm object-cover"
+                          />
+                        ) : (
+                          <div className="w-12 h-12 rounded-sm bg-savethedate-brown/10 flex items-center justify-center">
+                            <Music2 className="w-5 h-5 text-savethedate-brown/30" />
+                          </div>
+                        )}
+                        {song.previewUrl && (
+                          <button
+                            type="button"
+                            onClick={() => handlePlay(song)}
+                            className="absolute inset-0 rounded-sm flex items-center justify-center bg-black/40 opacity-0 group-hover/cover:opacity-100 transition-opacity duration-200"
+                            aria-label={playingId === song.id ? "Pause" : "Écouter un extrait"}
+                          >
+                            {playingId === song.id ? (
+                              <Pause className="w-5 h-5 text-white" fill="white" />
+                            ) : (
+                              <Play className="w-5 h-5 text-white" fill="white" />
+                            )}
+                          </button>
+                        )}
+                      </div>
 
                       {/* Contenu */}
                       <div className="flex-grow min-w-0">
@@ -502,14 +544,6 @@ export default function Playlist() {
               )}
             </div>
 
-            {/* Note finale */}
-            <div className="mt-12 p-6 warm-note relative z-10">
-              <div className="text-center">
-                <p className="text-stone-600 italic text-sm">
-                  Plus vous êtes, meilleure sera la nuit.
-                </p>
-              </div>
-            </div>
           </div>
         </main>
 

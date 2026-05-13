@@ -55,6 +55,7 @@ interface Song {
   comment?: string;
   albumImage?: string;
   spotifyUrl?: string;
+  previewUrl?: string | null;
 }
 
 const BLOB_KEY = 'wedding-playlist.json';
@@ -167,6 +168,7 @@ export default async function handler(
           comment: song.comment,
           albumImage: song.albumImage,
           spotifyUrl: song.spotifyUrl,
+          previewUrl: song.previewUrl ?? null,
         };
 
         songs[id] = newSong;

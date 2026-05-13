@@ -66,6 +66,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           artists: { name: string }[];
           album: { name: string; images: { url: string }[] };
           external_urls: { spotify: string };
+          preview_url: string | null;
         }[];
       };
     };
@@ -77,6 +78,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       album: t.album.name,
       image: t.album.images[2]?.url ?? t.album.images[0]?.url ?? null,
       spotifyUrl: t.external_urls.spotify,
+      previewUrl: t.preview_url ?? null,
     }));
 
     res.setHeader("Cache-Control", "public, s-maxage=60");

@@ -9,10 +9,25 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // --- Configuration à remplir ---
-const EMAIL_ADDRESS = 'corentinrobert648@gmail.com'; // Votre adresse e-mail (Gmail ou OVH)
-const EMAIL_PASSWORD = 'dpwu hqvo tdpc gkyb'; // Le mot de passe de l'e-mail ou mot de passe d'application
-const subject = 'Save the Date - Mariage Lorine & Corentin';
+const EMAIL_ADDRESS = 'corentinrobert648@gmail.com';
+const EMAIL_PASSWORD = 'dpwu hqvo tdpc gkyb';
 const baseUrl = 'https://www.ouiencorse.fr';
+
+// Choisir le template via argument : node send-email.js rappel  (défaut: save-the-date)
+const TEMPLATE = process.argv[2] === 'rappel' ? 'rappel' : 'save-the-date';
+
+const TEMPLATES = {
+  'save-the-date': {
+    subject: 'Save the Date - Mariage Lorine & Corentin',
+    file: 'public/email/index.html',
+  },
+  'rappel': {
+    subject: 'J-60 — quelques infos avant le grand jour',
+    file: 'public/email/rappel.html',
+  },
+};
+
+const { subject, file: templateFile } = TEMPLATES[TEMPLATE];
 // --- Fin de la configuration ---
 
 // --- Configuration du transporteur (décommentez celui que vous utilisez) ---
@@ -68,7 +83,8 @@ if (guests.length === 0) {
 // --- Logique d'envoi ---
 async function sendAllEmails() {
     console.log(`Début de l'envoi à ${guests.length} invité(s)...`);
-    const htmlTemplate = fs.readFileSync(path.join(__dirname, 'public', 'email', 'index.html'), 'utf8');
+    console.log(`Template : ${TEMPLATE} (${templateFile})`);
+    const htmlTemplate = fs.readFileSync(path.join(__dirname, templateFile), 'utf8');
     let emailsSent = 0;
     
     for (const guest of guests) {
