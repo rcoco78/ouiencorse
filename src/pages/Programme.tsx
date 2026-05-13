@@ -58,7 +58,7 @@ export default function Programme() {
                 </div>
                 <div className="space-y-5">
                   <Item label="Calcatoggio" detail="Village corse, 25 min d'Ajaccio" />
-                  <Item label="Cérémonie laïque" detail="Vers 16h30" note="Horaire à confirmer" />
+                  <Item label="Cérémonie laïque" detail="Vers 16h30" />
                   <Item label="Cocktail, dîner & soirée dansante" />
                 </div>
               </div>
