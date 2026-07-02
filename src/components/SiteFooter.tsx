@@ -8,12 +8,7 @@ const FOOTER_LINKS = [
       { href: "/infos-pratiques", label: "Infos pratiques" },
       { href: "/liste-mariage",   label: "Liste de mariage" },
       { href: "/playlist",        label: "Playlist" },
-    ],
-  },
-  {
-    group: "Votre participation",
-    links: [
-      { href: "/presence", label: "Confirmer ma présence" },
+      { href: "/photos",          label: "Photos" },
     ],
   },
 ];
