@@ -1,66 +1,77 @@
 import { QRCodeSVG } from "qrcode.react";
 import { Printer } from "lucide-react";
-import { Button } from "@/components/ui/button";
 
 const REVOLUT_URL = "https://revolut.me/corent1robert/pocket/buM4rAjzrH";
 const PHOTOS_URL  = `${window.location.origin}/photos`;
 
+function printCard(id: "photos" | "revolut") {
+  document.body.classList.add(`print-${id}`);
+  window.print();
+  // Petit délai pour que le navigateur retire la classe après l'impression
+  setTimeout(() => document.body.classList.remove(`print-${id}`), 500);
+}
+
 interface QRCardProps {
+  id: "photos" | "revolut";
   qrValue: string;
   title: string;
   subtitle: string;
   instruction: string;
 }
 
-function QRCard({ qrValue, title, subtitle, instruction }: QRCardProps) {
+function QRCard({ id, qrValue, title, subtitle, instruction }: QRCardProps) {
   return (
-    <div
-      className="qr-card flex flex-col items-center justify-center gap-5 p-10"
-      style={{
-        background: "#FAF4EE",
-        width: "100%",
-        maxWidth: "360px",
-        border: "1px solid rgba(167,152,133,0.2)",
-      }}
-    >
-      {/* Logo */}
-      <div className="flex items-center space-x-1">
-        <span className="font-dancing text-xl font-medium text-stone-800">L</span>
-        <span className="font-sans text-xs font-thin text-stone-800">&</span>
-        <span className="font-dancing text-xl font-medium text-stone-800">C</span>
+    <div className={`qr-card-${id} flex flex-col items-center gap-6`}>
+      {/* Carte */}
+      <div
+        className="flex flex-col items-center justify-center gap-5 p-10"
+        style={{
+          background: "#FAF4EE",
+          width: "320px",
+          border: "1px solid rgba(167,152,133,0.25)",
+        }}
+      >
+        {/* Logo */}
+        <div className="flex items-center space-x-1">
+          <span className="font-dancing text-xl font-medium text-stone-800">L</span>
+          <span className="font-sans text-xs font-thin text-stone-800">&</span>
+          <span className="font-dancing text-xl font-medium text-stone-800">C</span>
+        </div>
+
+        <div className="w-10 h-px bg-savethedate-brown/30" />
+
+        {/* Titre */}
+        <div className="text-center space-y-1">
+          <h2 className="font-dancing text-3xl text-stone-800">{title}</h2>
+          <p className="text-[10px] tracking-widest text-stone-400 uppercase">{subtitle}</p>
+        </div>
+
+        {/* QR */}
+        <div className="p-4 bg-white" style={{ border: "1px solid rgba(167,152,133,0.15)" }}>
+          <QRCodeSVG value={qrValue} size={168} bgColor="#ffffff" fgColor="#1c1917" level="M" />
+        </div>
+
+        {/* Instruction */}
+        <p className="text-center text-xs text-stone-500 font-light leading-relaxed max-w-[190px]">
+          {instruction}
+        </p>
+
+        {/* Date */}
+        <div className="flex items-center gap-2 text-[10px] tracking-widest text-stone-400 uppercase">
+          <span>11 . 07 . 2026</span>
+          <span className="text-stone-300">·</span>
+          <span>Calcatoggio</span>
+        </div>
       </div>
 
-      {/* Séparateur fin */}
-      <div className="w-12 h-px bg-savethedate-brown/30" />
-
-      {/* Titre */}
-      <div className="text-center space-y-1">
-        <h2 className="font-dancing text-3xl text-stone-800">{title}</h2>
-        <p className="text-xs tracking-widest text-stone-400 uppercase">{subtitle}</p>
-      </div>
-
-      {/* QR Code */}
-      <div className="p-4 bg-white rounded-sm shadow-sm" style={{ border: "1px solid rgba(167,152,133,0.15)" }}>
-        <QRCodeSVG
-          value={qrValue}
-          size={160}
-          bgColor="#ffffff"
-          fgColor="#1c1917"
-          level="M"
-        />
-      </div>
-
-      {/* Instruction */}
-      <p className="text-center text-xs text-stone-500 font-light leading-relaxed max-w-[200px]">
-        {instruction}
-      </p>
-
-      {/* Date */}
-      <div className="flex items-center gap-2 text-[10px] tracking-widest text-stone-400 uppercase">
-        <span>11 . 07 . 2026</span>
-        <span className="text-stone-300">·</span>
-        <span>Calcatoggio</span>
-      </div>
+      {/* Bouton imprimer — masqué à l'impression */}
+      <button
+        onClick={() => printCard(id)}
+        className="no-print flex items-center gap-2 text-xs tracking-widest text-stone-400 uppercase hover:text-savethedate-brown transition-colors"
+      >
+        <Printer className="w-3.5 h-3.5" />
+        Imprimer
+      </button>
     </div>
   );
 }
@@ -69,55 +80,50 @@ export default function PrintQR() {
   return (
     <>
       <style>{`
+        /* Par défaut à l'impression : tout masquer sauf si un mode est actif */
         @media print {
           .no-print { display: none !important; }
-          body { background: white; margin: 0; }
-          .print-grid {
-            display: grid !important;
-            grid-template-columns: 1fr 1fr;
-            gap: 0;
-            width: 100%;
-            height: 100vh;
+
+          /* Impression carte photos uniquement */
+          body.print-photos .qr-card-revolut { display: none !important; }
+          body.print-photos .qr-card-photos {
+            position: fixed; inset: 0;
+            display: flex; align-items: center; justify-content: center;
           }
-          .qr-card {
-            max-width: 100% !important;
-            height: 100%;
-            border: none !important;
-            page-break-inside: avoid;
+
+          /* Impression carte revolut uniquement */
+          body.print-revolut .qr-card-photos { display: none !important; }
+          body.print-revolut .qr-card-revolut {
+            position: fixed; inset: 0;
+            display: flex; align-items: center; justify-content: center;
           }
         }
-        @page { margin: 1cm; size: A4 landscape; }
+
+        @page { margin: 0; size: A5 portrait; }
       `}</style>
 
-      <div className="bg-cream min-h-screen font-sans">
-        {/* Bouton imprimer */}
-        <div className="no-print flex justify-center pt-10 pb-6">
-          <div className="text-center space-y-4">
-            <div className="flex items-center justify-center space-x-1">
-              <span className="font-dancing text-2xl font-medium text-stone-800">L</span>
-              <span className="font-sans text-sm font-thin text-stone-800">&</span>
-              <span className="font-dancing text-2xl font-medium text-stone-800">C</span>
-            </div>
-            <p className="text-xs tracking-widest text-stone-400 uppercase">Cartes à imprimer</p>
-            <Button
-              onClick={() => window.print()}
-              className="bg-savethedate-brown hover:bg-savethedate-brown/90 text-white font-light tracking-wide"
-            >
-              <Printer className="w-4 h-4 mr-2" />
-              Imprimer les deux cartes
-            </Button>
+      <div className="bg-cream min-h-screen font-sans flex flex-col items-center justify-center gap-16 py-16 px-6">
+        {/* En-tête */}
+        <div className="no-print text-center space-y-2">
+          <div className="flex items-center justify-center space-x-1">
+            <span className="font-dancing text-2xl font-medium text-stone-800">L</span>
+            <span className="font-sans text-sm font-thin text-stone-800">&</span>
+            <span className="font-dancing text-2xl font-medium text-stone-800">C</span>
           </div>
+          <p className="text-xs tracking-widest text-stone-400 uppercase">Cartes à imprimer</p>
         </div>
 
         {/* Les deux cartes */}
-        <div className="print-grid flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-12 px-6 pb-12">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-12 sm:gap-20">
           <QRCard
+            id="photos"
             qrValue={PHOTOS_URL}
             title="Vos photos"
             subtitle="Album du mariage"
             instruction="Scannez pour partager vos photos et vidéos dans notre album commun"
           />
           <QRCard
+            id="revolut"
             qrValue={REVOLUT_URL}
             title="La cagnotte"
             subtitle="Voyage de noces"
