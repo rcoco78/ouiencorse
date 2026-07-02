@@ -24,13 +24,24 @@ function QRCard({ id, qrValue, title, subtitle, instruction }: QRCardProps) {
     <div className={`qr-card-${id} flex flex-col items-center gap-6`}>
       {/* Carte */}
       <div
-        className="flex flex-col items-center justify-center gap-5 p-10"
+        className="relative flex flex-col items-center justify-center gap-5 p-10 overflow-hidden"
         style={{
           background: "#FAF4EE",
           width: "320px",
           border: "1px solid rgba(167,152,133,0.25)",
         }}
       >
+        {/* Corse en fond */}
+        <img
+          src="/corsica2.svg"
+          alt=""
+          aria-hidden
+          className="absolute inset-0 w-full h-full object-contain pointer-events-none select-none"
+          style={{ opacity: 0.04 }}
+        />
+        {/* Contenu au-dessus du fond */}
+        <div className="relative z-10 flex flex-col items-center gap-5 w-full">
+
         {/* Logo */}
         <div className="flex items-center space-x-1">
           <span className="font-dancing text-xl font-medium text-stone-800">L</span>
@@ -62,6 +73,8 @@ function QRCard({ id, qrValue, title, subtitle, instruction }: QRCardProps) {
           <span className="text-stone-300">·</span>
           <span>Calcatoggio</span>
         </div>
+
+        </div>{/* fin z-10 */}
       </div>
 
       {/* Bouton imprimer — masqué à l'impression */}
