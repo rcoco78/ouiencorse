@@ -394,7 +394,6 @@ export default function Photos() {
                 ref={fileInputRef}
                 type="file"
                 accept="image/*,video/*"
-                capture="environment"
                 className="hidden"
                 onChange={(e) => handleFileChange(e.target.files?.[0] ?? null)}
               />
