@@ -59,26 +59,18 @@ function useCountdown() {
 function Countdown() {
   const t = useCountdown();
   if (!t) return (
-    <p className="text-savethedate-brown font-dancing text-2xl">C'est aujourd'hui ! 🎉</p>
+    <p className="font-dancing text-3xl text-savethedate-brown">C'est aujourd'hui</p>
   );
 
-  const pad = (n: number) => String(n).padStart(2, "0");
-
   return (
-    <div className="flex items-end gap-3 sm:gap-4">
-      {[
-        { value: t.days,    label: t.days === 1 ? "jour" : "jours" },
-        { value: t.hours,   label: t.hours === 1 ? "heure" : "heures" },
-        { value: t.minutes, label: "min" },
-        { value: t.seconds, label: "sec" },
-      ].map(({ value, label }, i) => (
-        <div key={i} className="flex flex-col items-center">
-          <span className="font-dancing text-3xl sm:text-4xl text-stone-800 tabular-nums leading-none">
-            {i === 0 ? value : pad(value)}
-          </span>
-          <span className="text-[10px] tracking-widest text-stone-400 uppercase mt-1">{label}</span>
-        </div>
-      ))}
+    <div className="space-y-1">
+      <p className="text-xs tracking-widest text-stone-400 uppercase">Plus que</p>
+      <p className="font-dancing text-4xl sm:text-5xl text-stone-800 leading-none">
+        J&thinsp;-&thinsp;{t.days}
+      </p>
+      <p className="text-xs text-stone-400 font-light tracking-wider">
+        {String(t.hours).padStart(2, "0")}h {String(t.minutes).padStart(2, "0")}min
+      </p>
     </div>
   );
 }
@@ -102,42 +94,39 @@ function WeatherWidget() {
         code:    json.daily.weathercode[i],
       }));
     },
-    staleTime: 1000 * 60 * 60, // 1h
+    staleTime: 1000 * 60 * 60,
   });
 
   if (isLoading) return (
-    <div className="flex gap-2">
-      {Array.from({ length: 7 }).map((_, i) => (
-        <div key={i} className="w-10 h-16 bg-stone-200 rounded animate-pulse" />
-      ))}
+    <div className="space-y-2">
+      <p className="text-xs tracking-widest text-stone-400 uppercase">Météo · Calcatoggio</p>
+      <div className="flex gap-5">
+        {Array.from({ length: 5 }).map((_, i) => (
+          <div key={i} className="w-8 h-4 bg-stone-200 rounded animate-pulse" />
+        ))}
+      </div>
     </div>
   );
 
   if (isError || !data) return null;
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-3">
       <p className="text-xs tracking-widest text-stone-400 uppercase">Météo · Calcatoggio</p>
-      <div className="flex gap-1.5 sm:gap-2 flex-wrap">
+      <div className="flex items-start gap-5 flex-wrap">
         {data.map((day) => {
           const d = new Date(day.date + "T12:00:00");
           const isWeddingDay = day.date === "2026-07-11";
-          const weather = WMO_CODES[day.code] ?? { label: "–", emoji: "🌡️" };
+          const weather = WMO_CODES[day.code] ?? { label: "–", emoji: "–" };
           return (
-            <div
-              key={day.date}
-              className={`flex flex-col items-center gap-1 px-2.5 py-2 rounded-lg text-center transition-all ${
-                isWeddingDay
-                  ? "bg-savethedate-brown/10 ring-1 ring-savethedate-brown/30"
-                  : "bg-stone-100/60"
-              }`}
-            >
-              <span className={`text-[10px] tracking-wider uppercase ${isWeddingDay ? "text-savethedate-brown font-medium" : "text-stone-400"}`}>
+            <div key={day.date} className="flex flex-col gap-0.5">
+              <span className={`text-[10px] tracking-widest uppercase ${isWeddingDay ? "text-savethedate-brown" : "text-stone-400"}`}>
                 {isWeddingDay ? "Jour J" : DAYS_FR[d.getDay()]}
               </span>
-              <span className="text-lg" title={weather.label}>{weather.emoji}</span>
-              <span className="text-xs font-light text-stone-700">{day.maxTemp}°</span>
-              <span className="text-[10px] text-stone-400">{day.minTemp}°</span>
+              <span className="text-base leading-none" title={weather.label}>{weather.emoji}</span>
+              <span className={`text-xs font-light ${isWeddingDay ? "text-stone-700" : "text-stone-500"}`}>
+                {day.maxTemp}° <span className="text-stone-300">/</span> {day.minTemp}°
+              </span>
             </div>
           );
         })}
