@@ -161,6 +161,12 @@ export default function PrintQR() {
           }
         }
         @page { margin: 0; size: A5 portrait; }
+
+        * {
+          -webkit-print-color-adjust: exact !important;
+          print-color-adjust: exact !important;
+          color-adjust: exact !important;
+        }
       `}</style>
 
       <div className="bg-cream min-h-screen font-sans flex flex-col items-center gap-12 py-14 px-6">
