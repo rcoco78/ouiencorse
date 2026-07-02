@@ -75,7 +75,7 @@ function Countdown() {
   );
 }
 
-function WeatherWidget() {
+function WeatherFooterLine() {
   const { data, isLoading, isError } = useQuery<WeatherDay[]>({
     queryKey: ["weather"],
     queryFn: async () => {
@@ -97,41 +97,26 @@ function WeatherWidget() {
     staleTime: 1000 * 60 * 60,
   });
 
-  if (isLoading) return (
-    <div className="space-y-2">
-      <p className="text-xs tracking-widest text-stone-400 uppercase">Météo · Calcatoggio</p>
-      <div className="flex gap-5">
-        {Array.from({ length: 5 }).map((_, i) => (
-          <div key={i} className="w-8 h-4 bg-stone-200 rounded animate-pulse" />
-        ))}
-      </div>
-    </div>
-  );
-
-  if (isError || !data) return null;
+  if (isLoading || isError || !data) return null;
 
   return (
-    <div className="space-y-3">
-      <p className="text-xs tracking-widest text-stone-400 uppercase">Météo · Calcatoggio</p>
-      <div className="flex items-start gap-5 flex-wrap">
-        {data.map((day) => {
-          const d = new Date(day.date + "T12:00:00");
-          const isWeddingDay = day.date === "2026-07-11";
-          const weather = WMO_CODES[day.code] ?? { label: "–", emoji: "–" };
-          return (
-            <div key={day.date} className="flex flex-col gap-0.5">
-              <span className={`text-[10px] tracking-widest uppercase ${isWeddingDay ? "text-savethedate-brown" : "text-stone-400"}`}>
-                {isWeddingDay ? "Jour J" : DAYS_FR[d.getDay()]}
-              </span>
-              <span className="text-base leading-none" title={weather.label}>{weather.emoji}</span>
-              <span className={`text-xs font-light ${isWeddingDay ? "text-stone-700" : "text-stone-500"}`}>
-                {day.maxTemp}° <span className="text-stone-300">/</span> {day.minTemp}°
-              </span>
-            </div>
-          );
-        })}
-      </div>
-    </div>
+    <p className="text-center text-[11px] font-light text-stone-400 tracking-wide pb-6">
+      Météo · Calcatoggio
+      <span className="mx-2 text-stone-300">·</span>
+      {data.map((day, i) => {
+        const d = new Date(day.date + "T12:00:00");
+        const isWeddingDay = day.date === "2026-07-11";
+        const weather = WMO_CODES[day.code] ?? { emoji: "–", label: "–" };
+        return (
+          <span key={day.date}>
+            {i > 0 && <span className="mx-1.5 text-stone-200">·</span>}
+            <span className={isWeddingDay ? "text-savethedate-brown" : ""}>
+              {isWeddingDay ? "Sam J" : DAYS_FR[d.getDay()]} {weather.emoji} {day.maxTemp}°
+            </span>
+          </span>
+        );
+      })}
+    </p>
   );
 }
 
@@ -201,12 +186,11 @@ export default function Index() {
               {/* Compte à rebours */}
               <Countdown />
 
-              {/* Météo */}
-              <WeatherWidget />
             </div>
           </div>
         </main>
 
+        <WeatherFooterLine />
         <SiteFooter />
       </div>
     </div>
