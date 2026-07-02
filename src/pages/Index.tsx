@@ -199,10 +199,7 @@ export default function Index() {
               </p>
 
               {/* Compte à rebours */}
-              <div className="space-y-2">
-                <p className="text-xs tracking-widest text-stone-400 uppercase">Plus que</p>
-                <Countdown />
-              </div>
+              <Countdown />
 
               {/* Météo */}
               <WeatherWidget />
