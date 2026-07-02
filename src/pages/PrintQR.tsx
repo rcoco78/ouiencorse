@@ -7,80 +7,40 @@ const PHOTOS_URL  = `${window.location.origin}/photos`;
 function printCard(id: "photos" | "revolut") {
   document.body.classList.add(`print-${id}`);
   window.print();
-  // Petit délai pour que le navigateur retire la classe après l'impression
   setTimeout(() => document.body.classList.remove(`print-${id}`), 500);
 }
 
-interface QRCardProps {
-  id: "photos" | "revolut";
-  qrValue: string;
-  title: string;
-  subtitle: string;
-  instruction: string;
-}
-
-function QRCard({ id, qrValue, title, subtitle, instruction }: QRCardProps) {
+function CardWrapper({ id, children }: { id: "photos" | "revolut"; children: React.ReactNode }) {
   return (
-    <div className={`qr-card-${id} flex flex-col items-center gap-6`}>
-      {/* Carte */}
+    <div className={`qr-card-${id} flex flex-col items-center gap-5`}>
       <div
-        className="relative flex flex-col items-center justify-center gap-5 p-10 overflow-hidden"
+        className="relative overflow-hidden flex flex-col items-center justify-between text-center"
         style={{
           background: "#FAF4EE",
           width: "320px",
-          border: "1px solid rgba(167,152,133,0.25)",
+          minHeight: "480px",
+          border: "1px solid rgba(167,152,133,0.2)",
+          padding: "36px 32px",
+          gap: "20px",
         }}
       >
-        {/* Corse en fond */}
+        {/* Corse en filigrane */}
         <img
           src="/corsica2.svg"
           alt=""
           aria-hidden
           className="absolute inset-0 w-full h-full object-contain pointer-events-none select-none"
-          style={{ opacity: 0.04 }}
+          style={{ opacity: 0.05 }}
         />
-        {/* Contenu au-dessus du fond */}
-        <div className="relative z-10 flex flex-col items-center gap-5 w-full">
-
-        {/* Logo */}
-        <div className="flex items-center space-x-1">
-          <span className="font-dancing text-xl font-medium text-stone-800">L</span>
-          <span className="font-sans text-xs font-thin text-stone-800">&</span>
-          <span className="font-dancing text-xl font-medium text-stone-800">C</span>
+        <div className="relative z-10 flex flex-col items-center w-full" style={{ gap: "inherit" }}>
+          {children}
         </div>
-
-        <div className="w-10 h-px bg-savethedate-brown/30" />
-
-        {/* Titre */}
-        <div className="text-center space-y-1">
-          <h2 className="font-dancing text-3xl text-stone-800">{title}</h2>
-          <p className="text-[10px] tracking-widest text-stone-400 uppercase">{subtitle}</p>
-        </div>
-
-        {/* QR */}
-        <div className="p-4 bg-white" style={{ border: "1px solid rgba(167,152,133,0.15)" }}>
-          <QRCodeSVG value={qrValue} size={168} bgColor="#ffffff" fgColor="#1c1917" level="M" />
-        </div>
-
-        {/* Instruction */}
-        <p className="text-center text-xs text-stone-500 font-light leading-relaxed max-w-[190px]">
-          {instruction}
-        </p>
-
-        {/* Date */}
-        <div className="flex items-center gap-2 text-[10px] tracking-widest text-stone-400 uppercase">
-          <span>11 . 07 . 2026</span>
-          <span className="text-stone-300">·</span>
-          <span>Calcatoggio</span>
-        </div>
-
-        </div>{/* fin z-10 */}
       </div>
 
-      {/* Bouton imprimer — masqué à l'impression */}
+      {/* Bouton imprimer */}
       <button
         onClick={() => printCard(id)}
-        className="no-print flex items-center gap-2 text-xs tracking-widest text-stone-400 uppercase hover:text-savethedate-brown transition-colors"
+        className="no-print flex items-center gap-2 text-[10px] tracking-widest text-stone-400 uppercase hover:text-savethedate-brown transition-colors"
       >
         <Printer className="w-3.5 h-3.5" />
         Imprimer
@@ -89,33 +49,121 @@ function QRCard({ id, qrValue, title, subtitle, instruction }: QRCardProps) {
   );
 }
 
+function PhotosCard() {
+  return (
+    <CardWrapper id="photos">
+      {/* Titre */}
+      <h2 className="font-dancing text-[26px] text-stone-800 leading-snug">
+        Le selfie miroir,<br />notre signature…
+      </h2>
+
+      {/* Corps */}
+      <div className="space-y-3 text-stone-600 font-light text-[12.5px] leading-relaxed">
+        <p>
+          Si vous nous connaissez, vous savez qu'on ne résiste jamais à un{" "}
+          <span className="font-semibold text-stone-800">selfie miroir</span>.
+        </p>
+        <p>Alors maintenant, c'est à vous&nbsp;!</p>
+        <p>
+          Prenez votre plus beau selfie miroir et{" "}
+          <span className="font-semibold text-stone-800">scannez ce QR code</span>{" "}
+          pour nous l'envoyer.
+        </p>
+      </div>
+
+      {/* QR */}
+      <div className="py-1">
+        <div className="p-3 bg-white inline-block" style={{ border: "1px solid rgba(167,152,133,0.2)" }}>
+          <QRCodeSVG value={PHOTOS_URL} size={110} bgColor="#ffffff" fgColor="#1c1917" level="M" />
+        </div>
+      </div>
+
+      {/* Suite du texte */}
+      <div className="space-y-3 text-stone-600 font-light text-[12.5px] leading-relaxed">
+        <p>Promis, on les regardera tous… même les plus gênants&nbsp;!</p>
+        <p>
+          Merci de nous laisser un souvenir aussi spontané qu'inoubliable.
+        </p>
+      </div>
+
+      {/* Signature */}
+      <p className="font-dancing text-2xl text-stone-800 pt-1">
+        Lorine <span className="font-sans font-thin text-base">&</span> Corentin
+      </p>
+    </CardWrapper>
+  );
+}
+
+function RevolotCard() {
+  return (
+    <CardWrapper id="revolut">
+      {/* Titre */}
+      <h2 className="font-dancing text-[26px] text-stone-800 leading-snug">
+        Un cadeau ?<br />Avec plaisir…
+      </h2>
+
+      {/* Corps */}
+      <div className="space-y-3 text-stone-600 font-light text-[12.5px] leading-relaxed">
+        <p>
+          Si vous souhaitez nous offrir quelque chose, on rêve d'un{" "}
+          <span className="font-semibold text-stone-800">voyage au Japon</span>{" "}
+          pour notre lune de miel.
+        </p>
+        <p>
+          Votre contribution, grande ou petite, nous aidera à concrétiser ce rêve.
+        </p>
+        <p>
+          Scannez ce QR code pour{" "}
+          <span className="font-semibold text-stone-800">participer à la cagnotte</span>.
+        </p>
+      </div>
+
+      {/* QR */}
+      <div className="py-1">
+        <div className="p-3 bg-white inline-block" style={{ border: "1px solid rgba(167,152,133,0.2)" }}>
+          <QRCodeSVG value={REVOLUT_URL} size={110} bgColor="#ffffff" fgColor="#1c1917" level="M" />
+        </div>
+      </div>
+
+      {/* Suite */}
+      <div className="space-y-3 text-stone-600 font-light text-[12.5px] leading-relaxed">
+        <p>
+          Votre présence à nos côtés est déjà le plus beau des cadeaux.
+        </p>
+        <p>Merci du fond du cœur.</p>
+      </div>
+
+      {/* Signature */}
+      <p className="font-dancing text-2xl text-stone-800 pt-1">
+        Lorine <span className="font-sans font-thin text-base">&</span> Corentin
+      </p>
+    </CardWrapper>
+  );
+}
+
 export default function PrintQR() {
   return (
     <>
       <style>{`
-        /* Par défaut à l'impression : tout masquer sauf si un mode est actif */
         @media print {
           .no-print { display: none !important; }
 
-          /* Impression carte photos uniquement */
           body.print-photos .qr-card-revolut { display: none !important; }
           body.print-photos .qr-card-photos {
             position: fixed; inset: 0;
             display: flex; align-items: center; justify-content: center;
           }
 
-          /* Impression carte revolut uniquement */
           body.print-revolut .qr-card-photos { display: none !important; }
           body.print-revolut .qr-card-revolut {
             position: fixed; inset: 0;
             display: flex; align-items: center; justify-content: center;
           }
         }
-
         @page { margin: 0; size: A5 portrait; }
       `}</style>
 
-      <div className="bg-cream min-h-screen font-sans flex flex-col items-center justify-center gap-16 py-16 px-6">
+      <div className="bg-cream min-h-screen font-sans flex flex-col items-center gap-12 py-14 px-6">
         {/* En-tête */}
         <div className="no-print text-center space-y-2">
           <div className="flex items-center justify-center space-x-1">
@@ -127,21 +175,9 @@ export default function PrintQR() {
         </div>
 
         {/* Les deux cartes */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-12 sm:gap-20">
-          <QRCard
-            id="photos"
-            qrValue={PHOTOS_URL}
-            title="Vos photos"
-            subtitle="Album du mariage"
-            instruction="Scannez pour partager vos photos et vidéos dans notre album commun"
-          />
-          <QRCard
-            id="revolut"
-            qrValue={REVOLUT_URL}
-            title="La cagnotte"
-            subtitle="Voyage de noces"
-            instruction="Scannez pour participer à notre voyage de noces — merci du fond du cœur"
-          />
+        <div className="flex flex-col sm:flex-row items-start justify-center gap-10 sm:gap-16">
+          <PhotosCard />
+          <RevolotCard />
         </div>
       </div>
     </>
