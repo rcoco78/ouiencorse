@@ -10,6 +10,7 @@ import ListeMariage from "./pages/ListeMariage";
 import Playlist from "./pages/Playlist";
 import Presence from "./pages/Presence";
 import SaveTheDate from "./pages/SaveTheDate";
+import Photos from "./pages/Photos";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -28,6 +29,7 @@ const App = () => (
           <Route path="/playlist" element={<Playlist />} />
           <Route path="/presence" element={<Presence />} />
           <Route path="/save-the-date" element={<SaveTheDate />} />
+          <Route path="/photos" element={<Photos />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
