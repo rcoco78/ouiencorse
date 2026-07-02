@@ -14,14 +14,14 @@ function CardWrapper({ id, children }: { id: "photos" | "revolut"; children: Rea
   return (
     <div className={`qr-card-${id} flex flex-col items-center gap-5`}>
       <div
-        className="relative overflow-hidden flex flex-col items-center justify-between text-center"
+        className="relative overflow-hidden flex flex-col items-center justify-center text-center"
         style={{
           background: "#FAF4EE",
           width: "380px",
           minHeight: "560px",
           border: "1px solid rgba(167,152,133,0.2)",
           padding: "48px 44px",
-          gap: "24px",
+          gap: "28px",
         }}
       >
         {/* Corse en filigrane */}
@@ -53,12 +53,12 @@ function PhotosCard() {
   return (
     <CardWrapper id="photos">
       {/* Titre */}
-      <h2 className="font-dancing text-4xl text-stone-800 leading-snug">
+      <h2 className="font-dancing text-5xl text-stone-800 leading-snug">
         Le selfie miroir,<br />notre signature…
       </h2>
 
       {/* Corps */}
-      <div className="space-y-4 text-stone-600 font-light text-base leading-relaxed">
+      <div className="space-y-4 text-stone-600 font-light text-[17px] leading-relaxed">
         <p>
           Si vous nous connaissez, vous savez qu'on ne résiste jamais à un{" "}
           <span className="font-semibold text-stone-800">selfie miroir</span>.
@@ -79,14 +79,14 @@ function PhotosCard() {
       </div>
 
       {/* Suite du texte */}
-      <div className="space-y-4 text-stone-600 font-light text-base leading-relaxed">
+      <div className="space-y-4 text-stone-600 font-light text-[17px] leading-relaxed">
         <p>Promis, on les regardera tous… même les plus gênants&nbsp;!</p>
         <p>Merci de nous laisser un souvenir aussi spontané qu'inoubliable.</p>
       </div>
 
       {/* Signature */}
-      <p className="font-dancing text-3xl text-stone-800 pt-1">
-        Lorine <span className="font-sans font-thin text-lg">&</span> Corentin
+      <p className="font-dancing text-4xl text-stone-800 pt-1">
+        Lorine <span className="font-sans font-thin text-xl">&</span> Corentin
       </p>
     </CardWrapper>
   );
@@ -96,12 +96,12 @@ function RevolotCard() {
   return (
     <CardWrapper id="revolut">
       {/* Titre */}
-      <h2 className="font-dancing text-4xl text-stone-800 leading-snug">
+      <h2 className="font-dancing text-5xl text-stone-800 leading-snug">
         Un cadeau ?<br />Avec plaisir…
       </h2>
 
       {/* Corps */}
-      <div className="space-y-4 text-stone-600 font-light text-base leading-relaxed">
+      <div className="space-y-4 text-stone-600 font-light text-[17px] leading-relaxed">
         <p>
           Si vous souhaitez nous offrir quelque chose, on rêve d'un{" "}
           <span className="font-semibold text-stone-800">voyage au Japon</span>{" "}
@@ -122,14 +122,14 @@ function RevolotCard() {
       </div>
 
       {/* Suite */}
-      <div className="space-y-4 text-stone-600 font-light text-base leading-relaxed">
+      <div className="space-y-4 text-stone-600 font-light text-[17px] leading-relaxed">
         <p>Votre présence à nos côtés est déjà le plus beau des cadeaux.</p>
         <p>Merci du fond du cœur.</p>
       </div>
 
       {/* Signature */}
-      <p className="font-dancing text-3xl text-stone-800 pt-1">
-        Lorine <span className="font-sans font-thin text-lg">&</span> Corentin
+      <p className="font-dancing text-4xl text-stone-800 pt-1">
+        Lorine <span className="font-sans font-thin text-xl">&</span> Corentin
       </p>
     </CardWrapper>
   );
