@@ -5,7 +5,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 // ── À compléter par les mariés ───────────────────────────────────────────────
-const CAGNOTTE_URL = ""; // ex: https://www.leetchi.com/…
+const CAGNOTTE_URL = "https://revolut.me/corent1robert/pocket/buM4rAjzrH";
 const IBAN = "";         // ex: FR76 XXXX XXXX XXXX XXXX XXXX XXX
 const BIC = "";
 // ─────────────────────────────────────────────────────────────────────────────
