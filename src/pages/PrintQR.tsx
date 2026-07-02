@@ -53,12 +53,12 @@ function PhotosCard() {
   return (
     <CardWrapper id="photos">
       {/* Titre */}
-      <h2 className="font-dancing text-[26px] text-stone-800 leading-snug">
+      <h2 className="font-dancing text-4xl text-stone-800 leading-snug">
         Le selfie miroir,<br />notre signature…
       </h2>
 
       {/* Corps */}
-      <div className="space-y-3 text-stone-600 font-light text-[12.5px] leading-relaxed">
+      <div className="space-y-4 text-stone-600 font-light text-base leading-relaxed">
         <p>
           Si vous nous connaissez, vous savez qu'on ne résiste jamais à un{" "}
           <span className="font-semibold text-stone-800">selfie miroir</span>.
@@ -73,22 +73,20 @@ function PhotosCard() {
 
       {/* QR */}
       <div className="py-1">
-        <div className="p-3 bg-white inline-block" style={{ border: "1px solid rgba(167,152,133,0.2)" }}>
+        <div className="p-4 bg-white inline-block" style={{ border: "1px solid rgba(167,152,133,0.2)" }}>
           <QRCodeSVG value={PHOTOS_URL} size={150} bgColor="#ffffff" fgColor="#1c1917" level="M" />
         </div>
       </div>
 
       {/* Suite du texte */}
-      <div className="space-y-3 text-stone-600 font-light text-[12.5px] leading-relaxed">
+      <div className="space-y-4 text-stone-600 font-light text-base leading-relaxed">
         <p>Promis, on les regardera tous… même les plus gênants&nbsp;!</p>
-        <p>
-          Merci de nous laisser un souvenir aussi spontané qu'inoubliable.
-        </p>
+        <p>Merci de nous laisser un souvenir aussi spontané qu'inoubliable.</p>
       </div>
 
       {/* Signature */}
-      <p className="font-dancing text-2xl text-stone-800 pt-1">
-        Lorine <span className="font-sans font-thin text-base">&</span> Corentin
+      <p className="font-dancing text-3xl text-stone-800 pt-1">
+        Lorine <span className="font-sans font-thin text-lg">&</span> Corentin
       </p>
     </CardWrapper>
   );
@@ -98,20 +96,18 @@ function RevolotCard() {
   return (
     <CardWrapper id="revolut">
       {/* Titre */}
-      <h2 className="font-dancing text-[26px] text-stone-800 leading-snug">
+      <h2 className="font-dancing text-4xl text-stone-800 leading-snug">
         Un cadeau ?<br />Avec plaisir…
       </h2>
 
       {/* Corps */}
-      <div className="space-y-3 text-stone-600 font-light text-[12.5px] leading-relaxed">
+      <div className="space-y-4 text-stone-600 font-light text-base leading-relaxed">
         <p>
           Si vous souhaitez nous offrir quelque chose, on rêve d'un{" "}
           <span className="font-semibold text-stone-800">voyage au Japon</span>{" "}
           pour notre lune de miel.
         </p>
-        <p>
-          Votre contribution, grande ou petite, nous aidera à concrétiser ce rêve.
-        </p>
+        <p>Votre contribution, grande ou petite, nous aidera à concrétiser ce rêve.</p>
         <p>
           Scannez ce QR code pour{" "}
           <span className="font-semibold text-stone-800">participer à la cagnotte</span>.
@@ -120,22 +116,20 @@ function RevolotCard() {
 
       {/* QR */}
       <div className="py-1">
-        <div className="p-3 bg-white inline-block" style={{ border: "1px solid rgba(167,152,133,0.2)" }}>
+        <div className="p-4 bg-white inline-block" style={{ border: "1px solid rgba(167,152,133,0.2)" }}>
           <QRCodeSVG value={REVOLUT_URL} size={150} bgColor="#ffffff" fgColor="#1c1917" level="M" />
         </div>
       </div>
 
       {/* Suite */}
-      <div className="space-y-3 text-stone-600 font-light text-[12.5px] leading-relaxed">
-        <p>
-          Votre présence à nos côtés est déjà le plus beau des cadeaux.
-        </p>
+      <div className="space-y-4 text-stone-600 font-light text-base leading-relaxed">
+        <p>Votre présence à nos côtés est déjà le plus beau des cadeaux.</p>
         <p>Merci du fond du cœur.</p>
       </div>
 
       {/* Signature */}
-      <p className="font-dancing text-2xl text-stone-800 pt-1">
-        Lorine <span className="font-sans font-thin text-base">&</span> Corentin
+      <p className="font-dancing text-3xl text-stone-800 pt-1">
+        Lorine <span className="font-sans font-thin text-lg">&</span> Corentin
       </p>
     </CardWrapper>
   );
