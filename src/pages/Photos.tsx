@@ -17,12 +17,13 @@ import {
   ChevronRight,
   QrCode,
   Sparkles,
+  Download,
 } from "lucide-react";
 import { toast } from "sonner";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 
 const PHOTOS_URL = "/api/photos";
-const SITE_URL = "https://ouiencorse.vercel.app/photos";
+const SITE_URL = `${window.location.origin}/photos`;
 
 interface PhotoEntry {
   id: string;
@@ -40,6 +41,32 @@ function formatRelativeTime(iso: string) {
   const hours = Math.floor(minutes / 60);
   if (hours < 24) return `il y a ${hours}h`;
   return new Date(iso).toLocaleDateString("fr-FR", { day: "numeric", month: "short" });
+}
+
+async function downloadPhoto(url: string, type: "image" | "video") {
+  try {
+    const res = await fetch(url);
+    const blob = await res.blob();
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `souvenir-mariage-L&C.${type === "video" ? "mp4" : "jpg"}`;
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+  } catch {
+    window.open(url, "_blank");
+  }
+}
+
+function sanitizeName(name: string) {
+  return (
+    name
+      .trim()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-zA-Z0-9\s]/g, "")
+      .replace(/\s+/g, "-")
+      .slice(0, 20) || "anonyme"
+  );
 }
 
 function fireConfetti() {
@@ -214,20 +241,15 @@ export default function Photos() {
 
     try {
       const ext = file.name.split(".").pop() ?? "jpg";
-      const filename = `wedding-photos/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
+      const type = file.type.startsWith("video/") ? "vid" : "img";
+      const name = sanitizeName(uploaderName);
+      // Métadonnées encodées dans le nom de fichier — pas de race condition possible
+      const filename = `wedding-photos/${Date.now()}_${type}_${name}.${ext}`;
 
-      const blob = await upload(filename, file, {
+      await upload(filename, file, {
         access: "public",
         handleUploadUrl: `${PHOTOS_URL}?action=upload`,
         onUploadProgress: ({ percentage }) => setProgress(percentage),
-      });
-
-      const type = file.type.startsWith("video/") ? "video" : "image";
-
-      await fetch(`${PHOTOS_URL}?action=metadata`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url: blob.url, type, uploaderName }),
       });
 
       fireConfetti();
@@ -489,7 +511,16 @@ export default function Photos() {
               <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 to-transparent px-5 py-4">
                 <div className="flex items-center justify-between text-white/70 text-xs font-light">
                   <span>{currentPhoto.uploaderName ?? "Anonyme"}</span>
-                  <span>{formatRelativeTime(currentPhoto.uploadedAt)}</span>
+                  <div className="flex items-center gap-3">
+                    <span>{formatRelativeTime(currentPhoto.uploadedAt)}</span>
+                    <button
+                      onClick={() => downloadPhoto(currentPhoto.url, currentPhoto.type)}
+                      className="flex items-center gap-1 text-white/60 hover:text-white transition-colors"
+                      title="Télécharger"
+                    >
+                      <Download className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
                 </div>
               </div>
             )}
