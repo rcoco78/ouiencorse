@@ -17,11 +17,11 @@ function CardWrapper({ id, children }: { id: "photos" | "revolut"; children: Rea
         className="relative overflow-hidden flex flex-col items-center justify-between text-center"
         style={{
           background: "#FAF4EE",
-          width: "320px",
-          minHeight: "480px",
+          width: "380px",
+          minHeight: "560px",
           border: "1px solid rgba(167,152,133,0.2)",
-          padding: "36px 32px",
-          gap: "20px",
+          padding: "44px 40px",
+          gap: "22px",
         }}
       >
         {/* Corse en filigrane */}
@@ -74,7 +74,7 @@ function PhotosCard() {
       {/* QR */}
       <div className="py-1">
         <div className="p-3 bg-white inline-block" style={{ border: "1px solid rgba(167,152,133,0.2)" }}>
-          <QRCodeSVG value={PHOTOS_URL} size={110} bgColor="#ffffff" fgColor="#1c1917" level="M" />
+          <QRCodeSVG value={PHOTOS_URL} size={130} bgColor="#ffffff" fgColor="#1c1917" level="M" />
         </div>
       </div>
 
@@ -121,7 +121,7 @@ function RevolotCard() {
       {/* QR */}
       <div className="py-1">
         <div className="p-3 bg-white inline-block" style={{ border: "1px solid rgba(167,152,133,0.2)" }}>
-          <QRCodeSVG value={REVOLUT_URL} size={110} bgColor="#ffffff" fgColor="#1c1917" level="M" />
+          <QRCodeSVG value={REVOLUT_URL} size={130} bgColor="#ffffff" fgColor="#1c1917" level="M" />
         </div>
       </div>
 
@@ -153,14 +153,20 @@ export default function PrintQR() {
             position: fixed; inset: 0;
             display: flex; align-items: center; justify-content: center;
           }
+          body.print-photos .qr-card-photos > div:first-child {
+            width: 100% !important; min-height: 100% !important;
+          }
 
           body.print-revolut .qr-card-photos { display: none !important; }
           body.print-revolut .qr-card-revolut {
             position: fixed; inset: 0;
             display: flex; align-items: center; justify-content: center;
           }
+          body.print-revolut .qr-card-revolut > div:first-child {
+            width: 100% !important; min-height: 100% !important;
+          }
         }
-        @page { margin: 0; size: A5 portrait; }
+        @page { margin: 1.5cm; size: A5 portrait; }
 
         * {
           -webkit-print-color-adjust: exact !important;
