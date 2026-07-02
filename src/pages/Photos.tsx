@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { upload } from "@vercel/blob/client";
 import { QRCodeSVG } from "qrcode.react";
+import confetti from "canvas-confetti";
 import {
   Camera,
   Upload,
@@ -15,12 +16,10 @@ import {
   ChevronLeft,
   ChevronRight,
   QrCode,
+  Sparkles,
 } from "lucide-react";
 import { toast } from "sonner";
-import {
-  Dialog,
-  DialogContent,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 
 const PHOTOS_URL = "/api/photos";
 const SITE_URL = "https://ouiencorse.vercel.app/photos";
@@ -43,6 +42,90 @@ function formatRelativeTime(iso: string) {
   return new Date(iso).toLocaleDateString("fr-FR", { day: "numeric", month: "short" });
 }
 
+function fireConfetti() {
+  const colors = ["#c4a882", "#d4b896", "#e8d5b7", "#f5ece0", "#8b7355"];
+  confetti({
+    particleCount: 80,
+    spread: 70,
+    origin: { y: 0.6 },
+    colors,
+    shapes: ["circle", "square"],
+    scalar: 0.9,
+  });
+  setTimeout(() => {
+    confetti({
+      particleCount: 40,
+      spread: 50,
+      origin: { x: 0.2, y: 0.7 },
+      colors,
+      scalar: 0.8,
+    });
+    confetti({
+      particleCount: 40,
+      spread: 50,
+      origin: { x: 0.8, y: 0.7 },
+      colors,
+      scalar: 0.8,
+    });
+  }, 200);
+}
+
+interface MasonryGridProps {
+  photos: PhotoEntry[];
+  onPhotoClick: (idx: number) => void;
+  visibleCount: number;
+}
+
+function MasonryGrid({ photos, onPhotoClick, visibleCount }: MasonryGridProps) {
+  return (
+    <div className="columns-2 sm:columns-3 gap-2 sm:gap-3 space-y-0">
+      {photos.map((photo, idx) => (
+        <div
+          key={photo.id}
+          onClick={() => onPhotoClick(idx)}
+          className="break-inside-avoid mb-2 sm:mb-3 relative rounded-lg overflow-hidden cursor-pointer group bg-stone-100"
+          style={{
+            animation: idx < visibleCount
+              ? `fadeSlideIn 0.5s ease-out ${Math.min(idx, 8) * 60}ms both`
+              : "none",
+            opacity: idx < visibleCount ? undefined : 0,
+          }}
+        >
+          {photo.type === "video" ? (
+            <>
+              <video
+                src={photo.url}
+                className="w-full object-cover group-hover:scale-[1.03] transition-transform duration-500"
+                muted
+                playsInline
+              />
+              <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/35 transition-colors">
+                <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                  <Video className="w-5 h-5 text-white drop-shadow" />
+                </div>
+              </div>
+            </>
+          ) : (
+            <img
+              src={photo.url}
+              alt=""
+              loading="lazy"
+              className="w-full object-cover group-hover:scale-[1.03] transition-transform duration-500"
+            />
+          )}
+
+          {/* Overlay nom au survol */}
+          <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/60 to-transparent px-2.5 py-2 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+            <p className="text-white text-xs truncate font-light">
+              {photo.uploaderName ?? "Anonyme"} · {formatRelativeTime(photo.uploadedAt)}
+            </p>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export default function Photos() {
   const queryClient = useQueryClient();
 
@@ -53,9 +136,11 @@ export default function Photos() {
   const [progress, setProgress] = useState(0);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [showQR, setShowQR] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(0);
+  const prevCountRef = useRef(0);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const dropRef = useRef<HTMLDivElement>(null);
 
   const { data: photos = [], isLoading } = useQuery<PhotoEntry[]>({
     queryKey: ["photos"],
@@ -67,12 +152,19 @@ export default function Photos() {
     refetchInterval: 15000,
   });
 
-  // Rafraîchissement automatique après upload
+  // Notification live quand de nouvelles photos arrivent (hors upload personnel)
   useEffect(() => {
-    if (!isUploading) {
-      queryClient.invalidateQueries({ queryKey: ["photos"] });
+    if (prevCountRef.current > 0 && photos.length > prevCountRef.current && !isUploading) {
+      const diff = photos.length - prevCountRef.current;
+      toast(`${diff === 1 ? "Nouvelle photo" : `${diff} nouvelles photos`} partagée${diff > 1 ? "s" : ""} ! ✨`, {
+        duration: 4000,
+      });
     }
-  }, [isUploading, queryClient]);
+    if (photos.length > visibleCount) {
+      setVisibleCount(photos.length);
+    }
+    prevCountRef.current = photos.length;
+  }, [photos.length]);
 
   const handleFileChange = useCallback((selected: File | null) => {
     if (!selected) return;
@@ -108,6 +200,7 @@ export default function Photos() {
   const handleDrop = useCallback(
     (e: React.DragEvent) => {
       e.preventDefault();
+      setIsDragging(false);
       handleFileChange(e.dataTransfer.files[0] ?? null);
     },
     [handleFileChange]
@@ -137,7 +230,8 @@ export default function Photos() {
         body: JSON.stringify({ url: blob.url, type, uploaderName }),
       });
 
-      toast.success("Photo partagée ! Merci 💛");
+      fireConfetti();
+      toast.success("Merci, c'est dans l'album ! 💛");
       setFile(null);
       setPreview(null);
       setProgress(0);
@@ -167,226 +261,217 @@ export default function Photos() {
   const currentPhoto = lightboxIndex !== null ? photos[lightboxIndex] : null;
 
   return (
-    <div className="bg-cream min-h-screen w-full font-sans overflow-x-hidden flex flex-col">
-      <div className="container mx-auto px-6 sm:px-8 flex flex-col flex-grow">
-        {/* Header */}
-        <header className="py-8 sm:py-12">
-          <div className="flex items-center justify-between">
-            <a href="/" className="flex items-center space-x-1 hover:opacity-80 transition-opacity">
-              <span className="font-dancing text-2xl font-medium text-stone-800">L</span>
-              <span className="font-sans text-sm font-thin text-stone-800">&</span>
-              <span className="font-dancing text-2xl font-medium text-stone-800">C</span>
-            </a>
-            <Navigation />
-          </div>
-        </header>
+    <>
+      <style>{`
+        @keyframes fadeSlideIn {
+          from { opacity: 0; transform: translateY(16px) scale(0.97); }
+          to   { opacity: 1; transform: translateY(0)   scale(1); }
+        }
+        @keyframes pulseBorder {
+          0%, 100% { border-color: rgba(139, 115, 85, 0.4); }
+          50%       { border-color: rgba(139, 115, 85, 0.9); box-shadow: 0 0 20px rgba(139, 115, 85, 0.15); }
+        }
+      `}</style>
 
-        <main className="py-8 flex-grow space-y-16">
-          {/* Titre */}
-          <div className="text-center space-y-3">
-            <h1 className="font-dancing text-5xl sm:text-6xl text-stone-800">
-              Vos photos
-            </h1>
-            <p className="text-stone-500 font-light text-sm tracking-wider">
-              Partagez vos plus beaux moments du jour J
-            </p>
-          </div>
-
-          {/* Zone d'upload */}
-          <div className="max-w-lg mx-auto space-y-5">
-            {!file ? (
-              <div
-                ref={dropRef}
-                onDrop={handleDrop}
-                onDragOver={(e) => e.preventDefault()}
-                onClick={() => fileInputRef.current?.click()}
-                className="border-2 border-dashed border-savethedate-brown/30 rounded-xl p-12 flex flex-col items-center justify-center gap-4 cursor-pointer hover:border-savethedate-brown/60 hover:bg-savethedate-brown/5 transition-all duration-200 group"
-              >
-                <div className="w-14 h-14 rounded-full bg-savethedate-brown/10 flex items-center justify-center group-hover:bg-savethedate-brown/15 transition-colors">
-                  <Camera className="w-6 h-6 text-savethedate-brown" />
-                </div>
-                <div className="text-center">
-                  <p className="text-stone-700 font-light">
-                    Appuyez pour choisir une photo ou vidéo
-                  </p>
-                  <p className="text-stone-400 text-xs mt-1">
-                    Photos · Vidéos jusqu'à 10 secondes
-                  </p>
-                </div>
-              </div>
-            ) : (
-              <div className="relative rounded-xl overflow-hidden shadow-md">
-                {file.type.startsWith("video/") ? (
-                  <video
-                    src={preview ?? ""}
-                    controls
-                    className="w-full max-h-80 object-contain bg-black"
-                  />
-                ) : (
-                  <img
-                    src={preview ?? ""}
-                    alt="Aperçu"
-                    className="w-full max-h-80 object-contain bg-stone-100"
-                  />
-                )}
-                <button
-                  onClick={() => { setFile(null); setPreview(null); setProgress(0); }}
-                  className="absolute top-3 right-3 bg-white/80 backdrop-blur-sm rounded-full p-1.5 shadow hover:bg-white transition-colors"
-                >
-                  <X className="w-4 h-4 text-stone-700" />
-                </button>
-              </div>
-            )}
-
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*,video/*"
-              capture="environment"
-              className="hidden"
-              onChange={(e) => handleFileChange(e.target.files?.[0] ?? null)}
-            />
-
-            {file && (
-              <div className="space-y-4">
-                <Input
-                  placeholder="Votre prénom (facultatif)"
-                  value={uploaderName}
-                  onChange={(e) => setUploaderName(e.target.value)}
-                  className="border-savethedate-brown/20 focus:border-savethedate-brown/50 bg-white/60 font-light"
-                />
-
-                {isUploading && (
-                  <div className="space-y-1.5">
-                    <div className="w-full bg-stone-200 rounded-full h-1.5">
-                      <div
-                        className="bg-savethedate-brown h-1.5 rounded-full transition-all duration-300"
-                        style={{ width: `${progress}%` }}
-                      />
-                    </div>
-                    <p className="text-xs text-stone-400 text-center">{progress}%</p>
-                  </div>
-                )}
-
-                <Button
-                  onClick={handleUpload}
-                  disabled={isUploading}
-                  className="w-full bg-savethedate-brown hover:bg-savethedate-brown/90 text-white font-light tracking-wide"
-                >
-                  {isUploading ? (
-                    "Envoi en cours…"
-                  ) : (
-                    <>
-                      <Upload className="w-4 h-4 mr-2" />
-                      Partager
-                    </>
-                  )}
-                </Button>
-              </div>
-            )}
-          </div>
-
-          {/* Galerie */}
-          <div className="space-y-6">
+      <div className="bg-cream min-h-screen w-full font-sans overflow-x-hidden flex flex-col">
+        <div className="container mx-auto px-6 sm:px-8 flex flex-col flex-grow">
+          {/* Header */}
+          <header className="py-8 sm:py-12">
             <div className="flex items-center justify-between">
-              <h2 className="font-dancing text-3xl text-stone-800">
-                L'album du mariage
-              </h2>
-              <button
-                onClick={() => setShowQR(true)}
-                className="flex items-center gap-2 text-xs text-stone-400 hover:text-savethedate-brown transition-colors"
-              >
-                <QrCode className="w-4 h-4" />
-                <span className="hidden sm:inline">QR Code</span>
-              </button>
+              <a href="/" className="flex items-center space-x-1 hover:opacity-80 transition-opacity">
+                <span className="font-dancing text-2xl font-medium text-stone-800">L</span>
+                <span className="font-sans text-sm font-thin text-stone-800">&</span>
+                <span className="font-dancing text-2xl font-medium text-stone-800">C</span>
+              </a>
+              <Navigation />
+            </div>
+          </header>
+
+          <main className="py-8 flex-grow space-y-16">
+            {/* Titre */}
+            <div className="text-center space-y-3" style={{ animation: "fadeSlideIn 0.6s ease-out both" }}>
+              <h1 className="font-dancing text-5xl sm:text-6xl text-stone-800">
+                Vos photos
+              </h1>
+              <p className="text-stone-500 font-light text-sm tracking-wider">
+                Partagez vos plus beaux moments du jour J
+              </p>
             </div>
 
-            {isLoading ? (
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3">
-                {Array.from({ length: 6 }).map((_, i) => (
-                  <div key={i} className="aspect-square bg-stone-200 rounded-lg animate-pulse" />
-                ))}
-              </div>
-            ) : photos.length === 0 ? (
-              <div className="text-center py-20 space-y-3">
-                <ImageIcon className="w-10 h-10 text-stone-300 mx-auto" />
-                <p className="text-stone-400 font-light">
-                  Soyez le premier à partager une photo !
-                </p>
-              </div>
-            ) : (
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3">
-                {photos.map((photo, idx) => (
+            {/* Zone d'upload */}
+            <div
+              className="max-w-lg mx-auto space-y-5"
+              style={{ animation: "fadeSlideIn 0.6s ease-out 0.1s both" }}
+            >
+              {!file ? (
+                <div
+                  onDrop={handleDrop}
+                  onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
+                  onDragLeave={() => setIsDragging(false)}
+                  onClick={() => fileInputRef.current?.click()}
+                  className="border-2 border-dashed rounded-xl p-12 flex flex-col items-center justify-center gap-4 cursor-pointer transition-all duration-300 group"
+                  style={{
+                    borderColor: isDragging ? "rgba(139,115,85,0.9)" : "rgba(139,115,85,0.3)",
+                    background: isDragging ? "rgba(139,115,85,0.06)" : "transparent",
+                    animation: isDragging ? "pulseBorder 1s ease-in-out infinite" : "none",
+                    transform: isDragging ? "scale(1.01)" : "scale(1)",
+                  }}
+                >
                   <div
-                    key={photo.id}
-                    onClick={() => setLightboxIndex(idx)}
-                    className="relative aspect-square rounded-lg overflow-hidden cursor-pointer group bg-stone-100"
+                    className="w-16 h-16 rounded-full flex items-center justify-center transition-all duration-300"
+                    style={{
+                      background: isDragging ? "rgba(139,115,85,0.15)" : "rgba(139,115,85,0.08)",
+                      transform: isDragging ? "scale(1.1)" : "scale(1)",
+                    }}
                   >
-                    {photo.type === "video" ? (
-                      <>
-                        <video
-                          src={photo.url}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                          muted
-                          playsInline
-                        />
-                        <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/30 transition-colors">
-                          <Video className="w-8 h-8 text-white/90 drop-shadow" />
-                        </div>
-                      </>
-                    ) : (
-                      <img
-                        src={photo.url}
-                        alt=""
-                        loading="lazy"
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
-                    )}
-                    {photo.uploaderName && (
-                      <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/50 to-transparent px-2 py-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <p className="text-white text-xs truncate">{photo.uploaderName}</p>
-                      </div>
-                    )}
+                    <Camera
+                      className="w-7 h-7 transition-colors duration-300"
+                      style={{ color: isDragging ? "#6b5537" : "#8b7355" }}
+                    />
                   </div>
-                ))}
+                  <div className="text-center">
+                    <p className="text-stone-700 font-light">
+                      {isDragging ? "Lâchez pour ajouter !" : "Appuyez pour choisir une photo ou vidéo"}
+                    </p>
+                    <p className="text-stone-400 text-xs mt-1">
+                      Photos · Vidéos jusqu'à 10 secondes
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <div
+                  className="relative rounded-xl overflow-hidden shadow-md"
+                  style={{ animation: "fadeSlideIn 0.4s ease-out both" }}
+                >
+                  {file.type.startsWith("video/") ? (
+                    <video src={preview ?? ""} controls className="w-full max-h-80 object-contain bg-black" />
+                  ) : (
+                    <img src={preview ?? ""} alt="Aperçu" className="w-full max-h-80 object-contain bg-stone-100" />
+                  )}
+                  <button
+                    onClick={() => { setFile(null); setPreview(null); setProgress(0); }}
+                    className="absolute top-3 right-3 bg-white/80 backdrop-blur-sm rounded-full p-1.5 shadow hover:bg-white transition-colors"
+                  >
+                    <X className="w-4 h-4 text-stone-700" />
+                  </button>
+                </div>
+              )}
+
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*,video/*"
+                capture="environment"
+                className="hidden"
+                onChange={(e) => handleFileChange(e.target.files?.[0] ?? null)}
+              />
+
+              {file && (
+                <div className="space-y-4" style={{ animation: "fadeSlideIn 0.3s ease-out both" }}>
+                  <Input
+                    placeholder="Votre prénom (facultatif)"
+                    value={uploaderName}
+                    onChange={(e) => setUploaderName(e.target.value)}
+                    className="border-savethedate-brown/20 focus:border-savethedate-brown/50 bg-white/60 font-light"
+                  />
+
+                  {isUploading && (
+                    <div className="space-y-1.5">
+                      <div className="w-full bg-stone-200 rounded-full h-1.5 overflow-hidden">
+                        <div
+                          className="bg-savethedate-brown h-1.5 rounded-full transition-all duration-300"
+                          style={{ width: `${progress}%` }}
+                        />
+                      </div>
+                      <p className="text-xs text-stone-400 text-center">{progress}%</p>
+                    </div>
+                  )}
+
+                  <Button
+                    onClick={handleUpload}
+                    disabled={isUploading}
+                    className="w-full bg-savethedate-brown hover:bg-savethedate-brown/90 text-white font-light tracking-wide transition-all duration-200 active:scale-[0.98]"
+                  >
+                    {isUploading ? (
+                      <span className="flex items-center gap-2">
+                        <span className="inline-block w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                        Envoi en cours…
+                      </span>
+                    ) : (
+                      <span className="flex items-center gap-2">
+                        <Upload className="w-4 h-4" />
+                        Partager dans l'album
+                      </span>
+                    )}
+                  </Button>
+                </div>
+              )}
+            </div>
+
+            {/* Galerie */}
+            <div className="space-y-6" style={{ animation: "fadeSlideIn 0.6s ease-out 0.2s both" }}>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <h2 className="font-dancing text-3xl text-stone-800">L'album</h2>
+                  {photos.length > 0 && (
+                    <span className="text-xs text-stone-400 font-light tabular-nums">
+                      {photos.length} {photos.length === 1 ? "souvenir" : "souvenirs"}
+                    </span>
+                  )}
+                </div>
+                <button
+                  onClick={() => setShowQR(true)}
+                  className="flex items-center gap-1.5 text-xs text-stone-400 hover:text-savethedate-brown transition-colors"
+                >
+                  <QrCode className="w-4 h-4" />
+                  <span className="hidden sm:inline">QR Code</span>
+                </button>
               </div>
-            )}
 
-            {photos.length > 0 && (
-              <p className="text-center text-xs text-stone-400 font-light">
-                {photos.length} {photos.length === 1 ? "souvenir partagé" : "souvenirs partagés"}
-              </p>
-            )}
-          </div>
-        </main>
+              {isLoading ? (
+                <div className="columns-2 sm:columns-3 gap-2 sm:gap-3">
+                  {Array.from({ length: 6 }).map((_, i) => (
+                    <div
+                      key={i}
+                      className="break-inside-avoid mb-2 sm:mb-3 bg-stone-200 rounded-lg animate-pulse"
+                      style={{ height: `${[180, 240, 160, 220, 200, 260][i]}px` }}
+                    />
+                  ))}
+                </div>
+              ) : photos.length === 0 ? (
+                <div className="text-center py-24 space-y-4">
+                  <div className="w-16 h-16 rounded-full bg-stone-100 flex items-center justify-center mx-auto">
+                    <Sparkles className="w-7 h-7 text-stone-300" />
+                  </div>
+                  <div>
+                    <p className="text-stone-500 font-light">L'album est vide pour l'instant</p>
+                    <p className="text-stone-400 text-sm font-light mt-1">Soyez le premier à partager un souvenir !</p>
+                  </div>
+                </div>
+              ) : (
+                <MasonryGrid photos={photos} onPhotoClick={setLightboxIndex} visibleCount={visibleCount} />
+              )}
+            </div>
+          </main>
 
-        <SiteFooter />
+          <SiteFooter />
+        </div>
       </div>
 
       {/* Lightbox */}
       <Dialog open={lightboxIndex !== null} onOpenChange={(open) => !open && setLightboxIndex(null)}>
-        <DialogContent className="max-w-4xl p-0 bg-black border-0 overflow-hidden">
+        <DialogContent className="max-w-4xl p-0 bg-black/95 border-0 overflow-hidden">
           <div className="relative flex items-center justify-center min-h-[60vh]">
             {currentPhoto?.type === "video" ? (
-              <video
-                src={currentPhoto.url}
-                controls
-                autoPlay
-                className="max-h-[80vh] max-w-full"
-              />
+              <video src={currentPhoto.url} controls autoPlay className="max-h-[85vh] max-w-full" />
             ) : (
-              <img
-                src={currentPhoto?.url}
-                alt=""
-                className="max-h-[80vh] max-w-full object-contain"
-              />
+              <img src={currentPhoto?.url} alt="" className="max-h-[85vh] max-w-full object-contain" />
             )}
 
-            {/* Navigation lightbox */}
             {lightboxIndex !== null && lightboxIndex > 0 && (
               <button
                 onClick={(e) => { e.stopPropagation(); setLightboxIndex((i) => (i ?? 1) - 1); }}
-                className="absolute left-3 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-full p-2 text-white transition-colors"
+                className="absolute left-3 bg-white/10 hover:bg-white/25 backdrop-blur-sm rounded-full p-2.5 text-white transition-all duration-200 hover:scale-110"
               >
                 <ChevronLeft className="w-5 h-5" />
               </button>
@@ -394,16 +479,15 @@ export default function Photos() {
             {lightboxIndex !== null && lightboxIndex < photos.length - 1 && (
               <button
                 onClick={(e) => { e.stopPropagation(); setLightboxIndex((i) => (i ?? 0) + 1); }}
-                className="absolute right-3 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-full p-2 text-white transition-colors"
+                className="absolute right-3 bg-white/10 hover:bg-white/25 backdrop-blur-sm rounded-full p-2.5 text-white transition-all duration-200 hover:scale-110"
               >
                 <ChevronRight className="w-5 h-5" />
               </button>
             )}
 
-            {/* Infos */}
             {currentPhoto && (
-              <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/70 to-transparent px-5 py-4">
-                <div className="flex items-center justify-between text-white/80 text-xs">
+              <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 to-transparent px-5 py-4">
+                <div className="flex items-center justify-between text-white/70 text-xs font-light">
                   <span>{currentPhoto.uploaderName ?? "Anonyme"}</span>
                   <span>{formatRelativeTime(currentPhoto.uploadedAt)}</span>
                 </div>
@@ -413,24 +497,16 @@ export default function Photos() {
         </DialogContent>
       </Dialog>
 
-      {/* Modale QR Code */}
+      {/* QR Code */}
       <Dialog open={showQR} onOpenChange={setShowQR}>
         <DialogContent className="max-w-sm text-center space-y-5">
           <div>
             <h2 className="font-dancing text-3xl text-stone-800">QR Code</h2>
-            <p className="text-stone-500 text-sm font-light mt-1">
-              À imprimer sur les tables du mariage
-            </p>
+            <p className="text-stone-500 text-sm font-light mt-1">À imprimer sur les tables du mariage</p>
           </div>
           <div className="flex justify-center">
-            <div className="p-4 bg-white rounded-xl shadow-sm border border-stone-100">
-              <QRCodeSVG
-                value={SITE_URL}
-                size={180}
-                bgColor="#ffffff"
-                fgColor="#1c1917"
-                level="M"
-              />
+            <div className="p-5 bg-white rounded-2xl shadow-sm border border-stone-100">
+              <QRCodeSVG value={SITE_URL} size={180} bgColor="#ffffff" fgColor="#1c1917" level="M" />
             </div>
           </div>
           <p className="text-xs text-stone-400 break-all">{SITE_URL}</p>
@@ -443,6 +519,6 @@ export default function Photos() {
           </Button>
         </DialogContent>
       </Dialog>
-    </div>
+    </>
   );
 }

@@ -12,7 +12,6 @@ const INFO_LINKS = [
   { href: "/infos-pratiques", label: "Infos pratiques" },
   { href: "/liste-mariage",   label: "Liste de mariage" },
   { href: "/playlist",        label: "Playlist" },
-  { href: "/photos",          label: "Photos" },
 ];
 
 const ACTION_LINKS = [
