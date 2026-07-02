@@ -29,7 +29,7 @@ function CardWrapper({ id, children }: { id: "photos" | "revolut"; children: Rea
           src="/corsica2.svg"
           alt=""
           aria-hidden
-          className="absolute inset-0 w-full h-full object-contain pointer-events-none select-none"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[70%] pointer-events-none select-none"
           style={{ opacity: 0.05 }}
         />
         <div className="relative z-10 flex flex-col items-center w-full" style={{ gap: "inherit" }}>
