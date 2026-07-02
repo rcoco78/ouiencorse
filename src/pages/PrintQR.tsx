@@ -166,7 +166,7 @@ export default function PrintQR() {
             width: 100% !important; min-height: 100% !important;
           }
         }
-        @page { margin: 1.5cm; size: A5 portrait; }
+        @page { margin: 0; size: A5 portrait; }
 
         * {
           -webkit-print-color-adjust: exact !important;
