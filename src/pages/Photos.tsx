@@ -246,17 +246,28 @@ export default function Photos() {
       // Métadonnées encodées dans le nom de fichier — pas de race condition possible
       const filename = `wedding-photos/${Date.now()}_${type}_${name}.${ext}`;
 
-      await upload(filename, file, {
+      const blob = await upload(filename, file, {
         access: "public",
         handleUploadUrl: `${PHOTOS_URL}?action=upload`,
         onUploadProgress: ({ percentage }) => setProgress(percentage),
       });
+
+      // Ajout immédiat dans la galerie sans attendre le rechargement
+      const newPhoto: PhotoEntry = {
+        id: filename,
+        url: blob.url,
+        type: type === "vid" ? "video" : "image",
+        uploaderName: uploaderName.trim() || undefined,
+        uploadedAt: new Date().toISOString(),
+      };
+      queryClient.setQueryData<PhotoEntry[]>(["photos"], (old = []) => [newPhoto, ...old]);
 
       fireConfetti();
       toast.success("Merci, c'est dans l'album ! 💛");
       setFile(null);
       setPreview(null);
       setProgress(0);
+      // Refetch en arrière-plan pour synchroniser
       queryClient.invalidateQueries({ queryKey: ["photos"] });
     } catch {
       toast.error("Une erreur est survenue, réessaie.");
