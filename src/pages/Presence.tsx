@@ -119,7 +119,41 @@ function PageHeader() {
   );
 }
 
+const CLOSED = true;
+
+function PresenceClosed() {
+  return (
+    <div className="bg-cream min-h-screen w-full font-sans flex flex-col">
+      <div className="container mx-auto px-6 sm:px-8 flex flex-col flex-grow">
+        <header className="py-8 sm:py-12">
+          <div className="flex items-center justify-between">
+            <a href="/" className="flex items-center space-x-1 hover:opacity-80 transition-opacity">
+              <span className="font-dancing text-2xl font-medium text-stone-800">L</span>
+              <span className="font-sans text-sm font-thin text-stone-800">&</span>
+              <span className="font-dancing text-2xl font-medium text-stone-800">C</span>
+            </a>
+            <Navigation />
+          </div>
+        </header>
+        <main className="flex-grow flex flex-col items-center justify-center text-center gap-5 pb-20">
+          <h1 className="font-dancing text-5xl sm:text-6xl text-stone-800">On se retrouve bientôt !</h1>
+          <p className="text-stone-500 font-light max-w-sm leading-relaxed">
+            Les confirmations de présence sont maintenant closes.<br />
+            On a hâte de vous voir le 11 juillet en Corse 🌿
+          </p>
+          <a href="/" className="text-sm text-savethedate-brown hover:underline font-light mt-2">
+            Retour à l'accueil
+          </a>
+        </main>
+        <SiteFooter />
+      </div>
+    </div>
+  );
+}
+
 export default function Presence() {
+  if (CLOSED) return <PresenceClosed />;
+
   const [submitted, setSubmitted] = useState(false);
   const [accompanists, setAccompanists] = useState<{
     firstName: string;
